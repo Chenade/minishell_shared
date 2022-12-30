@@ -63,17 +63,17 @@ OBJS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 #                                                                             #
 ###############################################################################
 
-all:			$(NAME)
+all:			norminette $(NAME)
 
 $(LIBFT):
 				@$(MAKE) -C $(LIBFT_DIR) all
 				mv $(LIBFT_DIR)/$(LIBFT) .
 				$(MAKE) -C $(LIBFT_DIR) fclean
-				@echo ${GREEN}"Libft Compile Successfully\n"${X}
+				@echo ${GREEN}"===== Libft Compile Successfully =====\n"${X}
 
 $(NAME):		$(LIBFT) $(OBJS)
 				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $@
-				@echo ${GREEN}"Minishell Compile Successfully"${X}
+				@echo ${GREEN}"===== Minishell Compile Successfully =====\n"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 
 $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
@@ -96,9 +96,9 @@ clear:
 
 
 norminette:		clear
-				@echo ${Y}"\n=====minishell norminette check!====="${X}
+				@echo ${Y}"\n===== minishell norminette check! ====="${X}
 				norminette $(SRCS_DIR) $(INCS_DIR)
-				@echo ${GREEN}"=====minishell norminette check Successfully!=====\n"${X}
+				@echo ${GREEN}"===== minishell norminette check Successfully! =====\n"${X}
 
 
 project:		clean $(OBJS)
