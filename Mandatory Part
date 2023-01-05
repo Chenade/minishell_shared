@@ -1,0 +1,46 @@
+
+echo
+    -n
+
+cd
+    ./, ../, ~/
+
+pwd
+    no option
+
+export , unset , env
+    no options
+
+exit
+    no option
+
+;
+
+
+(Double Quote) ""
+    $ excepted
+    
+(Single Quote) ''
+
+(redirection) < , > , >>, << 
+
+(pipe) |
+
+Ctrl + C, D, \
+
+(Environment variables) $
+
+$? : return value
+        0 (SUCCESS)
+        1 (ERROR) : too many argument, not a valid identifier etc.
+        2 (No such file or directory)
+        126 (PERMISSION DENIED) : is a directory, command exist but cannot excute
+        127 (COMMAND NOT FOUND)
+        130 (script terminated by Ctrl + C)
+        255 (Numeric argument required)
+    >> check error_mesage_list
+
+
+
+-prompt window function
+-parshing, tokenize
