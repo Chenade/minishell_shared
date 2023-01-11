@@ -1,3 +1,4 @@
+ls, wc, awk, grep (and more)
 
 echo
     -n
@@ -15,7 +16,6 @@ exit
     no option
 
 ;
-
 
 (Double Quote) ""
     $ excepted
@@ -38,9 +38,10 @@ $? : return value
         127 (COMMAND NOT FOUND)
         130 (script terminated by Ctrl + C)
         255 (Numeric argument required)
+        ??? Invalid syntax error
     >> check error_mesage_list
 
 
 
--prompt window function
--parshing, tokenize
+-JISU : prompt, parshing
+-YANGCHI : excute functions
