@@ -29,13 +29,13 @@
 # define EMPTY 0
 # define CMD 1
 # define ARG 2
-# define OPTN 3
-# define INPUT 4 // <
-# define OUTPUT 5 // >
-# define DELIM 6 // <<
-# define APPEN 7 // >>
-# define PIPE 8
-# define END 9
+# define ENV 3
+# define OPTN 4
+# define INPUT 5 // <
+# define OUTPUT 6 // >
+# define DELIM 7 // <<
+# define APPEN 8 // >>
+# define PIPE 9
 
 
 typedef struct	s_token
