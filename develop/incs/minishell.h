@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:14:04 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/25 15:44:31 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:04:27 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,34 @@ typedef struct s_prompt
 	int 	exit_status;
 }			t_prompt;
 
-void	print_token(t_token *token);
-void	fill_type(t_token *token, int separator);
-t_token *fill_nodes(char **args);
+/* temp */
+void		print_token(t_token *token);
+void		print_env(char **envp);
 
+/* error */
+void		*print_error(int err_type, char *param);
 
-void	*print_error(int err_type, char *param);
+/* utils */
+int			ft_strchr_int(const char *s, int c);
+char		**dup_matrix(char **m);
+// void		free_pp(char **pp);
+void		free_matrix(char ***m);
+// char		**extend_matrix(char **in, char *newstr);
+int			get_matrixlen(char **m);
 
-int		ft_strchr_int(const char *s, int c);
-void	free_pp(char **pp);
-void	free_matrix(char ***m);
-char	**extend_matrix(char **in, char *newstr);
-void	print_env(char **envp);
-int		get_matrixlen(char **m);
-char	**ft_dup_matrix(char **m);
+/* token */
+void		fill_type(t_token *token, int separator);
+t_token 	*fill_nodes(char **args);
 
-void	*check_args(char *out, t_prompt *p);
+/* parser */
+void		*check_args(char *out, t_prompt *p);
 
-char	*get_env(char *var, char **envp, int n);
-char	**set_env(char *var, char *value, char **envp, int n);
+/* env */
+char		*get_env(char *var, char **envp, int n);
+char		**set_env(char *var, char *value, char **envp, int n);
 
-
-int	main(int argc, char **argv, char **envp);
+/* main, init */
+int			main(int argc, char **argv, char **envp);
 
 
 #endif

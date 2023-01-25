@@ -89,7 +89,7 @@ int	get_matrixlen(char **m)
 	return (i);
 }
 
-char	**ft_dup_matrix(char **m)
+char	**dup_matrix(char **m)
 {
 	char	**out;
 	int		n_rows;

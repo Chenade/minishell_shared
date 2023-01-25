@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/25 15:44:31 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:03:00 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_prompt	init_prompt(char **argv, char **envp)
 
 	str = NULL;
 	// prompt.cmds = NULL;
-	prompt.envp = ft_dup_matrix(envp);
+	prompt.envp = dup_matrix(envp);
 	prompt.exit_status = 0;
 	mini_getpid(&prompt);
 	prompt = init_envp(prompt, str, argv);
@@ -156,7 +156,7 @@ int	main(int argc, char **argv, char **envp)
 
 // 	str = NULL;
 // 	// prompt.cmds = NULL;
-// 	prompt.envp = ft_dup_matrix(envp);
+// 	prompt.envp = dup_matrix(envp);
 // 	prompt.exit_status = 0;
 // 	mini_getpid(&prompt);
 // 	prompt = init_envp(prompt, str, argv);
