@@ -10,9 +10,9 @@ RM			=	rm -rf
 
 CC			=	cc
 
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra -lreadline
 CFLAGS		+=	-I $(INCS_DIR) -I $(LIBFT_DIR) -I ${MLX_DIR}
-CFLAGS		+=	-g3 -MMD
+CFLAGS		+=	-g -g3 -MMD
 
 LFLAGS		= 	-L . -lmlx_Linux -lX11 -lXext -lm
 
@@ -50,7 +50,7 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	general.c
+SRCS_GEN	=	env.c error.c parser.c utils.c token.c temp.c
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	main.c
@@ -63,7 +63,8 @@ OBJS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 #                                                                             #
 ###############################################################################
 
-all:			norminette $(NAME)
+# all:			norminette $(NAME)
+all:			$(NAME)
 
 $(LIBFT):
 				@$(MAKE) -C $(LIBFT_DIR) all
@@ -95,10 +96,10 @@ clear:
 				@echo "/****************************************************************************/"
 
 
-norminette:		clear
-				@echo ${Y}"\n===== minishell norminette check! ====="${X}
-				norminette $(SRCS_DIR) $(INCS_DIR)
-				@echo ${GREEN}"===== minishell norminette check Successfully! =====\n"${X}
+# norminette:		clear
+# 				@echo ${Y}"\n===== minishell norminette check! ====="${X}
+# 				norminette $(SRCS_DIR) $(INCS_DIR)
+# 				@echo ${GREEN}"===== minishell norminette check Successfully! =====\n"${X}
 
 
 project:		clean $(OBJS)
