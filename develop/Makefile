@@ -11,10 +11,12 @@ RM			=	rm -rf
 CC			=	cc
 
 CFLAGS		=	-Wall -Werror -Wextra -lreadline
-CFLAGS		+=	-I $(INCS_DIR) -I $(LIBFT_DIR) -I ${MLX_DIR}
-CFLAGS		+=	-g -g3 -MMD
+CFLAGS		+=	-I $(INCS_DIR) -I $(LIBFT_DIR) 
+CFLAGS		+=	-g3 -MMD
 
-LFLAGS		= 	-L . -lmlx_Linux -lX11 -lXext -lm
+CFLAGS		= 	-I $(INCS_DIR) -I $(LIBFT_DIR) -lreadline -g3 -MMD
+
+LFLAGS		= 	-L . -lmlx_Linux -lX11 -lXext -lm -I ${MLX_DIR}
 
 CLIBS		=	-L . -lft
 
@@ -96,10 +98,10 @@ clear:
 				@echo "/****************************************************************************/"
 
 
-# norminette:		clear
-# 				@echo ${Y}"\n===== minishell norminette check! ====="${X}
-# 				norminette $(SRCS_DIR) $(INCS_DIR)
-# 				@echo ${GREEN}"===== minishell norminette check Successfully! =====\n"${X}
+norminette:		clear
+				@echo ${Y}"\n===== minishell norminette check! ====="${X}
+				norminette $(SRCS_DIR) $(INCS_DIR)
+				@echo ${GREEN}"===== minishell norminette check Successfully! =====\n"${X}
 
 
 project:		clean $(OBJS)
