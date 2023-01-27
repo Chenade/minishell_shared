@@ -98,6 +98,7 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!check_args(out, &prompt))
 			break ;
+		process(&prompt);
 	}
 	return (0);
 }

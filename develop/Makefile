@@ -54,7 +54,11 @@ OBJS_DIR	=	objs
 
 SRCS_GEN	=	env.c error.c parser.c utils.c token.c temp.c
 
+SRCS_CMD	=	cmd/process.c \
+				cmd/builtin.c
+
 SRCS		=	$(SRCS_GEN)
+SRCS		+=	$(SRCS_CMD)
 SRCS		+=	main.c
 
 OBJS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))

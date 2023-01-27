@@ -1,0 +1,7 @@
+### Compile Error
+[ ] clang: warning: -lreadline: 'linker' input unused [-Wunused-command-line-argument]
+
+### Seg fault
+[ ] Ctrl+C while input
+[ ] input : test test | test test test
+[ ] input : nothing

@@ -70,6 +70,7 @@ typedef struct s_prompt
 {
 	t_token	*token;
 	t_list	*env;
+	char	*result;
 	char	**envp;
 	pid_t	pid;
 	int 	exit_status;
@@ -104,5 +105,7 @@ char		**set_env(char *var, char *value, char **envp, int n);
 /* main, init */
 int			main(int argc, char **argv, char **envp);
 
-
+t_token		*move_to(t_token *pre, int index);
+int 		process(t_prompt *prompt);
+int			ft_echo(int i, t_prompt *prompt);
 #endif
