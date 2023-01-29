@@ -1,10 +1,14 @@
 #include "minishell.h"
 
+extern int	exit_status;
+
 void	*parse_args(char **args, t_prompt *p)
 {
 	t_token	*tmp;
 
 	p->token = fill_nodes(args);
+	if (!p->token)
+		return (p);
 	tmp = p->token;
 	while (tmp->str)
 	{
@@ -13,7 +17,8 @@ void	*parse_args(char **args, t_prompt *p)
 			break;
 		tmp = tmp->next;
 	}
-	// print_token(p->token);
+
+	// exit_status = execute();	/*>>>>>>>>>>>>>>>>>>>>>>>>>excution start;*/
 
 	return (p);
 }
@@ -122,5 +127,11 @@ void	*check_args(char *out, t_prompt *p)
 	if (!cmd)
 		return ("");
 	p = parse_args(cmd, p);
+	if (!ft_strcmp(p->token->str, "exit"))
+	{
+		free_matrix(&cmd);
+		free_all(p);
+		return (NULL);
+	}
 	return (p);
 }
