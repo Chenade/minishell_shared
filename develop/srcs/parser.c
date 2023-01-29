@@ -127,11 +127,11 @@ void	*check_args(char *out, t_prompt *p)
 	if (!cmd)
 		return ("");
 	p = parse_args(cmd, p);
-	if (!ft_strcmp(p->token->str, "exit"))
-	{
-		free_matrix(&cmd);
-		free_all(p);
-		return (NULL);
-	}
+	// if (!ft_strcmp(p->token->str, "exit"))
+	// {
+	// 	free_matrix(&cmd);
+	// 	free_all(p);
+	// 	return (NULL);
+	// }
 	return (p);
 }
