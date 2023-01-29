@@ -41,9 +41,10 @@ t_token	*token_new(char *content)
 	int		size;
 
 	size = ft_strlen(content);
-	new = (t_token *) malloc (sizeof(t_list));
+	new = (t_token *) malloc (sizeof(t_token));
 	if (!new)
 		return (0);
+	new->type = 0;
 	if (content && !size)
 		new->str = ft_strdup("");
 	else
@@ -69,7 +70,6 @@ t_token	*tokenlast(t_token *token)
 	while (token->next)
 		token = token->next;
 	return (token);
-
 }
 
 t_token *fill_nodes(char **args)
