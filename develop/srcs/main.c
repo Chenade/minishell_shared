@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/31 14:00:54 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/01/31 14:41:17 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	main(int argc, char **argv, char **envp)
 	prompt = init_prompt(argv, envp);
 	while (argv && argc)
 	{
+		prompt.has_pipe = 0;
 		signal(SIGINT, sigint_handler);	// ctrl + C 
 		// signal(SIGQUIT, sigquit_handler);
 		signal(SIGQUIT, SIG_IGN);		// ctrl + \ : ignore it for now. i dont know what it suppose to be
