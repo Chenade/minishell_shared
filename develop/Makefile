@@ -52,7 +52,7 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	env.c error.c parser.c utils.c token.c temp.c
+SRCS_GEN	=	env.c error.c parser.c utils.c token.c exec.c builtin.c temp.c
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	main.c

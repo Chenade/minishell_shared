@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	fill_type(t_token *token, int separator)
+void	fill_type(t_token *token, int separator, t_prompt *p)
 {
 	if (!ft_strcmp(token->str, ""))
 		token->type = EMPTY;
@@ -13,7 +13,10 @@ void	fill_type(t_token *token, int separator)
 	else if (!ft_strcmp(token->str, "<<") && separator == 0)
 		token->type = DELIM;
 	else if (!ft_strcmp(token->str, "|") && separator == 0)
+	{
 		token->type = PIPE;
+		p->has_pipe = 1;
+	}
 	else if (separator == ENV_VAL)
 		token->type = ENV_VAL;
 	else if (ft_strchr("-", token->str[0]) && separator == 0)
@@ -56,7 +59,7 @@ t_token	*token_new(char *content)
 		else if (ft_strchr("$", content[0]))
 		{
 			new->str = ft_substr(content, 1, size - 1);
-			fill_type(new, ENV_VAL);
+			fill_type(new, ENV_VAL, NULL);
 		}
 		else
 			new->str = ft_strdup(content);

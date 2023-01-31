@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/31 12:26:16 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/01/31 14:00:54 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_prompt	init_prompt(char **argv, char **envp)
 
 	str = NULL;
 	exit_status = 0;
+	prompt.has_pipe = 0;
 	prompt.envp = dup_matrix(envp);
 	mini_getpid(&prompt);
 	prompt = init_envp(prompt, str, argv);

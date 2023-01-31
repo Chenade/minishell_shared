@@ -5,7 +5,7 @@ void	*print_error(int err_type, char *param)
 	ft_putstr_fd(param, 1);
 	// write(1, ft_itoa(eorr_type), 1);
 	if (err_type == QUOTE)
-		write(1, "Unclosed quote\n", 15);
+		write(1, ": \e[91mUnclosed quote\e[0m\n", 26);
 		// ft_putstr_fd("Quote error\n", 1); 
 
 	// prompt->exit_status = err;
@@ -17,8 +17,8 @@ void	*print_error(int err_type, char *param)
 	// 	ft_putstr_fd("No such file or directory: ", 2);
 	// else if (err_type == NPERM)
 	// 	ft_putstr_fd("Permission denied: ", 2);
-	// else if (err_type == NCMD)
-	// 	ft_putstr_fd("Command not found: ", 2);
+	else if (err_type == NCMD)
+		write(1, ": \e[91mCommand not found\e[0m\n", 29);
 	// else if (err_type == DUPERR)
 	// 	ft_putstr_fd("Dup failed\n", 2);
 	// else if (err_type == FORKERR)
