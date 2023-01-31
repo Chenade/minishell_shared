@@ -17,7 +17,7 @@ void	*parse_args(char **args, t_prompt *p)
 			break;
 		tmp = tmp->next;
 	}
-
+	print_token(p->token);
 	// exit_status = execute();	/*>>>>>>>>>>>>>>>>>>>>>>>>>excution start;*/
 
 	return (p);
@@ -124,9 +124,7 @@ void	*check_args(char *out, t_prompt *p)
 		exit_status = 22;
 		return ("");
 	}
-	if (cmd[0])
-		p = parse_args(cmd, p);
-	print_token(p->token);
+	p = parse_args(cmd, p);
 	// if (!ft_strcmp(p->token->str, "exit"))
 	// {
 	// 	free_matrix(&cmd);

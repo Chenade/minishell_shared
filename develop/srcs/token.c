@@ -40,6 +40,8 @@ t_token	*token_new(char *content)
 	t_token	*new;
 	int		size;
 
+	if (!content)
+		return (NULL);
 	size = ft_strlen(content);
 	new = (t_token *) malloc (sizeof(t_token));
 	if (!new)
@@ -81,9 +83,9 @@ t_token *fill_nodes(char **args)
 
 	i = 1;
 	token = token_new(args[0]);
-	token->prev = NULL;
 	if (!token)
 		return (0);
+	token->prev = NULL;
 	while (args[i])
 	{
 		tmp = tokenlast(token);
