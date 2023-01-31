@@ -95,11 +95,6 @@ char	**ft_cmdtrim(char const *cmd, char *set)
 	nwords = ft_count_words(cmd);
 	if (nwords == -1)
 	{
-		print_error(WCHAR, NULL);
-		return (NULL);
-	}
-	if (nwords == -2)
-	{
 		print_error(QUOTE, NULL);
 		return (NULL);
 	}
@@ -125,8 +120,13 @@ void	*check_args(char *out, t_prompt *p)
 	cmd = ft_cmdtrim(out, " ");
 	free(out);								
 	if (!cmd)
+	{
+		exit_status = 22;
 		return ("");
-	p = parse_args(cmd, p);
+	}
+	if (cmd[0])
+		p = parse_args(cmd, p);
+	print_token(p->token);
 	// if (!ft_strcmp(p->token->str, "exit"))
 	// {
 	// 	free_matrix(&cmd);
