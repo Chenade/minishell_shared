@@ -99,7 +99,7 @@ char	**ft_cmdtrim(char const *cmd, char *set)
 	nwords = ft_count_words(cmd);
 	if (nwords == -1)
 	{
-		print_error(QUOTE, (char *)cmd);
+		print_error(QUOTE, (char *)cmd, NULL);
 		return (NULL);
 	}
 	aux = malloc((nwords + 1) * sizeof(char *));

@@ -21,7 +21,7 @@ void	mini_getpid(t_prompt *p)
 	pid = fork();
 	if (pid < 0)			// fork failed
 	{
-		print_error(FORKERR, NULL);
+		print_error(FORKERR, NULL, NULL);
 		free_matrix(&p->envp);
 		exit(1);
 	}

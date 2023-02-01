@@ -20,29 +20,29 @@ t_token	*move_to(t_token *pre, int index)
     return (token);
 }
 
-int	valid_cmd(char *cmd, int i, t_prompt *prompt)
+int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 {
 	int		result;
 
 	result = 0;
 	if (ft_strcmp(cmd, "echo") == 0)
 		result = ft_echo(i + 1, prompt);
-	// if (ft_strcmp(cmd, "cd") == 0)
-	// 	result = ft_cd(args, mini->env);
+	else if (ft_strcmp(cmd, "cd") == 0)
+		result = ft_cd(i + 1, prompt);
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		result = ft_pwd(prompt);
 	else if (ft_strcmp(cmd, "export") == 0)
 		result = ft_export(i + 1, prompt);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		result = ft_unset(i + 1, prompt);
-	else if (ft_strcmp(cmd, "printenv") == 0)
+	else if (ft_strcmp(cmd, "env") == 0)
 	{
 		print_env(prompt->envp);
 		result = 0;
 	}
 	else
 	{
-		print_error(NCMD, cmd);
+		print_error(NCMD, cmd, NULL);
 		result = 0;
 	}
 	return (result);
@@ -61,7 +61,7 @@ int process(t_prompt *prompt)
 	while (token && !status)
 	{
 		if (token->type == 1)
-			status = valid_cmd(token->str, i, prompt);
+			status = builtin_cmd(token->str, i, prompt);
 		if (!token->next)
 			break;
 		token = token->next;
