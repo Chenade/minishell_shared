@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cmd.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/27 11:47:59 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/27 11:48:02 by ykuo             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -40,16 +29,22 @@ int	valid_cmd(char *cmd, int i, t_prompt *prompt)
 		result = ft_echo(i + 1, prompt);
 	// if (ft_strcmp(cmd, "cd") == 0)
 	// 	result = ft_cd(args, mini->env);
-	// if (ft_strcmp(cmd, "pwd") == 0)
-	// 	result = ft_pwd();
-	// if (ft_strcmp(cmd, "env") == 0)
-	// 	ft_env(mini->env);
-	// if (ft_strcmp(cmd, "export") == 0)
-	// 	ft_export(args, mini->env, mini->secret_env);
-	// if (ft_strcmp(cmd, "unset") == 0)
-	// 	ft_unset(args, mini);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		result = ft_pwd(prompt);
+	else if (ft_strcmp(cmd, "export") == 0)
+		result = ft_export(i + 1, prompt);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		result = ft_unset(i + 1, prompt);
+	else if (ft_strcmp(cmd, "printenv") == 0)
+	{
+		print_env(prompt->envp);
+		result = 0;
+	}
 	else
+	{
 		print_error(NCMD, cmd);
+		result = 0;
+	}
 	return (result);
 }
 
@@ -62,16 +57,15 @@ int process(t_prompt *prompt)
 	status = 0;
 	i = 0;
     token = prompt->token;
+	print_token(token);
 	while (token && !status)
 	{
-		// if (token->type == 1)
-			// status = valid_cmd(token->str, i, prompt);
+		if (token->type == 1)
+			status = valid_cmd(token->str, i, prompt);
 		if (!token->next)
 			break;
 		token = token->next;
 		i += 1;
 	}
-	print_token(token);
-
     return (0);
 }
