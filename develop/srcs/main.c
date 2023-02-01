@@ -19,7 +19,7 @@ void	mini_getpid(t_prompt *p)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid < 0)			// fork failed
+	if (pid < 0)
 	{
 		print_error(FORKERR, NULL, NULL);
 		free_matrix(&p->envp);
@@ -88,15 +88,6 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
-void	sigquit_handler(int sig)
-{
-	if (sig == SIGQUIT)
-	{
-		exit_status = 131;
-		ft_putstr_fd("Core dump\n", 2);
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
@@ -106,13 +97,13 @@ int	main(int argc, char **argv, char **envp)
 	while (argv && argc)
 	{
 		prompt.has_pipe = 0;
-		signal(SIGINT, sigint_handler);	// ctrl + C 
-		// signal(SIGQUIT, sigquit_handler);
-		signal(SIGQUIT, SIG_IGN);		// ctrl + \ : ignore it for now. i dont know what it suppose to be
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		out = readline("minishell $ ");
 		if (!check_args(out, &prompt))
 			break ;
+		else
+			free_all(&prompt);
 	}
 	exit (exit_status);
 }
-
