@@ -44,8 +44,10 @@ int		ft_pwd(t_prompt *prompt)
 int	ft_echo(int i, t_prompt *prompt)
 {
 	t_token	*token;
+    int     newline;
 
 	token = move_to(prompt->token, i);
+    newline = 1;
 	while (token)
 	{
 		if (token->type == 2)
@@ -56,11 +58,14 @@ int	ft_echo(int i, t_prompt *prompt)
 		}
 		else if (token->type == 4)
 			ft_print (get_env(token->str, prompt->envp, 1), prompt);
+        else if (token->type == 5 && ft_strcmp(token->str, "-n") == 0)
+			newline = 0;
 		else
 			break ;
 		token = token->next;
 	}
-	ft_print("\n", prompt);
+    if (newline)
+	    ft_print("\n", prompt);
 	return (0);
 }
 

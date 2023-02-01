@@ -27,7 +27,7 @@ int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 	result = 0;
 	if (ft_strcmp(cmd, "echo") == 0)
 		result = ft_echo(i + 1, prompt);
-	if (ft_strcmp(cmd, "cd") == 0)
+	else if (ft_strcmp(cmd, "cd") == 0)
 		result = ft_cd(i + 1, prompt);
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		result = ft_pwd(prompt);
