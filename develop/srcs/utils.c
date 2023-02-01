@@ -49,6 +49,78 @@ void	free_matrix(char ***m)
 	}
 }
 
+int	token_countcmd(t_token *token)
+{
+	int	ans;
+
+	ans = 0;
+	while (token)
+	{
+		if (token->type == 1)
+			ans += 1;
+		token = token->next;
+	}
+	return (ans);
+}
+
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*tmp;
+
+	if (!del)
+		return ;
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		(*lst) = tmp;
+	}
+}
+
+void free_all(t_prompt *p)
+{
+	t_token	*tmp;
+
+	free_matrix(&p->envp);
+	while (p->token)
+	{
+		tmp = (p->token)->next;
+		free(p->token->str);
+		free(p->token);
+		(p->token) = tmp;
+	}
+}
+
+
+// void	*ft_memdel(void *ptr)
+// {
+// 	if (ptr)
+// 	{
+// 		free(ptr);
+// 		ptr = NULL;
+// 	}
+// 	return (NULL);
+// }
+// void	free_token(t_token *token)
+// {
+// 	while (token && token->next)
+// 	{
+// 		ft_memdel(token->str);
+// 		token = token->next;
+// 		ft_memdel(token->prev);
+// 	}
+// 	if (token)
+// 	{
+// 		ft_memdel(token->str);
+// 		ft_memdel(token);
+// 	}
+// }
+
+// void free_all(t_prompt *p)
+// {
+// 	free_matrix(&p->envp);
+// 	free_token(p->token);
+// }
 /* Add new str to end of matrix */
 // char	**extend_matrix(char **in, char *newstr)
 // {

@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:14:04 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/25 16:04:27 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/01/31 14:21:39 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,15 @@ enum	token_type
 enum	e_mini_error
 {
 	QUOTE = 1,
-	WCHAR = 2,
-	NDIR = 3,
-	NPERM = 4,
-	NCMD = 5,
-	DUPERR = 6,
-	FORKERR = 7,
-	PIPERR = 8,
-	MEM = 9,
-	IS_DIR = 10,
-	NOT_DIR = 12
+	NDIR = 2,
+	NPERM = 3,
+	NCMD = 4,
+	DUPERR = 5,
+	FORKERR = 6,
+	PIPERR = 7,
+	MEM = 8,
+	IS_DIR = 9,
+	NOT_DIR = 11
 };
 
 typedef struct	s_token
@@ -72,8 +71,8 @@ typedef struct s_prompt
 	t_list	*env;
 	char	*result;
 	char	**envp;
+	int		has_pipe;
 	pid_t	pid;
-	int 	exit_status;
 }			t_prompt;
 
 /* temp */
@@ -84,15 +83,23 @@ void		print_env(char **envp);
 void		*print_error(int err_type, char *param);
 
 /* utils */
+int			token_countcmd(t_token *token);
+void 		free_all(t_prompt *p);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
-// void		free_pp(char **pp);
 void		free_matrix(char ***m);
 // char		**extend_matrix(char **in, char *newstr);
 int			get_matrixlen(char **m);
 
+/* builtin */
+int			ft_echo(int i, t_prompt *prompt);
+
+/* exec */
+t_token		*move_to(t_token *pre, int index);
+int 		process(t_prompt *prompt);
+
 /* token */
-void		fill_type(t_token *token, int separator);
+void		fill_type(t_token *token, int separator, t_prompt *p);
 t_token 	*fill_nodes(char **args);
 
 /* parser */

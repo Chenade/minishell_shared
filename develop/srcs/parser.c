@@ -1,20 +1,29 @@
 #include "minishell.h"
 
+extern int	exit_status;
+
 void	*parse_args(char **args, t_prompt *p)
 {
 	t_token	*tmp;
+	int		i;
 
 	p->token = fill_nodes(args);
+	if (!p->token)
+		return (p);
 	tmp = p->token;
 	while (tmp->str)
 	{
-		fill_type(tmp, 0);
+		fill_type(tmp, 0, p);
 		if (!tmp->next)
 			break;
 		tmp = tmp->next;
 	}
+	exit_status = process(p);
+	i = token_countcmd(p->token);
 	// print_token(p->token);
-
+	// printf("cmd count : %d\n", i);
+	while (i--)
+		waitpid(-1, &exit_status, 0); 		//waiting any child process
 	return (p);
 }
 
@@ -90,12 +99,7 @@ char	**ft_cmdtrim(char const *cmd, char *set)
 	nwords = ft_count_words(cmd);
 	if (nwords == -1)
 	{
-		print_error(WCHAR, NULL);
-		return (NULL);
-	}
-	if (nwords == -2)
-	{
-		print_error(QUOTE, NULL);
+		print_error(QUOTE, (char *)cmd);
 		return (NULL);
 	}
 	aux = malloc((nwords + 1) * sizeof(char *));
@@ -120,7 +124,16 @@ void	*check_args(char *out, t_prompt *p)
 	cmd = ft_cmdtrim(out, " ");
 	free(out);								
 	if (!cmd)
+	{
+		exit_status = 22;
 		return ("");
+	}
 	p = parse_args(cmd, p);
+	// if (!ft_strcmp(p->token->str, "exit"))
+	// {
+	// 	free_matrix(&cmd);
+	// 	free_all(p);
+	// 	return (NULL);
+	// }
 	return (p);
 }

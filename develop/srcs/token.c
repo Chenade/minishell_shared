@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	fill_type(t_token *token, int separator)
+void	fill_type(t_token *token, int separator, t_prompt *p)
 {
 	if (!ft_strcmp(token->str, ""))
 		token->type = EMPTY;
@@ -13,7 +13,10 @@ void	fill_type(t_token *token, int separator)
 	else if (!ft_strcmp(token->str, "<<") && separator == 0)
 		token->type = DELIM;
 	else if (!ft_strcmp(token->str, "|") && separator == 0)
+	{
 		token->type = PIPE;
+		p->has_pipe = 1;
+	}
 	else if (separator == ENV_VAL)
 		token->type = ENV_VAL;
 	else if (ft_strchr("-", token->str[0]) && separator == 0)
@@ -40,10 +43,13 @@ t_token	*token_new(char *content)
 	t_token	*new;
 	int		size;
 
+	if (!content)
+		return (NULL);
 	size = ft_strlen(content);
-	new = (t_token *) malloc (sizeof(t_list));
+	new = (t_token *) malloc (sizeof(t_token));
 	if (!new)
 		return (0);
+	new->type = 0;
 	if (content && !size)
 		new->str = ft_strdup("");
 	else
@@ -53,7 +59,7 @@ t_token	*token_new(char *content)
 		else if (ft_strchr("$", content[0]))
 		{
 			new->str = ft_substr(content, 1, size - 1);
-			fill_type(new, ENV_VAL);
+			fill_type(new, ENV_VAL, NULL);
 		}
 		else
 			new->str = ft_strdup(content);
@@ -69,7 +75,6 @@ t_token	*tokenlast(t_token *token)
 	while (token->next)
 		token = token->next;
 	return (token);
-
 }
 
 t_token *fill_nodes(char **args)
@@ -81,9 +86,9 @@ t_token *fill_nodes(char **args)
 
 	i = 1;
 	token = token_new(args[0]);
-	token->prev = NULL;
 	if (!token)
 		return (0);
+	token->prev = NULL;
 	while (args[i])
 	{
 		tmp = tokenlast(token);
