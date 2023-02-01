@@ -35,7 +35,7 @@ int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 		result = ft_export(i + 1, prompt);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		result = ft_unset(i + 1, prompt);
-	else if (ft_strcmp(cmd, "printenv") == 0)
+	else if (ft_strcmp(cmd, "env") == 0)
 	{
 		print_env(prompt->envp);
 		result = 0;
