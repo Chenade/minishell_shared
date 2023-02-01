@@ -68,6 +68,8 @@ typedef struct	s_token
 typedef struct s_prompt
 {
 	t_token	*token;
+	t_list	*env;
+	char	*result;
 	char	**envp;
 	int		has_pipe;
 	pid_t	pid;
@@ -89,13 +91,6 @@ void		free_matrix(char ***m);
 // char		**extend_matrix(char **in, char *newstr);
 int			get_matrixlen(char **m);
 
-/* builtin */
-int			ft_echo(int i, t_prompt *prompt);
-
-/* exec */
-t_token		*move_to(t_token *pre, int index);
-int 		process(t_prompt *prompt);
-
 /* token */
 void		fill_type(t_token *token, int separator, t_prompt *p);
 t_token 	*fill_nodes(char **args);
@@ -110,5 +105,13 @@ char		**set_env(char *var, char *value, char **envp, int n);
 /* main, init */
 int			main(int argc, char **argv, char **envp);
 
+/* cmd process */
+int 		process(t_prompt *prompt);
+t_token		*move_to(t_token *pre, int index);
 
+/* cmd  func*/
+int			ft_pwd(t_prompt *prompt);
+int			ft_echo(int i, t_prompt *prompt);
+int			ft_export(int i, t_prompt *prompt);
+int			ft_unset(int i, t_prompt *prompt);
 #endif

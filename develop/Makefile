@@ -52,9 +52,19 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	env.c error.c parser.c utils.c token.c exec.c builtin.c temp.c
+SRCS_GEN	=	env.c error.c parser.c token.c temp.c
+
+SRCS_UTL	=	utils/free.c \
+				utils/matrix.c \
+				utils/utils.c
+
+SRCS_CMD	=	cmd/process.c \
+				cmd/ft_echo_pwd.c \
+				cmd/ft_export_unset.c
 
 SRCS		=	$(SRCS_GEN)
+SRCS		+=	$(SRCS_UTL)
+SRCS		+=	$(SRCS_CMD)
 SRCS		+=	main.c
 
 OBJS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))

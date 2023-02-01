@@ -1,6 +1,7 @@
+
 #include "minishell.h"
 
-int	ft_echo(int i, t_prompt *prompt)
+int	ft_cd(int i, t_prompt *prompt)
 {
 	t_token	*token;
 

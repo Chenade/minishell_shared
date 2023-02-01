@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 t_token	*move_to(t_token *pre, int index)
@@ -28,16 +29,22 @@ int	valid_cmd(char *cmd, int i, t_prompt *prompt)
 		result = ft_echo(i + 1, prompt);
 	// if (ft_strcmp(cmd, "cd") == 0)
 	// 	result = ft_cd(args, mini->env);
-	// if (ft_strcmp(cmd, "pwd") == 0)
-	// 	result = ft_pwd();
-	// if (ft_strcmp(cmd, "env") == 0)
-	// 	ft_env(mini->env);
-	// if (ft_strcmp(cmd, "export") == 0)
-	// 	ft_export(args, mini->env, mini->secret_env);
-	// if (ft_strcmp(cmd, "unset") == 0)
-	// 	ft_unset(args, mini);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		result = ft_pwd(prompt);
+	else if (ft_strcmp(cmd, "export") == 0)
+		result = ft_export(i + 1, prompt);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		result = ft_unset(i + 1, prompt);
+	else if (ft_strcmp(cmd, "printenv") == 0)
+	{
+		print_env(prompt->envp);
+		result = 0;
+	}
 	else
+	{
 		print_error(NCMD, cmd);
+		result = 0;
+	}
 	return (result);
 }
 
@@ -50,7 +57,7 @@ int process(t_prompt *prompt)
 	status = 0;
 	i = 0;
     token = prompt->token;
-    printf("has_pipe : %d\n", prompt->has_pipe);
+	print_token(token);
 	while (token && !status)
 	{
 		if (token->type == 1)
@@ -60,7 +67,5 @@ int process(t_prompt *prompt)
 		token = token->next;
 		i += 1;
 	}
-	// print_token(token);
-
     return (0);
 }
