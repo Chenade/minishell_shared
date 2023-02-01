@@ -24,6 +24,12 @@
 # include <sys/ioctl.h>
 # include "libft.h"
 
+# include <string.h>
+# include <fcntl.h>
+# include <dirent.h>
+# include <limits.h>
+# include <errno.h>
+
 # define 	READ	0
 # define 	WRITE	1
 # define	CHILD	0
@@ -54,7 +60,8 @@ enum	e_mini_error
 	PIPERR = 7,
 	MEM = 8,
 	IS_DIR = 9,
-	NOT_DIR = 11
+	NOT_DIR = 11,
+	OP_NS = 12
 };
 
 typedef struct	s_token
@@ -80,9 +87,10 @@ void		print_token(t_token *token);
 void		print_env(char **envp);
 
 /* error */
-void		*print_error(int err_type, char *param);
+void	*print_error(int err_type, char *cmd, char *param);
 
 /* utils */
+void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
 void 		free_all(t_prompt *p);
 int			ft_strchr_int(const char *s, int c);
@@ -109,8 +117,16 @@ int			main(int argc, char **argv, char **envp);
 int 		process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
-/* cmd  func*/
+/* builtin  utils*/
+int	ft_print(char *str, t_prompt *prompt);
+int	del_envp(int index, t_token *token, t_prompt *prompt);
+int	add_envp(char *str, t_prompt *prompt);
+int	in_envp(char *token, t_prompt *prompt);
+int	update_oldpwd(t_prompt *prompt);
+
+/* builtin  func*/
 int			ft_pwd(t_prompt *prompt);
+int			ft_cd(int i, t_prompt *prompt);
 int			ft_echo(int i, t_prompt *prompt);
 int			ft_export(int i, t_prompt *prompt);
 int			ft_unset(int i, t_prompt *prompt);

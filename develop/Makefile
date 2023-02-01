@@ -59,8 +59,8 @@ SRCS_UTL	=	utils/free.c \
 				utils/utils.c
 
 SRCS_CMD	=	cmd/process.c \
-				cmd/ft_echo_pwd.c \
-				cmd/ft_export_unset.c
+				cmd/builtin.c \
+				cmd/builtin_utils.c
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	$(SRCS_UTL)
