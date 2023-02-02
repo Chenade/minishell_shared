@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	exit_status;
+t_sig g_sig;
 
 void	mini_getpid(t_prompt *p)
 {
@@ -32,6 +32,7 @@ void	mini_getpid(t_prompt *p)
 	}
 	waitpid(pid, NULL, 0);
 	p->pid = pid - 1;
+	g_sig.pid = pid - 1;
 }
 
 t_prompt	init_envp(t_prompt prompt, char *str, char **argv)
@@ -67,7 +68,7 @@ t_prompt	init_prompt(char **argv, char **envp)
 	char		*str;
 
 	str = NULL;
-	exit_status = 0;
+	g_sig.exit_status = 0;
 	prompt.has_pipe = 0;
 	prompt.envp = dup_matrix(envp);
 	mini_getpid(&prompt);
@@ -79,7 +80,7 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 {
 	if (sig == SIGINT)
 	{
-		exit_status = 130;
+		g_sig.exit_status = 130;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		if (rl_on_new_line() == -1)
 			exit(1);
@@ -105,5 +106,5 @@ int	main(int argc, char **argv, char **envp)
 		else
 			free_all(&prompt);
 	}
-	exit (exit_status);
+	exit (g_sig.exit_status);
 }

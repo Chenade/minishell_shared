@@ -64,6 +64,14 @@ enum	e_mini_error
 	OP_NS = 12
 };
 
+typedef struct	s_sig
+{
+	int				sigint;
+	int				sigquit;
+	int				exit_status;
+	pid_t			pid;
+}				t_sig;
+
 typedef struct	s_token
 {
 	char			*str;
@@ -130,4 +138,9 @@ int			ft_cd(int i, t_prompt *prompt);
 int			ft_echo(int i, t_prompt *prompt);
 int			ft_export(int i, t_prompt *prompt);
 int			ft_unset(int i, t_prompt *prompt);
+
+/* exec bin func*/
+int			exec_bin(char *cmd, t_prompt *prompt);
+
+extern t_sig g_sig;
 #endif

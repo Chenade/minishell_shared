@@ -19,7 +19,7 @@ t_token	*move_to(t_token *pre, int index)
 	}
     return (token);
 }
-
+//  execve(const char *pathname, char *const argv[], char *const envp[]);
 int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 {
 	int		result;
@@ -42,8 +42,13 @@ int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 	}
 	else
 	{
-		print_error(NCMD, cmd, NULL);
-		result = 0;
+		// char *argv[] = {"ls", "-l"};
+		// result =  execve("/usr/bin/ls", argv, prompt->envp);
+		// printf("[DEBUG] %d\n", result);
+		char *ac = {"cat", "Makefile"};
+		int tmp = execve("/usr/bin/cat", ac, prompt->envp);
+		printf("[DEBUG] %d\n", tmp);
+		// exec_bin(cmd, prompt);
 	}
 	return (result);
 }
@@ -63,12 +68,12 @@ int process(t_prompt *prompt)
 	{
 		if (token->type == 1)
 			status = builtin_cmd(token->str, i, prompt);
-		if (token->type == 7 || token->type == 9)
-			status = redirect_output(prompt, token);
+		// if (token->type == 7 || token->type == 9)
+		// 	status = redirect_output(prompt, token);
 		if (!token->next)
 			break;
 		token = token->next;
 		i += 1;
 	}
-    return (0);
+    return (status);
 }

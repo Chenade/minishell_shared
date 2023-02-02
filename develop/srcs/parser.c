@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-extern int	exit_status;
-
 void	*parse_args(char **args, t_prompt *p)
 {
 	t_token	*tmp;
@@ -18,12 +16,12 @@ void	*parse_args(char **args, t_prompt *p)
 			break;
 		tmp = tmp->next;
 	}
-	exit_status = process(p);
+	g_sig.exit_status = process(p);
 	i = token_countcmd(p->token);
 	// print_token(p->token);
 	// printf("cmd count : %d\n", i);
 	while (i--)
-		waitpid(-1, &exit_status, 0); 		//waiting any child process
+		waitpid(-1, &g_sig.exit_status, 0); 		//waiting any child process
 	return (p);
 }
 
@@ -126,7 +124,7 @@ void	*check_args(char *out, t_prompt *p)
 	free(out);								
 	if (!cmd)
 	{
-		exit_status = 22;
+		g_sig.exit_status = 22;
 		return ("");
 	}
 	p = parse_args(cmd, p);
