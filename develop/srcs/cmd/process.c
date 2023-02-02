@@ -57,11 +57,14 @@ int process(t_prompt *prompt)
 	status = 0;
 	i = 0;
     token = prompt->token;
+	prompt->result = NULL;
 	print_token(token);
 	while (token && !status)
 	{
 		if (token->type == 1)
 			status = builtin_cmd(token->str, i, prompt);
+		if (token->type == 7 || token->type == 9)
+			status = redirect_output(prompt, token);
 		if (!token->next)
 			break;
 		token = token->next;
