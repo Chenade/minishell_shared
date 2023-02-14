@@ -99,6 +99,9 @@ int			main(int argc, char **argv, char **envp);
 int 		process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
+int 		redirect_input(t_prompt *prompt);
+int 		redirect_output(t_prompt *prompt);
+
 /* builtin  utils*/
 int	ft_print(char *str, t_prompt *prompt);
 int	del_envp(int index, t_token *token, t_prompt *prompt);

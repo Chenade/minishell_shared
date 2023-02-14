@@ -59,6 +59,7 @@ SRCS_UTL	=	utils/free.c \
 				utils/utils.c
 
 SRCS_CMD	=	cmd/process.c \
+				cmd/redirect.c \
 				cmd/builtin.c \
 				cmd/builtin_utils.c \
 				cmd/exec.c
