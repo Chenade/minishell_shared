@@ -69,7 +69,7 @@ void		print_env(char **envp);
 
 /* error */
 void	exit_minishell(t_prompt *prompt, int status);
-int		*print_error(int err_type, char *cmd, char *param);
+int		print_error(int err_type, char *cmd, char *param);
 
 /* utils */
 void		free_pp(char **pp);

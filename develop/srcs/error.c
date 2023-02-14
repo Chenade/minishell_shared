@@ -7,7 +7,7 @@ void	exit_minishell(t_prompt *prompt, int status)
 	exit (g_sig.exit_status);
 }
 
-int	*print_error(int err_type, char *cmd, char *param)
+int	print_error(int err_type, char *cmd, char *param)
 {
 	ft_putstr_fd(cmd, 2);
 	// write(1, ft_itoa(eorr_type), 1);

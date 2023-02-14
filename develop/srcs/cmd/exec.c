@@ -36,7 +36,7 @@ int			error_message(char *path)
 
 int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
 {
-	char	argv[2][9] = {"cat", "Makefile"};
+	char	*argv[] = {"cat", "Makefile", NULL};
 	char	*ptr;
 	int		ret;
 
@@ -65,7 +65,7 @@ int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
 	return (ret);
 }
 
-char		*path_join(const char *s1, const char *s2)
+char		*path_join(char *s1, char *s2)
 {
 	char	*tmp;
 	char	*path;

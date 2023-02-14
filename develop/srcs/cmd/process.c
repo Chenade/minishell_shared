@@ -41,11 +41,8 @@ int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 	}
 	else
 	{
-		char *argv[] = {"ls", "-la", NULL};
-		// result =  execve("/usr/bin/ls", argv, prompt->envp);
-		// printf("[DEBUG] %d\n", result);
-		char *ac[] = {"cat", "Makefile", NULL};
-		int tmp = execve("/usr/bin/cat", argv, prompt->envp);
+		char *ac[] = {"cat", "-e", NULL};
+		int tmp = execve("/usr/bin/cat", ac, prompt->envp);
 		printf("[DEBUG] %d\n", tmp);
 		// exec_bin(cmd, prompt);
 	}
@@ -74,7 +71,6 @@ int process(t_prompt *prompt)
 	if (g_sig.exit_status)
 		return (g_sig.exit_status);
 	
-	// printf("[DEBUG] input_fd: %d, output_fd:%d\n", prompt->input_fd, prompt->output_fd);
 	while (token && !status)
 	{
 		if (token->type == 1)
@@ -84,6 +80,5 @@ int process(t_prompt *prompt)
 		token = token->next;
 		i += 1;
 	}
-	// printf("[DEBUG] status: %d\n", status);
     return (status);
 }
