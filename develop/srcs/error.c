@@ -1,6 +1,13 @@
 #include "minishell.h"
 
-void	*print_error(int err_type, char *cmd, char *param)
+void	exit_minishell(t_prompt *prompt, int status)
+{
+	g_sig.exit_status = status;
+	free_all(prompt);
+	exit (g_sig.exit_status);
+}
+
+int	*print_error(int err_type, char *cmd, char *param)
 {
 	ft_putstr_fd(cmd, 2);
 	// write(1, ft_itoa(eorr_type), 1);
@@ -21,6 +28,11 @@ void	*print_error(int err_type, char *cmd, char *param)
 	// 	ft_putstr_fd("Permission denied: ", 2);
 	else if (err_type == NCMD)
 		write(1, ": \e[91mCommand not found\e[0m", 29);
+	else if (err_type == SYNERR)
+	{
+		g_sig.exit_status = 2;	
+		ft_putstr_fd(": syntax error near unexpected token: ", 2);
+	}
 	// else if (err_type == DUPERR)
 	// 	ft_putstr_fd("Dup failed", 2);
 	// else if (err_type == FORKERR)
@@ -34,5 +46,6 @@ void	*print_error(int err_type, char *cmd, char *param)
 	else if (err_type == NOT_DIR)
 		write(1, ": Not a directory", 18);
 	ft_putendl_fd(param, 2);
+	return (g_sig.exit_status);
 	// return (NULL);
 }

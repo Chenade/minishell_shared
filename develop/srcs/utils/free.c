@@ -41,4 +41,5 @@ void free_all(t_prompt *p)
 		free(p->token);
 		(p->token) = tmp;
 	}
+	close(p->output_fd);
 }

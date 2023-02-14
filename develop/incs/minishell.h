@@ -29,40 +29,11 @@
 # include <dirent.h>
 # include <limits.h>
 # include <errno.h>
+# include <defines.h>
 
 # define 	READ	0
 # define 	WRITE	1
 # define	CHILD	0
-
-enum	token_type
-{ 
-	EMPTY = 0,
-	CMD = 1,
-	ARG = 2,
-	ENV_DEF = 3,
-	ENV_VAL = 4,
-	OPTN = 5,
-	INPUT = 6, // <
-	OUTPUT = 7, // >
-	DELIM = 8, // <<
-	APPEN = 9, // >>
-	PIPE = 10
-};
-
-enum	e_mini_error
-{
-	QUOTE = 1,
-	NDIR = 2,
-	NPERM = 3,
-	NCMD = 4,
-	DUPERR = 5,
-	FORKERR = 6,
-	PIPERR = 7,
-	MEM = 8,
-	IS_DIR = 9,
-	NOT_DIR = 11,
-	OP_NS = 12
-};
 
 typedef struct	s_sig
 {
@@ -84,6 +55,8 @@ typedef struct s_prompt
 {
 	t_token	*token;
 	t_list	*env;
+	int		output_fd;
+	int		input_fd;
 	char	*result;
 	char	**envp;
 	int		has_pipe;
@@ -95,7 +68,8 @@ void		print_token(t_token *token);
 void		print_env(char **envp);
 
 /* error */
-void	*print_error(int err_type, char *cmd, char *param);
+void	exit_minishell(t_prompt *prompt, int status);
+int		*print_error(int err_type, char *cmd, char *param);
 
 /* utils */
 void		free_pp(char **pp);
