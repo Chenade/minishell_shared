@@ -29,6 +29,12 @@ void	free_matrix(char ***m)
 	}
 }
 
+void	ft_close(int fd)
+{
+	if (fd > 0)
+		close(fd);
+}
+
 void free_all(t_prompt *p)
 {
 	t_token	*tmp;
@@ -41,6 +47,6 @@ void free_all(t_prompt *p)
 		free(p->token);
 		(p->token) = tmp;
 	}
-	close(p->input_fd);
-	close(p->output_fd);
+	ft_close(p->input_fd);
+	ft_close(p->output_fd);
 }

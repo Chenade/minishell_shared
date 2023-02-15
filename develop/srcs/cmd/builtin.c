@@ -69,7 +69,7 @@ int	ft_echo(int i, t_prompt *prompt)
 				ft_print (" ", prompt);
 		}
 		else if (token->type == 4)
-			ft_print (get_env(token->str, prompt->envp, 1), prompt);
+			ft_print (get_env(token->str, prompt->envp, -1), prompt);
         else if (token->type == 5 && ft_strcmp(token->str, "-n") == 0)
 			newline = 0;
 		else

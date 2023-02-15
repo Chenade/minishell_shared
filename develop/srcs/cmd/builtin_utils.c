@@ -82,6 +82,7 @@ int	in_envp(char *str, t_prompt *prompt)
 		env_val = ft_split(prompt->envp[j], '=');
 		if (ft_strcmp(value[0], env_val[0]) == 0)
 		{
+			free_pp (value);
 			free_pp (env_val);
 			return (j);
 		}

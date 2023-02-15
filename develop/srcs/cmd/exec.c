@@ -1,11 +1,5 @@
 #include "minishell.h"
 
-void	ft_close(int fd)
-{
-	if (fd > 0)
-		close(fd);
-}
-
 int			error_message(char *path)
 {
 	DIR	*folder;
@@ -48,13 +42,16 @@ int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
 	g_sig.pid = fork();
 	if (g_sig.pid == 0)
 	{
-		// if (ft_strchr(path, '/') != NULL)
-			int tmp = execve(path, argv, prompt->envp);
-			printf("[DEBUG] %d\n", tmp);
-		// else
-			// printf("[DEBUG] %s", ft_strchr("path", '/'));
+		char *ac[] = {"cat", "-e", NULL};
+		int tmp = execve("/usr/bin/cat", ac, prompt->envp);
+		printf("[DEBUG] %d\n", tmp);
+		// // if (ft_strchr(path, '/') != NULL)
+		// 	int tmp = execve(path, argv, prompt->envp);
+		// 	printf("[DEBUG] %d\n", tmp);
+		// // else
+		// 	// printf("[DEBUG] %s", ft_strchr("path", '/'));
 
-		// ret = error_message(path);
+		// // ret = error_message(path);
 		exit(ret);
 	}
 	else

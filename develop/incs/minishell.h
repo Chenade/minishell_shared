@@ -75,6 +75,7 @@ int		print_error(int err_type, char *cmd, char *param);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
 void 		free_all(t_prompt *p);
+void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
 void		free_matrix(char ***m);
@@ -100,6 +101,7 @@ int 		process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
 int 		redirect_input(t_prompt *prompt);
+int 		redirect_input2(t_prompt *prompt);
 int 		redirect_output(t_prompt *prompt);
 
 /* builtin  utils*/

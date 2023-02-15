@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int			error_message_fd(int type, char *path)
+int	error_message_fd(int type, char *path)
 {
 	DIR	*folder;
 	int	fd;
@@ -27,10 +27,11 @@ int	ft_open(int type, char *path)
 {
 	int	fd;
 
+	fd = 0;
 	if (type == 7)
-		fd = open(path, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (type == 9)
-		fd = open(path, O_WRONLY|O_CREAT|O_APPEND, 0666);
+		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	else if (type == 6)
 		fd = open(path, O_RDONLY, 0666);
 	else if (type == 8)
@@ -38,11 +39,11 @@ int	ft_open(int type, char *path)
 	return (fd);
 }
 
-int redirect_output(t_prompt *prompt)
+int	redirect_output(t_prompt *prompt)
 {
 	t_token	*token;
-	
-    token = prompt->token;
+
+	token = prompt->token;
 	while (token)
 	{
 		if (token->type == 7 || token->type == 9)
@@ -50,40 +51,40 @@ int redirect_output(t_prompt *prompt)
 			if (token->next && token->next->type == 2)
 			{
 				if (prompt->output_fd != 1)
-					close(prompt->output_fd);
+					ft_close(prompt->output_fd);
 				prompt->output_fd = ft_open(token->type, token->next->str);
 				if (prompt->output_fd < 0)
 					return (error_message_fd(token->type, token->next->str));
 			}
 			else
-   				return (print_error(SYNERR, "", token->str));
+				return (print_error(SYNERR, "", token->str));
 		}
 		if (!token->next)
-			break;
+			break ;
 		token = token->next;
 	}
-    return (0);
+	return (0);
 }
 
-int redirect_input2(t_prompt *prompt)
+int	redirect_input2(t_prompt *prompt)
 {
 	t_token	*token;
-	
-    token = prompt->token;
+
+	token = prompt->token;
 	while (token)
 	{
 		if (!token->next)
-			break;
+			break ;
 		token = token->next;
 	}
-    return (0);
+	return (0);
 }
 
-int redirect_input(t_prompt *prompt)
+int	redirect_input(t_prompt *prompt)
 {
 	t_token	*token;
-	
-    token = prompt->token;
+
+	token = prompt->token;
 	while (token)
 	{
 		if (token->type == 6)
@@ -97,13 +98,11 @@ int redirect_input(t_prompt *prompt)
 					return (error_message_fd(token->type, token->next->str));
 			}
 			else
-   				return (print_error(SYNERR, "", token->str));
+				return (print_error(SYNERR, "", token->str));
 		}
-		if (token->type == 8)
-			redirect_input2(prompt);
 		if (!token->next)
-			break;
+			break ;
 		token = token->next;
 	}
-    return (0);
+	return (0);
 }
