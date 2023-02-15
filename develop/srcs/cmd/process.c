@@ -47,26 +47,26 @@ int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 
 int	parsing_cmd(t_prompt *prompt)
 {
-	t_token	*token;
-	t_token	*new_lst;
-	t_token	*new_head;
+	// t_token	*token;
+	// t_token	*new_lst;
+	// t_token	*new_head;
 
-	token = prompt->token;
-	while (token)
-	{
-		if (token->type < 5 || token->type > 10)
-		{
-			new_lst = token;
-			new_lst = new_lst->next;
-		}
-		// else
-		// {
-			if (!token->next)
-				break ;
-			token = token->next;
-		// }
-	}
-	prompt->token = new_lst;
+	// token = prompt->token;
+	// while (token)
+	// {
+	// 	if (token->type < 5 || token->type > 10)
+	// 	{
+	// 		new_lst = token;
+	// 		new_lst = new_lst->next;
+	// 	}
+	// 	// else
+	// 	// {
+	// 		if (!token->next)
+	// 			break ;
+	// 		token = token->next;
+	// 	// }
+	// }
+	// prompt->token = new_lst;
 	return (0);
 }
 
