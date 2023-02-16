@@ -124,9 +124,54 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!out)
 			break;
+		//if (pre_check(out))
 		check_args(out, &prompt);
 		g_sig.exit_status = 0;
+
 	}
 	// free_all(&prompt);
 	exit (g_sig.exit_status);
 }
+
+// starting  by |
+// finishing by |
+// more than 1x | in a row so a||a its not ok but a|a|a is ok
+
+
+// <<< 
+// <>
+// ><
+// when you <, <<, >> or > you have to have a filename after, either its stick together or there as may many space in between
+
+// for the rule of "" '', you dont care what is in the middle
+
+
+//be sure not have any error when you do valgrind -s
+
+//case that should not work:
+//fdsfds |
+//|
+//fsdfsd ||
+//>> fdsfds fds >>
+//"fsdfds "  >> <<
+//echo > > fdsfds
+//echo <> fsdfd
+//echo <<>
+//echo ><
+//<
+//"fsfds |" ""|
+//fdsfdssd|>|fsfsdf
+//f|       <<    |fds
+//ffd<|fdfd
+//"fdsfdsfsfds "'fdsfds'"|""""|
+// '<'""|<
+
+
+//case that should work:
+//<"|"
+//"fsdfds>>"<">>>"
+//""|da|a|>a|""
+//"fdsfds"|'|'|'|'
+//""f"f">>lol"|"
+// <<"<" ->it work and the multi is normal because its an heredoc
+//>">"<"<"
