@@ -86,6 +86,7 @@ int	pre_process(t_prompt *prompt)
 	if (g_sig.exit_status)
 		return (g_sig.exit_status);
 	print_token(prompt->token);
+	return (0);
 }
 
 int	process(t_prompt *prompt)

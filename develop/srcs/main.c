@@ -70,7 +70,10 @@ t_prompt	init_prompt(char **argv, char **envp)
 	str = NULL;
 	g_sig.exit_status = 0;
 	prompt.has_pipe = 0;
+	prompt.output_fd = 0;
+	prompt.input_fd = 0;
 	prompt.envp = dup_matrix(envp);
+	prompt.token = NULL;
 	mini_getpid(&prompt);
 	prompt = init_envp(prompt, str, argv);
 	return (prompt);
@@ -89,51 +92,6 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	char				*out;
-// 	t_prompt			prompt;
-	
-// 	prompt = init_prompt(argv, envp);
-// 	while (argv && argc)
-// 	{
-// 		prompt.has_pipe = 0;
-// 		signal(SIGINT, sigint_handler);
-// 		signal(SIGQUIT, SIG_IGN);
-// 		out = readline("minishell $ ");
-// 		if (!check_args(out, &prompt))
-// 			break ;
-// 		else
-// 			free_all(&prompt);
-// 	}
-// 	exit (g_sig.exit_status);
-// }
-
-int	pre_check(char *out)
-{
-	int	i;
-	int	double_quote;
-	int	single_quote;
-
-	i = -1;
-	double_quote = 1;
-	single_quote = 1;
-	if (out[0] == '|' || out[ft_strlen(out) - 1] == '|')
-		return (1);	//printf("[DEBUG]pipe error\n");
-	while (out[++i])
-	{
-		if (out[i] == 34 && single_quote > 0)
-			double_quote *= -1;
-		if (out[i] == 39 && double_quote > 0)
-			single_quote *= -1;
-		if (out[i] == '|' && out[i + 1] == '|')
-			return (1);
-	}
-	if (single_quote < 0 || double_quote < 0)
-		return (1);
-	return (0);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
@@ -150,60 +108,14 @@ int	main(int argc, char **argv, char **envp)
 			break;
 		if (out[0] != '\0')
 			add_history(out);
-		if (!pre_check(out))
+		if (!out[0] || !pre_check(out))
 		{
-			check_args(out, &prompt);
+			printf("Pre check PASS!\n");
+			// check_args(out, &prompt);
 			g_sig.exit_status = 0;
 		}
 		free (out);
 	}
-	// free_all(&prompt);
+	free_all(&prompt);
 	exit (g_sig.exit_status);
 }
-
-// starting  by |
-// finishing by |
-// more than 1x | in a row so a||a its not ok but a|a|a is ok
-
-
-// <<< 
-// <>
-// ><
-// when you <, <<, >> or > you have to have a filename after, either its stick together or there as may many space in between
-
-// for the rule of "" '', you dont care what is in the middle
-
-
-//be sure not have any error when you do valgrind -s
-
-//case that should not work:
-//fdsfds |
-//|
-//fsdfsd ||
-//>> fdsfds fds >>
-//"fsdfds "  >> <<
-//echo > > fdsfds
-//echo <> fsdfd
-//echo <<>
-//echo ><
-//<
-//"fsfds |" ""|
-//fdsfdssd|>|fsfsdf
-//f|       <<    |fds
-//ffd<|fdfd
-//"fdsfdsfsfds "'fdsfds'"|""""|
-// '<'""|<
-
-
-//case that should work:
-//<"|"
-//"fsdfds>>"<">>>"
-//""|da|a|>a|""
-//"fdsfds"|'|'|'|'
-//""f"f">>lol"|"
-// <<"<" ->it work and the multi is normal because its an heredoc
-//>">"<"<"
-
-
-// export a="cat filea fileb"
-// $a => return filea not found

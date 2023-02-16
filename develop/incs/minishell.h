@@ -43,6 +43,17 @@ typedef struct	s_sig
 	pid_t			pid;
 }				t_sig;
 
+
+typedef struct	s_parse
+{
+	int				double_quote;
+	int				single_quote;
+	int				is_pipe;
+	int				infile;
+	int				outfile;
+}				t_parse;
+
+
 typedef struct	s_token
 {
 	char			*str;
@@ -104,12 +115,15 @@ int 		redirect_input(t_prompt *prompt);
 int 		redirect_input2(t_prompt *prompt);
 int 		redirect_output(t_prompt *prompt);
 
+/* parsing fix*/
+int			pre_check(char *out);
+
 /* builtin  utils*/
-int	ft_print(char *str, t_prompt *prompt);
-int	del_envp(int index, t_token *token, t_prompt *prompt);
-int	add_envp(char *str, t_prompt *prompt);
-int	in_envp(char *token, t_prompt *prompt);
-int	update_oldpwd(t_prompt *prompt);
+int			ft_print(char *str, t_prompt *prompt);
+int			del_envp(int index, t_token *token, t_prompt *prompt);
+int			add_envp(char *str, t_prompt *prompt);
+int			in_envp(char *token, t_prompt *prompt);
+int			update_oldpwd(t_prompt *prompt);
 
 /* builtin  func*/
 int			ft_pwd(t_prompt *prompt);

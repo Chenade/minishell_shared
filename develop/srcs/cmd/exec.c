@@ -88,7 +88,7 @@ char	*check_path(char *cmd, char *env)
 	{
 		bin = ft_split(env, ':');
 		if (!bin[0])
-			return (-1);
+			return (NULL);
 		i = 0;
 		while (cmd && bin[i] && path == NULL)
 			path = check_dir(bin[i++], cmd);

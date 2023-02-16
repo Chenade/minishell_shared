@@ -125,5 +125,6 @@ void	*check_args(char *out, t_prompt *p)
 		return ("");
 	}
 	p = parse_args(cmd, p);
+	free (cmd);
 	return (p);
 }

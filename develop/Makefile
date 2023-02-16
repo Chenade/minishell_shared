@@ -58,6 +58,8 @@ SRCS_UTL	=	utils/free.c \
 				utils/matrix.c \
 				utils/utils.c
 
+SRCS_PAR	=	parse/pre_check.c
+
 SRCS_CMD	=	cmd/process.c \
 				cmd/redirect.c \
 				cmd/builtin.c \
@@ -66,6 +68,7 @@ SRCS_CMD	=	cmd/process.c \
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	$(SRCS_UTL)
+SRCS		+=	$(SRCS_PAR)
 SRCS		+=	$(SRCS_CMD)
 SRCS		+=	main.c
 
@@ -132,8 +135,8 @@ fclean:			clean
 
 run:			$(NAME)
 				clear
-				valgrind --leak-check=full --show-leak-kinds=all ./minishell
-				# valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
+				# valgrind --leak-check=full --show-leak-kinds=all ./minishell
+				valgrind -s --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 
 re:				fclean all
 
