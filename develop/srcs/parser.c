@@ -118,10 +118,7 @@ void	*check_args(char *out, t_prompt *p)
 		printf("exit\n");
 		return (NULL);
 	}
-	if (out[0] != '\0')
-		add_history(out);
 	cmd = ft_cmdtrim(out, " ");
-	free(out);								
 	if (!cmd)
 	{
 		g_sig.exit_status = 22;
