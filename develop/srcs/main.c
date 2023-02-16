@@ -89,22 +89,44 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char				*out;
+// 	t_prompt			prompt;
+	
+// 	prompt = init_prompt(argv, envp);
+// 	while (argv && argc)
+// 	{
+// 		prompt.has_pipe = 0;
+// 		signal(SIGINT, sigint_handler);
+// 		signal(SIGQUIT, SIG_IGN);
+// 		out = readline("minishell $ ");
+// 		if (!check_args(out, &prompt))
+// 			break ;
+// 		else
+// 			free_all(&prompt);
+// 	}
+// 	exit (g_sig.exit_status);
+// }
+
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
 	t_prompt			prompt;
 	
 	prompt = init_prompt(argv, envp);
+
 	while (argv && argc)
 	{
 		prompt.has_pipe = 0;
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		out = readline("minishell $ ");
-		if (!check_args(out, &prompt))
-			break ;
-		else
-			free_all(&prompt);
+		if (!out)
+			break;
+		check_args(out, &prompt);
+		g_sig.exit_status = 0;
 	}
+	// free_all(&prompt);
 	exit (g_sig.exit_status);
 }

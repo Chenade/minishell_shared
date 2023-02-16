@@ -36,10 +36,7 @@ int	builtin_cmd(char *cmd, int i, t_prompt *prompt)
 	else if (ft_strcmp(cmd, "unset") == 0)
 		result = ft_unset(i + 1, prompt);
 	else if (ft_strcmp(cmd, "env") == 0)
-	{
-		print_env(prompt->envp);
-		result = 0;
-	}
+		result = print_env(prompt->envp);
 	else
 		result = exec_bin(cmd, prompt);
 	return (result);

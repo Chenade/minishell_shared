@@ -65,7 +65,7 @@ typedef struct s_prompt
 
 /* temp */
 void		print_token(t_token *token);
-void		print_env(char **envp);
+int			print_env(char **envp);
 
 /* error */
 void	exit_minishell(t_prompt *prompt, int status);
