@@ -117,6 +117,7 @@ int 		redirect_output(t_prompt *prompt);
 
 /* parsing fix*/
 int			pre_check(char *out);
+int			expansion(char *out);
 
 /* builtin  utils*/
 int			ft_print(char *str, t_prompt *prompt);

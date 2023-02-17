@@ -86,7 +86,7 @@ int	pre_check(char *out)
 		{
 			if (out[i] == '|')
 			{
-				if (data.is_pipe < 0)
+				if (data.is_pipe < 0 || data.outfile || data.infile)
 					break ;
 				data.is_pipe *= -1;
 			}
