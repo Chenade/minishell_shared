@@ -195,8 +195,9 @@ void	fill_token(t_prompt *prompt, char *str, char *q, int i)
 			*q = '\0';
 		else if (i > 0)
 		{
-			printf("str - i [%s]  str - [%s]\n", str - i, str);
+			printf("str - [%s]\n", str);
 			*(str - i) = *str;
+			printf("AF>str - [%s]\n", str);
 		}
 		if (!*q && is_sep(*str))
 		{
