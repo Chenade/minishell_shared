@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:14:04 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/31 14:21:39 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/17 05:41:36 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define 	READ	0
 # define 	WRITE	1
 # define	CHILD	0
+# define	SINGLE	1
+# define	DOUBLE  2
 
 enum	token_type
 { 
@@ -76,6 +78,7 @@ typedef struct s_prompt
 {
 	t_token	*token;
 	t_list	*env;
+	char	*tmp_rep;
 	char	*result;
 	char	**envp;
 	int		has_pipe;
@@ -100,8 +103,16 @@ void		free_matrix(char ***m);
 int			get_matrixlen(char **m);
 
 /* token */
+void		token_exception(t_token *token, t_prompt *p);
 void		fill_type(t_token *token, int separator, t_prompt *p);
 t_token 	*fill_nodes(char **args);
+
+/* expand */
+int 		get_env_len(char *str);
+int			jump_env(char *str, int i, int *len, t_prompt *p);
+char 		*put_str_expand(char *str, int q[3], t_prompt *p);
+int			get_len_expand_str(char *str, int q[3], t_prompt *p);
+char		**expand_cmd(char **aux, t_prompt *p);
 
 /* parser */
 void		*check_args(char *out, t_prompt *p);

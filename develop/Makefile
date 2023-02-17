@@ -54,6 +54,11 @@ OBJS_DIR	=	objs
 
 SRCS_GEN	=	env.c error.c parser.c token.c temp.c
 
+SRCS_EXP	=	expand/expand.c \
+				expand/expand_len.c \
+				expand/expand_put.c \
+				expand/expand_utils.c
+
 SRCS_UTL	=	utils/free.c \
 				utils/matrix.c \
 				utils/utils.c
@@ -63,6 +68,7 @@ SRCS_CMD	=	cmd/process.c \
 				cmd/builtin_utils.c
 
 SRCS		=	$(SRCS_GEN)
+SRCS		+=	$(SRCS_EXP)
 SRCS		+=	$(SRCS_UTL)
 SRCS		+=	$(SRCS_CMD)
 SRCS		+=	main.c

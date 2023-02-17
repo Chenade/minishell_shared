@@ -33,7 +33,7 @@ void free_all(t_prompt *p)
 {
 	t_token	*tmp;
 
-	free_matrix(&p->envp);
+	// free_matrix(&p->envp);
 	while (p->token)
 	{
 		tmp = (p->token)->next;
