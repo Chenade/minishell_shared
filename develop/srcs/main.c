@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/17 05:42:07 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/17 20:26:45 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_prompt	init_prompt(char **argv, char **envp)
 
 	str = NULL;
 	exit_status = 0;
-	prompt.tmp_rep = NULL;
 	prompt.has_pipe = 0;
 	prompt.envp = dup_matrix(envp);
 	mini_getpid(&prompt);
@@ -76,18 +75,18 @@ t_prompt	init_prompt(char **argv, char **envp)
 	return (prompt);
 }
 
-void	sigint_handler(int sig)		// need to change exit_code -> 130;
-{
-	if (sig == SIGINT)
-	{
-		exit_status = 130;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		if (rl_on_new_line() == -1)
-			exit(1);
-		rl_replace_line("", 0);		//set string from readline as ""
-		rl_on_new_line();			//set next line while readline
-	}
-}
+// void	sigint_handler(int sig)		// need to change exit_code -> 130;
+// {
+// 	if (sig == SIGINT)
+// 	{
+// 		exit_status = 130;
+// 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+// 		if (rl_on_new_line() == -1)
+// 			exit(1);
+// 		rl_replace_line("", 0);		//set string from readline as ""
+// 		rl_on_new_line();			//set next line while readline
+// 	}
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -97,14 +96,19 @@ int	main(int argc, char **argv, char **envp)
 	prompt = init_prompt(argv, envp);
 	while (argv && argc)
 	{
-		prompt.has_pipe = 0;
-		signal(SIGINT, sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
+		// prompt.has_pipe = 0;
+		set_signal();
 		out = readline("minishell $ ");
-		if (!check_args(out, &prompt))
-			break ;
-		else
-			free_all(&prompt);
+		if (!out)
+		{
+			free_matrix(&prompt.envp);
+			ft_putstr_fd("exit\n", STDERR);
+			break;
+		}
+		if (check_args(out, &prompt) && check_syntax(&prompt, prompt.token))
+			exit_status = process(&prompt);
+		free_token(&prompt.token);
+		free(out);
 	}
 	// free_matrix(&prompt.envp);
 	exit (exit_status);

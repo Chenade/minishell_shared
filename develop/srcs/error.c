@@ -7,10 +7,9 @@ void	*print_error(int err_type, char *cmd, char *param)
 	if (err_type == QUOTE)
 		write(1, ": \e[91mUnclosed quote\e[0m", 26);
 		// ft_putstr_fd("Quote error", 1); 
-
+	else if (err_type == SYNT)
+		ft_putstr_fd(": Invalid syntax error.", 2);
 	// prompt->exit_status = err;
-	// if (err_type == QUOTE)
-	// 	ft_putstr_fd("Quote error", 2); 
     // else if (err_type == WCHAR)
 	// 	ft_putstr_fd("Wrong input character: ", 2);
 	else if (err_type == OP_NS)

@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:14:04 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/17 05:41:36 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/17 20:42:42 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@
 # define	SINGLE	1
 # define	DOUBLE  2
 
+enum e_std_type
+{
+	STDIN = 0,
+	STDOUT = 1,
+	STDERR = 2
+};
+
 enum	token_type
 { 
 	EMPTY = 0,
@@ -48,7 +55,10 @@ enum	token_type
 	OUTPUT = 7, // >
 	DELIM = 8, // <<
 	APPEN = 9, // >>
-	PIPE = 10
+	PIPE = 10,
+	AND = 11,
+	OR = 12,
+	DIRE = 13
 };
 
 enum	e_mini_error
@@ -63,7 +73,8 @@ enum	e_mini_error
 	MEM = 8,
 	IS_DIR = 9,
 	NOT_DIR = 11,
-	OP_NS = 12
+	OP_NS = 12,
+	SYNT = 13
 };
 
 typedef struct	s_token
@@ -77,13 +88,12 @@ typedef struct	s_token
 typedef struct s_prompt
 {
 	t_token	*token;
-	t_list	*env;
-	char	*tmp_rep;
-	char	*result;
 	char	**envp;
 	int		has_pipe;
 	pid_t	pid;
 }			t_prompt;
+
+void	set_signal(void);
 
 /* temp */
 void		print_token(t_token *token);
@@ -93,9 +103,11 @@ void		print_env(char **envp);
 void	*print_error(int err_type, char *cmd, char *param);
 
 /* utils */
+int			is_quot(char s);
+int			is_sep(char s);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
-void 		free_all(t_prompt *p);
+void 		free_token(t_token **token);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
 void		free_matrix(char ***m);
@@ -103,19 +115,13 @@ void		free_matrix(char ***m);
 int			get_matrixlen(char **m);
 
 /* token */
-void		token_exception(t_token *token, t_prompt *p);
-void		fill_type(t_token *token, int separator, t_prompt *p);
-t_token 	*fill_nodes(char **args);
 
-/* expand */
-int 		get_env_len(char *str);
-int			jump_env(char *str, int i, int *len, t_prompt *p);
-char 		*put_str_expand(char *str, int q[3], t_prompt *p);
-int			get_len_expand_str(char *str, int q[3], t_prompt *p);
-char		**expand_cmd(char **aux, t_prompt *p);
+char	*str_to_token(t_prompt *prompt, char *start, char *end);
+void	fill_token(t_prompt *prompt, char *str, char *q, int i);
 
 /* parser */
-void		*check_args(char *out, t_prompt *p);
+int			check_syntax(t_prompt *prompt, t_token *token);
+int			check_args(char *out, t_prompt *prompt);
 
 /* env */
 char		*get_env(char *var, char **envp, int n);

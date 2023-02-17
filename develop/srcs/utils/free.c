@@ -29,16 +29,23 @@ void	free_matrix(char ***m)
 	}
 }
 
-void free_all(t_prompt *p)
+void free_token(t_token **token)
 {
 	t_token	*tmp;
 
-	// free_matrix(&p->envp);
-	while (p->token)
+	tmp = (*token);
+	if (!tmp)
+		return ;
+	while (tmp->next)
 	{
-		tmp = (p->token)->next;
-		free(p->token->str);
-		free(p->token);
-		(p->token) = tmp;
+		tmp = tmp->next;
+		free(tmp->prev->str);
+		free(tmp->prev);
 	}
+	if (tmp)
+	{
+		free(tmp->str);
+		free(tmp);
+	}
+	*token = NULL;
 }
