@@ -110,7 +110,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(out);
 		if (!out[0] || !pre_check(out))
 		{
-			printf("Pre check PASS!\n");
+			out = expansion(out, prompt.envp);
+			// todo if out = NULL, malloc error
 			// check_args(out, &prompt);
 			g_sig.exit_status = 0;
 		}
