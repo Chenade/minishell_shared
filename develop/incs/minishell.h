@@ -33,18 +33,20 @@
 # include "defines.h"
 # include "structure.h"
 
+extern t_sig	g_sig;
+
 /* temp */
 void		print_token(t_token *token);
 int			print_env(char **envp);
 
 /* error */
-void	exit_minishell(t_prompt *prompt, int status);
-int		print_error(int err_type, char *cmd, char *param);
+void		exit_minishell(t_prompt *prompt, int status);
+int			print_error(int err_type, char *cmd, char *param);
 
 /* utils */
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
-void 		free_all(t_prompt *p);
+void		free_all(t_prompt *p);
 void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
@@ -54,7 +56,7 @@ int			get_matrixlen(char **m);
 
 /* token */
 void		fill_type(t_token *token, int separator, t_prompt *p);
-t_token 	*fill_nodes(char **args);
+t_token		*fill_nodes(char **args);
 
 /* parser */
 void		*check_args(char *out, t_prompt *p);
@@ -67,12 +69,12 @@ char		**set_env(char *var, char *value, char **envp, int n);
 int			main(int argc, char **argv, char **envp);
 
 /* cmd process */
-int 		process(t_prompt *prompt);
+int			process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
-int 		redirect_input(t_prompt *prompt);
-int 		redirect_input2(t_prompt *prompt);
-int 		redirect_output(t_prompt *prompt);
+int			redirect_input(t_prompt *prompt);
+int			redirect_input2(t_prompt *prompt);
+int			redirect_output(t_prompt *prompt);
 
 /* parsing fix*/
 int			pre_check(char *out);
@@ -95,5 +97,4 @@ int			ft_unset(int i, t_prompt *prompt);
 /* exec bin func*/
 int			exec_bin(char *cmd, t_prompt *prompt);
 
-extern t_sig g_sig;
 #endif
