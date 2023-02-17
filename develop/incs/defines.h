@@ -1,6 +1,12 @@
+#ifndef DEFINES_H
+# define DEFINES_H
 
-enum	token_type
-{ 
+# define READ	0
+# define WRITE	1
+# define CHILD	0
+
+enum	e_token_type
+{
 	EMPTY = 0,
 	CMD = 1,
 	ARG = 2,
@@ -29,3 +35,5 @@ enum	e_mini_error
 	OP_NS = 12,
 	SYNERR = 13,
 };
+
+#endif
