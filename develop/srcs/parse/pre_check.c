@@ -51,7 +51,7 @@ int	check_redirect(t_parse *data, char *c)
 	}
 	if (*c == ' ')
 	{
-			*c = -(*c);
+		*c = -(*c);
 		if (data->infile > 0)
 			data->infile += 1;
 		if (data->outfile > 0)
@@ -100,6 +100,5 @@ int	pre_check(char *out)
 		if (ft_isalpha(out[i]))
 			reset_bool(&data, 0);
 	}
-	printf("AF C : %s\n", out);
 	return (print_syntax_error(data));
 }

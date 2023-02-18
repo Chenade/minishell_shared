@@ -1,6 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   defines.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/18 00:25:23 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/18 00:25:26 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-enum	token_type
-{ 
+#ifndef DEFINES_H
+# define DEFINES_H
+
+# define READ	0
+# define WRITE	1
+# define CHILD	0
+
+enum	e_token_type
+{
 	EMPTY = 0,
 	CMD = 1,
 	ARG = 2,
@@ -29,3 +47,5 @@ enum	e_mini_error
 	OP_NS = 12,
 	SYNERR = 13,
 };
+
+#endif

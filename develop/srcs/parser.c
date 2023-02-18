@@ -147,5 +147,6 @@ void	*check_args(char *out, t_prompt *p)
 	p = parse_args(cmd, p);
 	printf("cmd : %s\n", out);
 	// free (cmd);
+	free (cmd);
 	return (p);
 }

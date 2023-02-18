@@ -54,19 +54,21 @@ OBJS_DIR	=	objs
 
 SRCS_GEN	=	env.c error.c parser.c token.c temp.c
 
-SRCS_UTL	=	utils/free.c \
+SRCS_UTL	=	utils/init.c \
+				utils/free.c \
 				utils/matrix.c \
 				utils/utils.c
 
 SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
+				parse/pipe.c \
 				parse/parse_cmd.c
 
 SRCS_CMD	=	cmd/process.c \
-				cmd/redirect.c \
 				cmd/builtin.c \
 				cmd/builtin_utils.c \
-				cmd/exec.c
+				cmd/exec.c \
+				# cmd/redirect.c
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	$(SRCS_UTL)
@@ -122,7 +124,7 @@ norminette:		clear
 
 
 project:		clean $(OBJS)
-				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $(NAME)
+				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $@
 				@echo ${GREEN}"Minishell Compile Successfully"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 
@@ -137,7 +139,6 @@ fclean:			clean
 
 run:			$(NAME)
 				clear
-				# valgrind --leak-check=full --show-leak-kinds=all ./minishell
 				valgrind -s --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 
 re:				fclean all

@@ -102,5 +102,6 @@ char	*expansion(char *out, char **envp)
 	replace_env(out, new_out, envp, q);
 	free (out);
 	printf("[DEBUG] %s\n", new_out);
+
 	return (new_out);
 }

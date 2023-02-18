@@ -67,27 +67,25 @@ int	parsing_cmd(t_prompt *prompt)
 	return (0);
 }
 
-int	pre_process(t_prompt *prompt)
-{
-	prompt->output_fd = 0;
-	prompt->input_fd = 0;
-	prompt->result = NULL;
-	print_token(prompt->token);
-	redirect_output(prompt);
-	if (g_sig.exit_status)
-		return (g_sig.exit_status);
-	redirect_input(prompt);
-	if (g_sig.exit_status)
-		return (g_sig.exit_status);
-	redirect_input2(prompt);
-	if (g_sig.exit_status)
-		return (g_sig.exit_status);
-	parsing_cmd(prompt);
-	if (g_sig.exit_status)
-		return (g_sig.exit_status);
-	print_token(prompt->token);
-	return (0);
-}
+// int	pre_process(t_prompt *prompt)
+// {
+// 	prompt->result = NULL;
+// 	print_token(prompt->token);
+// 	redirect_output(prompt);
+// 	if (g_sig.exit_status)
+// 		return (g_sig.exit_status);
+// 	redirect_input(prompt);
+// 	if (g_sig.exit_status)
+// 		return (g_sig.exit_status);
+// 	redirect_input2(prompt);
+// 	if (g_sig.exit_status)
+// 		return (g_sig.exit_status);
+// 	parsing_cmd(prompt);
+// 	if (g_sig.exit_status)
+// 		return (g_sig.exit_status);
+// 	print_token(prompt->token);
+// 	return (0);
+// }
 
 int	process(t_prompt *prompt)
 {
@@ -97,7 +95,7 @@ int	process(t_prompt *prompt)
 
 	status = 0;
 	i = 0;
-	pre_process(prompt);
+	// pre_process(prompt);
 	if (g_sig.exit_status)
 		return (g_sig.exit_status);
 	token = prompt->token;

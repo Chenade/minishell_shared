@@ -31,57 +31,22 @@
 # include <errno.h>
 # include <defines.h>
 
-# define 	READ	0
-# define 	WRITE	1
-# define	CHILD	0
+# include "defines.h"
+# include "structure.h"
 
-typedef struct	s_sig
-{
-	int				sigint;
-	int				sigquit;
-	int				exit_status;
-	pid_t			pid;
-}				t_sig;
-
-
-typedef struct	s_parse
-{
-	int				double_quote;
-	int				single_quote;
-	int				is_pipe;
-	int				infile;
-	int				outfile;
-}				t_parse;
-
-
-typedef struct	s_token
-{
-	char			*str;
-	int				type;
-	struct s_token	*prev;
-	struct s_token	*next;
-}				t_token;
-
-typedef struct s_prompt
-{
-	t_token	*token;
-	int		output_fd;
-	int		input_fd;
-	char	*result;
-	char	**envp;
-	int		has_pipe;
-	pid_t	pid;
-}			t_prompt;
+extern t_sig	g_sig;
 
 /* temp */
 void		print_token(t_token *token);
 int			print_env(char **envp);
 
 /* error */
-void	exit_minishell(t_prompt *prompt, int status);
-int		print_error(int err_type, char *cmd, char *param);
+void		exit_minishell(t_prompt *prompt, int status);
+int			print_error(int err_type, char *cmd, char *param);
 
 /* utils */
+t_prompt	init_envp(t_prompt prompt, char *str, char **argv);
+t_prompt	init_prompt(char **argv, char **envp);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
 void		free_token(t_token **token);
@@ -90,12 +55,17 @@ void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
 void		free_matrix(char ***m);
-// char		**extend_matrix(char **in, char *newstr);
 int			get_matrixlen(char **m);
+// char		**extend_matrix(char **in, char *newstr);
+
+/* free */
+void		free_all(t_prompt *p);
+void	    free_readline(char **out, t_prompt *prompt);
+void		ft_close(int fd);
 
 /* token */
 void		fill_type(t_token *token, int separator, t_prompt *p);
-t_token 	*fill_nodes(char **args);
+t_token		*fill_nodes(char **args);
 
 /* parser */
 void		*check_args(char *out, t_prompt *p);
@@ -105,10 +75,11 @@ char		*get_env(char *var, char **envp, int n);
 char		**set_env(char *var, char *value, char **envp, int n);
 
 /* main, init */
+void		mini_getpid(t_prompt *p);
 int			main(int argc, char **argv, char **envp);
 
 /* cmd process */
-int 		process(t_prompt *prompt);
+int			process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
 int 		redirect_input(t_prompt *prompt);
@@ -119,6 +90,16 @@ int 		redirect_output(t_prompt *prompt);
 void		parse_cmd(char *cmd);
 int			pre_check(char *out);
 char		*expansion(char *out, char **envp);
+int			redirect_input(t_prompt *prompt);
+int			redirect_input2(t_prompt *prompt);
+int			redirect_output(t_prompt *prompt);
+
+/* parsing fix*/
+int         reset_bool(t_parse *data, int init);
+int         check_quote(t_parse *data, char c);
+int			pre_check(char *out);
+char		*expansion(char *out, char **envp);
+int         separate_pipe(char *out, t_prompt *prompt);
 
 /* builtin  utils*/
 int			ft_print(char *str, t_prompt *prompt);
@@ -137,5 +118,4 @@ int			ft_unset(int i, t_prompt *prompt);
 /* exec bin func*/
 int			exec_bin(char *cmd, t_prompt *prompt);
 
-extern t_sig g_sig;
 #endif
