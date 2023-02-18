@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/18 02:33:57 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/18 03:07:15 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,22 @@ int	is_quot(char s)
 	return (0);
 }
 
+void	rm_space_sep(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (*cmd)
+	{
+		if ((is_sep(*cmd) && *(cmd - 1) == ' '))
+			++i;
+		else if ((is_sep(*cmd - 1) && *(cmd) == ' '))
+			++i;
+		else
+			cmd++;
+		*cmd = *(cmd + i);
+	}
+}
 
 void	filter_cmd(char *cmd)
 {
@@ -128,7 +144,9 @@ void	filter_cmd(char *cmd)
 			cmd++;
 		*cmd = *(cmd + i);
 	}
+	printf("BEFORE RM : %s\n", cmd);
 	rm_space_sep(cmd);
+	printf("AFT RM : %s\n", cmd);
 }
 
 int	main(int argc, char **argv, char **envp)
