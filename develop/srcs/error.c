@@ -31,7 +31,7 @@ int	print_error(int err_type, char *cmd, char *param)
 		write(1, ": \e[91mCommand not found\e[0m", 29);
 	else if (err_type == SYNERR)
 	{
-		g_sig.exit_status = 2;	
+		g_sig.exit_status = 2;
 		ft_putstr_fd(": syntax error near unexpected token: ", 2);
 	}
 	// else if (err_type == DUPERR)
@@ -40,8 +40,11 @@ int	print_error(int err_type, char *cmd, char *param)
 	// 	ft_putstr_fd("Fork failed", 2);
 	// else if (err_type == PIPERR)
 	// 	ft_putstr_fd("Pipe error", 2);
-	// else if (err_type == MEM)
-	// 	ft_putstr_fd("No memory left on device", 2);
+	else if (err_type == MEM)
+	{
+		g_sig.exit_status = 2;
+		ft_putstr_fd("No memory left on device", 2);
+	}
 	else if (err_type == IS_DIR)
 		ft_putstr_fd(": \e[91mIs a directory\e[0m", 2);
 	else if (err_type == NOT_DIR)

@@ -74,6 +74,7 @@ t_prompt	init_prompt(char **argv, char **envp)
 	prompt.input_fd = 0;
 	prompt.envp = dup_matrix(envp);
 	prompt.token = NULL;
+	prompt.clean = NULL;
 	mini_getpid(&prompt);
 	prompt = init_envp(prompt, str, argv);
 	return (prompt);
@@ -98,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	t_prompt			prompt;
 	
 	prompt = init_prompt(argv, envp);
-	while (argv && argc)
+	while (42)
 	{
 		prompt.has_pipe = 0;
 		signal(SIGINT, sigint_handler);
@@ -112,6 +113,8 @@ int	main(int argc, char **argv, char **envp)
 		{
 			out = expansion(out, prompt.envp);
 			// todo if out = NULL, malloc error
+			if (separate_pipe(out, &prompt))
+				break ;
 			// check_args(out, &prompt);
 			g_sig.exit_status = 0;
 		}

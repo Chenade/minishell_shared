@@ -59,7 +59,8 @@ SRCS_UTL	=	utils/free.c \
 				utils/utils.c
 
 SRCS_PAR	=	parse/pre_check.c \
-				parse/expansion.c
+				parse/expansion.c \
+				parse/pipe.c
 
 SRCS_CMD	=	cmd/process.c \
 				cmd/redirect.c \
@@ -121,7 +122,7 @@ norminette:		clear
 
 
 project:		clean $(OBJS)
-				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $(NAME)
+				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $@
 				@echo ${GREEN}"Minishell Compile Successfully"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 
@@ -136,7 +137,6 @@ fclean:			clean
 
 run:			$(NAME)
 				clear
-				# valgrind --leak-check=full --show-leak-kinds=all ./minishell
 				valgrind -s --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 
 re:				fclean all

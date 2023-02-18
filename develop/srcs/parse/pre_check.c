@@ -93,7 +93,7 @@ int	pre_check(char *out)
 			if (check_redirect (&data, out[i]))
 				break ;
 		}
-		if (ft_isalpha(out[i]))
+		if (ft_isalpha(out[i]) || out[i] == '$')
 			reset_bool(&data, 0);
 	}
 	return (print_syntax_error(data));

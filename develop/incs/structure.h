@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   structure.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 00:25:36 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/18 00:25:37 by ykuo             ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   structure.h										:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: ykuo <marvin@42.fr>						+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/02/18 00:25:36 by ykuo			  #+#	#+#			 */
+/*   Updated: 2023/02/18 00:25:37 by ykuo			 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
@@ -29,16 +29,36 @@ typedef struct s_token
 	struct s_token	*next;
 }				t_token;
 
+typedef struct s_tokens
+{
+	char			*str;
+	int				type;
+}				t_tokens;
+
+typedef struct s_request
+{
+	char				*str;
+	int					str_len;
+	char				**tab;
+	int					nbr_token;
+	int					input_fd;
+	int					output_fd;
+	struct s_tokens		*token;
+}				t_request;
+
 typedef struct s_prompt
 {
-	t_token	*token;
-	t_list	*env;
-	int		output_fd;
-	int		input_fd;
-	char	*result;
-	char	**envp;
-	int		has_pipe;
-	pid_t	pid;
+	char				*clean;
+	int					nbr_request;
+	t_token				*token;
+	t_list				*env;
+	int					output_fd;
+	int					input_fd;
+	char				*result;
+	char				**envp;
+	int					has_pipe;
+	pid_t				pid;
+	struct s_request	*requests;
 }			t_prompt;
 
 typedef struct s_parse
