@@ -34,10 +34,10 @@ t_prompt	init_prompt(char **argv, char **envp)
 
 	str = NULL;
 	g_sig.exit_status = 0;
-	prompt.has_pipe = 0;
 	prompt.envp = dup_matrix(envp);
 	prompt.token = NULL;
 	prompt.clean = NULL;
+	prompt.nbr_request = 1;
 	mini_getpid(&prompt);
 	prompt = init_envp(prompt, str, argv);
 	return (prompt);

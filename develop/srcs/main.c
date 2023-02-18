@@ -35,50 +35,6 @@ void	mini_getpid(t_prompt *p)
 	g_sig.pid = pid - 1;
 }
 
-// t_prompt	init_envp(t_prompt prompt, char *str, char **argv)
-// {
-// 	char	*num;
-	
-// 	str = getcwd(NULL, 0);
-// 	prompt.envp = set_env("PWD", str, prompt.envp, 3);
-// 	free(str);
-// 	str = get_env("SHLVL", prompt.envp, 5);
-// 	if (!str || ft_atoi(str) <= 0)
-// 		num = ft_strdup("1");
-// 	else
-// 		num = ft_itoa(ft_atoi(str) + 1);
-// 	free(str);
-// 	prompt.envp = set_env("SHLVL", num, prompt.envp, 5);
-// 	free(num);
-// 	str = get_env("PATH", prompt.envp, 4);
-// 	if (!str)
-// 		prompt.envp = set_env("PATH", \
-// 		"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", prompt.envp, 4);
-// 	free(str);
-// 	str = get_env("_", prompt.envp, 1);
-// 	if (!str)
-// 		prompt.envp = set_env("_", argv[0], prompt.envp, 1);
-// 	free(str);
-// 	return (prompt);
-// }
-
-// t_prompt	init_prompt(char **argv, char **envp)
-// {
-// 	t_prompt	prompt;
-// 	char		*str;
-
-// 	str = NULL;
-// 	g_sig.exit_status = 0;
-// 	prompt.has_pipe = 0;
-// 	// prompt.output_fd = 0;
-// 	// prompt.input_fd = 0;
-// 	prompt.envp = dup_matrix(envp);
-// 	prompt.token = NULL;
-// 	mini_getpid(&prompt);
-// 	prompt = init_envp(prompt, str, argv);
-// 	return (prompt);
-// }
-
 void	sigint_handler(int sig)		// need to change exit_code -> 130;
 {
 	if (sig == SIGINT)
@@ -96,15 +52,19 @@ int	minishell(char **out, t_prompt *prompt)
 {
 	if (*out[0] != '\0')
 		add_history(*out);
-	if (!*out[0] || !pre_check(*out))
+	if (!*out[0] || !pre_check(*out, prompt))
 	{
 		*out = expansion(*out, prompt->envp);
 		if (!*(out))
 			return (1);
 		if (separate_pipe(*out, prompt))
 			return (1);
+		printf("  out : %s\n", *out);
 		parse_cmd(*out);
 		printf("> out : %s\n", *out);
+		printf("**nbr_request : %d\n", prompt->nbr_request);
+		if(fill_token(*out, prompt))
+			return (1);
 		// check_args(out, &prompt);
 		g_sig.exit_status = 0;
 	}

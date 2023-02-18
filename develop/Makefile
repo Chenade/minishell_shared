@@ -52,7 +52,7 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	env.c error.c parser.c token.c temp.c
+SRCS_GEN	=	env.c error.c temp.c
 
 SRCS_UTL	=	utils/init.c \
 				utils/free.c \
@@ -64,6 +64,8 @@ SRCS_PAR	=	parse/pre_check.c \
 				parse/pipe.c \
 				parse/parse_cmd.c
 
+SRCS_TOK	=	token/token.c
+
 SRCS_CMD	=	cmd/process.c \
 				cmd/builtin.c \
 				cmd/builtin_utils.c \
@@ -73,6 +75,7 @@ SRCS_CMD	=	cmd/process.c \
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	$(SRCS_UTL)
 SRCS		+=	$(SRCS_PAR)
+SRCS		+=	$(SRCS_TOK)
 SRCS		+=	$(SRCS_CMD)
 SRCS		+=	main.c
 

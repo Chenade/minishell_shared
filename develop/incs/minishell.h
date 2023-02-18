@@ -64,8 +64,9 @@ void	    free_readline(char **out, t_prompt *prompt);
 void		ft_close(int fd);
 
 /* token */
-void		fill_type(t_token *token, int separator, t_prompt *p);
-t_token		*fill_nodes(char **args);
+int	fill_token(char *cmd, t_prompt *prompt);
+// void		fill_type(t_token *token, int separator, t_prompt *p);
+// t_token		*fill_nodes(char **args);
 
 /* parser */
 void		*check_args(char *out, t_prompt *p);
@@ -88,17 +89,14 @@ int 		redirect_output(t_prompt *prompt);
 
 /* parsing fix*/
 void		parse_cmd(char *cmd);
-int			pre_check(char *out);
+int         pre_check(char *out, t_prompt *prompt);
 char		*expansion(char *out, char **envp);
 int			redirect_input(t_prompt *prompt);
 int			redirect_input2(t_prompt *prompt);
 int			redirect_output(t_prompt *prompt);
 
-/* parsing fix*/
 int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
-int			pre_check(char *out);
-char		*expansion(char *out, char **envp);
 int         separate_pipe(char *out, t_prompt *prompt);
 
 /* builtin  utils*/

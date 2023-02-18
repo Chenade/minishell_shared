@@ -75,7 +75,7 @@ int	check_quote(t_parse *data, char c)
 	return (0);
 }
 
-int	pre_check(char *out)
+int	pre_check(char *out, t_prompt *prompt)
 {
 	int		i;
 	t_parse	data;
@@ -90,6 +90,10 @@ int	pre_check(char *out)
 			if (out[i] == '|')
 			{
 				out[i] *= -1;
+				printf("prompt->nbr_request : %d\n", prompt->nbr_request);
+				prompt->nbr_request++;
+								printf("prompt->nbr_request : %d\n", prompt->nbr_request);
+
 				if (data.is_pipe < 0 || data.outfile || data.infile)
 					break ;
 				data.is_pipe *= -1;

@@ -9,8 +9,9 @@ int	env_key_len(char *out)
 	len = 0;
 	while (out[++j])
 	{
-		if (out[j] == ' ' || out[j] == '|' || out[j] == '<' || out[j] == '>'
-			|| out[j] == '$' || out[j] == '\'' || out[j] == '"')
+		if (out[j] == -' ' || out[j] == -'|' || out[j] == -'<' || out[j] == -'>'
+			|| out[j] == '$' || out[j] == '\'' || out[j] == '\"' || out[j] == '\0'
+			|| out[j] == ' ')
 			break ;
 		len += 1;
 	}
