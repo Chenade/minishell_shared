@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/18 03:29:46 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/18 04:20:49 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,62 +92,6 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
-int	is_sep(char s)
-{
-	if (s == '<' || s == '>' || s == '|' || s == ' ')
-		return (1);
-	return (0);
-}
-
-int	is_quot(char s)
-{
-	if (s == '\'' || s == '\"')
-		return (1);
-	return (0);
-}
-
-void	rm_space_sep(char *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (*cmd)
-	{
-		if ((is_sep(*cmd) && *(cmd - 1) == ' ') && ++i)
-			*(cmd - 1) = *(cmd + i - 1);
-		else if ((*(cmd) == ' ' && is_sep(*(cmd - 1))) && ++i)
-			*(cmd) = *(cmd + i);
-		else
-			cmd++;
-		*(cmd) = *(cmd + i);
-	}
-}
-
-void	filter_cmd(char *cmd)
-{
-	int	i;
-	char quot;
-	char *tmp;
-
-	i = 0;
-	quot = '\0';
-	tmp = cmd;
-	while (*cmd == ' ')
-		cmd++;
-	while (*cmd)
-	{
-		if (!quot && is_quot(*cmd) && ++i)
-			quot = *cmd;
-		else if (quot && (*cmd == quot) && ++i)
-			quot = '\0'; 
-		else
-			cmd++;
-		*cmd = *(cmd + i);
-	}
-	cmd = tmp;
-	rm_space_sep(cmd);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
@@ -169,15 +113,12 @@ int	main(int argc, char **argv, char **envp)
 			out = expansion(out, prompt.envp);
 			// todo if out = NULL, malloc error
 			printf("  out : %s\n", out);
-			filter_cmd(out);
+			parse_cmd(out);
 			printf("> out : %s\n", out);
-			// printf("BEFORE RM : %s\n", out);
-			// rm_space_sep(out);
-			// printf("AFT RM : %s\n", out);
-			// check_args(out, &prompt);
 			g_sig.exit_status = 0;
 		}
 		free (out);
+		free_token(&(prompt.token));
 	}
 	free_all(&prompt);
 	exit (g_sig.exit_status);

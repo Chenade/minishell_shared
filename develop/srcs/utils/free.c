@@ -35,18 +35,32 @@ void	ft_close(int fd)
 		close(fd);
 }
 
+void	free_token(t_token **token)
+{
+	t_token	*ptr;
+
+	ptr = (*token);
+	if (!ptr)
+		return ;
+	while (ptr->next)
+	{
+		ptr = ptr->next;
+		free(ptr->prev->str);
+		free(ptr->prev);
+	}
+	if (ptr)
+	{
+		free(ptr->str);
+		free(ptr);
+	}
+	*token = NULL;
+}
+
 void free_all(t_prompt *p)
 {
 	t_token	*tmp;
 
 	free_matrix(&p->envp);
-	while (p->token)
-	{
-		tmp = (p->token)->next;
-		free(p->token->str);
-		free(p->token);
-		(p->token) = tmp;
-	}
 	ft_close(p->input_fd);
 	ft_close(p->output_fd);
 }

@@ -59,7 +59,8 @@ SRCS_UTL	=	utils/free.c \
 				utils/utils.c
 
 SRCS_PAR	=	parse/pre_check.c \
-				parse/expansion.c
+				parse/expansion.c \
+				parse/parse_cmd.c
 
 SRCS_CMD	=	cmd/process.c \
 				cmd/redirect.c \

@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:14:04 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/18 00:52:54 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/18 04:20:08 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int		print_error(int err_type, char *cmd, char *param);
 /* utils */
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
+void		free_token(t_token **token);
 void 		free_all(t_prompt *p);
 void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
@@ -115,6 +116,7 @@ int 		redirect_input2(t_prompt *prompt);
 int 		redirect_output(t_prompt *prompt);
 
 /* parsing fix*/
+void		parse_cmd(char *cmd);
 int			pre_check(char *out);
 char		*expansion(char *out, char **envp);
 

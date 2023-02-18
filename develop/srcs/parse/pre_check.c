@@ -29,26 +29,29 @@ int	reset_bool(t_parse *data, int init)
 	return (0);
 }
 
-int	check_redirect(t_parse *data, char c)
+int	check_redirect(t_parse *data, char *c)
 {
-	if (c == '<')
+	if (*c == '<')
 	{
 		if (data->outfile > 0)
 			return (1);
 		data->infile += 1;
+		*c = -(*c);
 		if (data->infile > 2)
 			return (1);
 	}
-	if (c == '>')
+	if (*c == '>')
 	{
 		if (data->infile > 0)
 			return (1);
 		data->outfile += 1;
+		*c = -(*c);
 		if (data->outfile > 2)
 			return (1);
 	}
-	if (c == ' ')
+	if (*c == ' ')
 	{
+			*c = -(*c);
 		if (data->infile > 0)
 			data->infile += 1;
 		if (data->outfile > 0)
@@ -86,15 +89,17 @@ int	pre_check(char *out)
 		{
 			if (out[i] == '|')
 			{
+				out[i] *= -1;
 				if (data.is_pipe < 0 || data.outfile || data.infile)
 					break ;
 				data.is_pipe *= -1;
 			}
-			if (check_redirect (&data, out[i]))
+			if (check_redirect (&data, &(out[i])))
 				break ;
 		}
 		if (ft_isalpha(out[i]))
 			reset_bool(&data, 0);
 	}
+	printf("AF C : %s\n", out);
 	return (print_syntax_error(data));
 }
