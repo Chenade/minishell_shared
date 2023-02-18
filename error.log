@@ -5,3 +5,10 @@
 [ ] Ctrl+C while input
 [ ] input : test test | test test test
 [ ] input : nothing
+
+
+
+
+
+cat > c error.log -e > f
+-> cat error.log -e > f

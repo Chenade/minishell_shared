@@ -6,13 +6,13 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/17 20:26:45 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/18 02:33:57 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exit_status;
+t_sig g_sig;
 
 void	mini_getpid(t_prompt *p)
 {
@@ -32,6 +32,7 @@ void	mini_getpid(t_prompt *p)
 	}
 	waitpid(pid, NULL, 0);
 	p->pid = pid - 1;
+	g_sig.pid = pid - 1;
 }
 
 t_prompt	init_envp(t_prompt prompt, char *str, char **argv)
@@ -67,26 +68,68 @@ t_prompt	init_prompt(char **argv, char **envp)
 	char		*str;
 
 	str = NULL;
-	exit_status = 0;
+	g_sig.exit_status = 0;
 	prompt.has_pipe = 0;
+	prompt.output_fd = 0;
+	prompt.input_fd = 0;
 	prompt.envp = dup_matrix(envp);
+	prompt.token = NULL;
 	mini_getpid(&prompt);
 	prompt = init_envp(prompt, str, argv);
 	return (prompt);
 }
 
-// void	sigint_handler(int sig)		// need to change exit_code -> 130;
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		exit_status = 130;
-// 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-// 		if (rl_on_new_line() == -1)
-// 			exit(1);
-// 		rl_replace_line("", 0);		//set string from readline as ""
-// 		rl_on_new_line();			//set next line while readline
-// 	}
-// }
+void	sigint_handler(int sig)		// need to change exit_code -> 130;
+{
+	if (sig == SIGINT)
+	{
+		g_sig.exit_status = 130;
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		if (rl_on_new_line() == -1)
+			exit(1);
+		rl_replace_line("", 0);		//set string from readline as ""
+		rl_on_new_line();			//set next line while readline
+	}
+}
+
+int	is_sep(char s)
+{
+	if (s == '<' || s == '>' || s == '|' || s == ' '
+		|| s == - '<' || s == - '>' || s == - '&'
+		|| s == - '|')
+		return (1);
+	return (0);
+}
+
+int	is_quot(char s)
+{
+	if (s == '\'' || s == '\"')
+		return (1);
+	return (0);
+}
+
+
+void	filter_cmd(char *cmd)
+{
+	int	i;
+	char quot;
+
+	i = 0;
+	quot = '\0';
+	while (*cmd == ' ')
+		cmd++;
+	while (*cmd)
+	{
+		if (!quot && is_quot(*cmd) && ++i)
+			quot = *cmd;
+		else if (quot && (*cmd == quot) && ++i)
+			quot = '\0'; 
+		else
+			cmd++;
+		*cmd = *(cmd + i);
+	}
+	rm_space_sep(cmd);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -96,20 +139,26 @@ int	main(int argc, char **argv, char **envp)
 	prompt = init_prompt(argv, envp);
 	while (argv && argc)
 	{
-		// prompt.has_pipe = 0;
-		set_signal();
+		prompt.has_pipe = 0;
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		out = readline("minishell $ ");
 		if (!out)
-		{
-			free_matrix(&prompt.envp);
-			ft_putstr_fd("exit\n", STDERR);
 			break;
+		if (out[0] != '\0')
+			add_history(out);
+		if (!out[0] || !pre_check(out))
+		{
+			out = expansion(out, prompt.envp);
+			// todo if out = NULL, malloc error
+			printf("  out : %s\n", out);
+			filter_cmd(out);
+			printf("> out : %s\n", out);
+			check_args(out, &prompt);
+			g_sig.exit_status = 0;
 		}
-		if (check_args(out, &prompt) && check_syntax(&prompt, prompt.token))
-			exit_status = process(&prompt);
-		free_token(&prompt.token);
-		free(out);
+		free (out);
 	}
-	// free_matrix(&prompt.envp);
-	exit (exit_status);
+	free_all(&prompt);
+	exit (g_sig.exit_status);
 }

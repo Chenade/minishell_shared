@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:14:04 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/17 20:42:42 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/18 00:52:54 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,53 +29,30 @@
 # include <dirent.h>
 # include <limits.h>
 # include <errno.h>
+# include <defines.h>
 
 # define 	READ	0
 # define 	WRITE	1
 # define	CHILD	0
-# define	SINGLE	1
-# define	DOUBLE  2
 
-enum e_std_type
+typedef struct	s_sig
 {
-	STDIN = 0,
-	STDOUT = 1,
-	STDERR = 2
-};
+	int				sigint;
+	int				sigquit;
+	int				exit_status;
+	pid_t			pid;
+}				t_sig;
 
-enum	token_type
-{ 
-	EMPTY = 0,
-	CMD = 1,
-	ARG = 2,
-	ENV_DEF = 3,
-	ENV_VAL = 4,
-	OPTN = 5,
-	INPUT = 6, // <
-	OUTPUT = 7, // >
-	DELIM = 8, // <<
-	APPEN = 9, // >>
-	PIPE = 10,
-	AND = 11,
-	OR = 12,
-	DIRE = 13
-};
 
-enum	e_mini_error
+typedef struct	s_parse
 {
-	QUOTE = 1,
-	NDIR = 2,
-	NPERM = 3,
-	NCMD = 4,
-	DUPERR = 5,
-	FORKERR = 6,
-	PIPERR = 7,
-	MEM = 8,
-	IS_DIR = 9,
-	NOT_DIR = 11,
-	OP_NS = 12,
-	SYNT = 13
-};
+	int				double_quote;
+	int				single_quote;
+	int				is_pipe;
+	int				infile;
+	int				outfile;
+}				t_parse;
+
 
 typedef struct	s_token
 {
@@ -88,26 +65,27 @@ typedef struct	s_token
 typedef struct s_prompt
 {
 	t_token	*token;
+	int		output_fd;
+	int		input_fd;
+	char	*result;
 	char	**envp;
 	int		has_pipe;
 	pid_t	pid;
 }			t_prompt;
 
-void	set_signal(void);
-
 /* temp */
 void		print_token(t_token *token);
-void		print_env(char **envp);
+int			print_env(char **envp);
 
 /* error */
-void	*print_error(int err_type, char *cmd, char *param);
+void	exit_minishell(t_prompt *prompt, int status);
+int		print_error(int err_type, char *cmd, char *param);
 
 /* utils */
-int			is_quot(char s);
-int			is_sep(char s);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
-void 		free_token(t_token **token);
+void 		free_all(t_prompt *p);
+void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
 void		free_matrix(char ***m);
@@ -115,13 +93,11 @@ void		free_matrix(char ***m);
 int			get_matrixlen(char **m);
 
 /* token */
-
-char	*str_to_token(t_prompt *prompt, char *start, char *end);
-void	fill_token(t_prompt *prompt, char *str, char *q, int i);
+void		fill_type(t_token *token, int separator, t_prompt *p);
+t_token 	*fill_nodes(char **args);
 
 /* parser */
-int			check_syntax(t_prompt *prompt, t_token *token);
-int			check_args(char *out, t_prompt *prompt);
+void		*check_args(char *out, t_prompt *p);
 
 /* env */
 char		*get_env(char *var, char **envp, int n);
@@ -134,12 +110,20 @@ int			main(int argc, char **argv, char **envp);
 int 		process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
+int 		redirect_input(t_prompt *prompt);
+int 		redirect_input2(t_prompt *prompt);
+int 		redirect_output(t_prompt *prompt);
+
+/* parsing fix*/
+int			pre_check(char *out);
+char		*expansion(char *out, char **envp);
+
 /* builtin  utils*/
-int	ft_print(char *str, t_prompt *prompt);
-int	del_envp(int index, t_token *token, t_prompt *prompt);
-int	add_envp(char *str, t_prompt *prompt);
-int	in_envp(char *token, t_prompt *prompt);
-int	update_oldpwd(t_prompt *prompt);
+int			ft_print(char *str, t_prompt *prompt);
+int			del_envp(int index, t_token *token, t_prompt *prompt);
+int			add_envp(char *str, t_prompt *prompt);
+int			in_envp(char *token, t_prompt *prompt);
+int			update_oldpwd(t_prompt *prompt);
 
 /* builtin  func*/
 int			ft_pwd(t_prompt *prompt);
@@ -147,4 +131,9 @@ int			ft_cd(int i, t_prompt *prompt);
 int			ft_echo(int i, t_prompt *prompt);
 int			ft_export(int i, t_prompt *prompt);
 int			ft_unset(int i, t_prompt *prompt);
+
+/* exec bin func*/
+int			exec_bin(char *cmd, t_prompt *prompt);
+
+extern t_sig g_sig;
 #endif

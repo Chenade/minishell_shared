@@ -52,19 +52,24 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	env.c error.c parser.c temp.c signal.c fill_token_node.c \
-				token.c check_syntax.c
+SRCS_GEN	=	env.c error.c parser.c token.c temp.c
 
 SRCS_UTL	=	utils/free.c \
 				utils/matrix.c \
 				utils/utils.c
 
+SRCS_PAR	=	parse/pre_check.c \
+				parse/expansion.c
+
 SRCS_CMD	=	cmd/process.c \
+				cmd/redirect.c \
 				cmd/builtin.c \
-				cmd/builtin_utils.c
+				cmd/builtin_utils.c \
+				cmd/exec.c
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	$(SRCS_UTL)
+SRCS		+=	$(SRCS_PAR)
 SRCS		+=	$(SRCS_CMD)
 SRCS		+=	main.c
 
@@ -131,8 +136,8 @@ fclean:			clean
 
 run:			$(NAME)
 				clear
-				valgrind --leak-check=full --show-leak-kinds=all ./minishell
-				# valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
+				# valgrind --leak-check=full --show-leak-kinds=all ./minishell
+				valgrind -s --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 
 re:				fclean all
 

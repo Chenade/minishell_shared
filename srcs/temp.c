@@ -16,7 +16,7 @@ void	print_token(t_token *token)
 	printf("======print_token======\n");
 }
 
-void	print_env(char **envp)
+int	print_env(char **envp)
 {
 	int i;
 
@@ -25,4 +25,5 @@ void	print_env(char **envp)
 	while(envp[++i])
 		printf("%d : %s\n", i + 1, envp[i]);
 	printf("======print_env======\n");
+	return (0);
 }

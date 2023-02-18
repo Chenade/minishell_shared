@@ -34,19 +34,16 @@ int	token_countcmd(t_token *token)
 	return (ans);
 }
 
-int	is_sep(char s)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	printf("s:[%c]\n", s);
-	if (s == '<' || s == '>' || s == '|' || s == ' '
-		|| s == - '<' || s == - '>' || s == - '&'
-		|| s == - '|')
-		return (1);
-	return (0);
-}
+	t_list	*tmp;
 
-int	is_quot(char s)
-{
-	if (s == '\'' || s == '\"')
-		return (1);
-	return (0);
+	if (!del)
+		return ;
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		(*lst) = tmp;
+	}
 }

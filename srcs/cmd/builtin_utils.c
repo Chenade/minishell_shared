@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/14 18:46:14 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/14 18:46:15 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_print(char *str, t_prompt *prompt)
 {
-	ft_putstr_fd (str, 1);
+	ft_putstr_fd (str, prompt->output_fd);
     return (0);
 }
 
@@ -70,6 +82,7 @@ int	in_envp(char *str, t_prompt *prompt)
 		env_val = ft_split(prompt->envp[j], '=');
 		if (ft_strcmp(value[0], env_val[0]) == 0)
 		{
+			free_pp (value);
 			free_pp (env_val);
 			return (j);
 		}
