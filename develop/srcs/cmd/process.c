@@ -87,27 +87,69 @@ int	parsing_cmd(t_prompt *prompt)
 // 	return (0);
 // }
 
+int	set_up(t_prompt *prompt)
+{
+	printf("[DEBUG] prompt->clean: %s\n", prompt->clean);
+	prompt->requests[0].nbr_token = 2;
+	prompt->requests[0].tab = (char **) malloc (3 * sizeof(char *));
+	prompt->requests[0].tab[0] = ft_strdup("cat");
+	prompt->requests[0].tab[1] = ft_strdup("Makefile");
+	prompt->requests[0].tab[2] = '\0';
+
+	prompt->requests[1].nbr_token = 2;
+	prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
+	prompt->requests[1].tab[0] = ft_strdup("cat");
+	prompt->requests[1].tab[1] = ft_strdup("Makefile");
+	prompt->requests[1].tab[2] = '\0';
+
+	return (0);
+}
+
 int	process(t_prompt *prompt)
 {
+	set_up(prompt);
 	int		status;
 	int		i;
 	t_token	*token;
 
 	status = 0;
 	i = 0;
-	// pre_process(prompt);
-	if (g_sig.exit_status)
-		return (g_sig.exit_status);
-	token = prompt->token;
-	while (token && !status)
-	{
-		if (token->type == 1)
-			status = builtin_cmd(token->str, i, prompt);
-		if (!token->next)
-			break ;
-		token = token->next;
-		i += 1;
-	}
+	// // pre_process(prompt);
+	// if (g_sig.exit_status)
+	// 	return (g_sig.exit_status);
+	// token = prompt->token;
+	// while (token && !status)
+	// {
+	// 	if (token->type == 1)
+	// 		status = builtin_cmd(token->str, i, prompt);
+	// 	if (!token->next)
+	// 		break ;
+	// 	token = token->next;
+	// 	i += 1;
+	// }
+	free_tmp(prompt);
 	printf("[DEBUG] status: %d, g_sig.exit_status: %d\n", status, g_sig.exit_status);
 	return (status);
+}
+
+
+int	free_tmp(t_prompt *prompt)
+{
+
+	printf("[DEBUG] prompt->nbr_request: %d\n", prompt->nbr_request);
+	int	j = 0;
+	int i;
+	while (j <= prompt->nbr_request)
+	{
+		i = -1;
+		while (prompt->requests[j].tab[++i])
+		{
+			printf("[DEBUG] prompt->requests[0].tab[%d]: %s\n", 0, prompt->requests[j].tab[i]);
+			free (prompt->requests[j].tab[i]);
+		}
+		free (prompt->requests[j].tab);
+		j += 1;
+	}
+	
+	return (0);
 }

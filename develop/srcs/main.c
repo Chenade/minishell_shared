@@ -59,6 +59,7 @@ int	minishell(char **out, t_prompt *prompt)
 			return (1);
 		if (separate_pipe(*out, prompt))
 			return (1);
+		process(prompt);
 		// check_args(out, &prompt);
 		g_sig.exit_status = 0;
 	}

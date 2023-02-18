@@ -57,7 +57,7 @@ void	free_readline(char **out, t_prompt *prompt)
 	free (*out);
 	while (i <= prompt->nbr_request)
 	{
-		printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
+		// printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
 		free (prompt->requests[i].str);
 		i += 1;
 	}
