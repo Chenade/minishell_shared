@@ -35,7 +35,7 @@ void	ft_close(int fd)
 		close(fd);
 }
 
-void free_all(t_prompt *p)
+void	free_all(t_prompt *p)
 {
 	t_token	*tmp;
 
@@ -47,6 +47,19 @@ void free_all(t_prompt *p)
 		free(p->token);
 		(p->token) = tmp;
 	}
-	ft_close(p->input_fd);
-	ft_close(p->output_fd);
+}
+
+void	free_readline(char **out, t_prompt *prompt)
+{
+	int	i;
+
+	i = 0;
+	free (*out);
+	while (i <= prompt->nbr_request)
+	{
+		printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
+		free (prompt->requests[i].str);
+		i += 1;
+	}
+	free (prompt->requests);
 }

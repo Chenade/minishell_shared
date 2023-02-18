@@ -98,7 +98,10 @@ char	*expansion(char *out, char **envp)
 	malloc_len = get_malloc_size(out, envp);
 	new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
 	if (!new_out)
+	{
+		print_error(MEM, NULL, NULL);
 		return (NULL);
+	}
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp);
 	free (out);

@@ -77,20 +77,10 @@ int	count_pipe(t_prompt *prompt)
 
 int	separate_pipe(char *out, t_prompt *prompt)
 {
-	int	i;
-
 	prompt->clean = out;
 	if (count_pipe (prompt))
 		return (1);
 	if (set_request(prompt))
 		return (1);
-	i = 0;
-	while (i <= prompt->nbr_request)
-	{
-		printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
-		free (prompt->requests[i].str);
-		i += 1;
-	}
-	free (prompt->requests);
 	return (0);
 }

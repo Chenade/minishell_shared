@@ -52,8 +52,6 @@ typedef struct s_prompt
 	int					nbr_request;
 	t_token				*token;
 	t_list				*env;
-	int					output_fd;
-	int					input_fd;
 	char				*result;
 	char				**envp;
 	int					has_pipe;

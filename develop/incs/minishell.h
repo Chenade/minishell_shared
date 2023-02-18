@@ -44,15 +44,20 @@ void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 
 /* utils */
+t_prompt	init_envp(t_prompt prompt, char *str, char **argv);
+t_prompt	init_prompt(char **argv, char **envp);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
-void		free_all(t_prompt *p);
-void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
 void		free_matrix(char ***m);
-// char		**extend_matrix(char **in, char *newstr);
 int			get_matrixlen(char **m);
+// char		**extend_matrix(char **in, char *newstr);
+
+/* free */
+void		free_all(t_prompt *p);
+void	    free_readline(char **out, t_prompt *prompt);
+void		ft_close(int fd);
 
 /* token */
 void		fill_type(t_token *token, int separator, t_prompt *p);

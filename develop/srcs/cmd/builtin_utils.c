@@ -14,7 +14,7 @@
 
 int	ft_print(char *str, t_prompt *prompt)
 {
-	ft_putstr_fd (str, prompt->output_fd);
+	ft_putstr_fd (str, 1);
     return (0);
 }
 

@@ -54,7 +54,8 @@ OBJS_DIR	=	objs
 
 SRCS_GEN	=	env.c error.c parser.c token.c temp.c
 
-SRCS_UTL	=	utils/free.c \
+SRCS_UTL	=	utils/init.c \
+				utils/free.c \
 				utils/matrix.c \
 				utils/utils.c
 
@@ -63,7 +64,6 @@ SRCS_PAR	=	parse/pre_check.c \
 				parse/pipe.c
 
 SRCS_CMD	=	cmd/process.c \
-				cmd/redirect.c \
 				cmd/builtin.c \
 				cmd/builtin_utils.c \
 				cmd/exec.c
