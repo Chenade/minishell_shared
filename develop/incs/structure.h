@@ -39,11 +39,13 @@ typedef struct s_request
 {
 	char				*str;
 	int					str_len;
+	char				*cmd;
 	char				**tab;
 	int					nbr_token;
 	int					input_fd;
 	int					output_fd;
-	struct s_tokens		*token;
+	int					pid;
+	struct s_token		*token;
 }				t_request;
 
 typedef struct s_prompt

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-int	ft_print(char *str, t_prompt *prompt)
+int	ft_print(char *str, int	fd)
 {
-	ft_putstr_fd (str, 1);
+	ft_putstr_fd (str, fd);
     return (0);
 }
 

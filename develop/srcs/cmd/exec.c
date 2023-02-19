@@ -24,7 +24,7 @@ int	error_message(char *path, char *cmd)
 	return (-1);
 }
 
-int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
+int			magic_box(char *path, char **tab, char *env, t_prompt *prompt)
 {
 	char	*ptr;
 	int		ret;
@@ -34,10 +34,9 @@ int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
 	g_sig.pid = fork();
 	if (g_sig.pid == 0)
 	{
-		char *ac[] = {cmd, NULL};
 		if (path && ft_strchr(path, '/') != NULL)
-			tmp = execve(path, ac, prompt->envp);
-		ret = error_message(path, cmd);
+			tmp = execve(path, tab, prompt->envp);
+		ret = error_message(path, tab[0]);
 		exit(ret);
 	}
 	else
@@ -98,7 +97,7 @@ char	*check_path(char *cmd, char *env)
 	return (cmd);
 }
 
-int	exec_bin(char *cmd, t_prompt *prompt)
+int	exec_bin(t_request *request, t_prompt *prompt)
 {
 	int		i;
 	char	**bin;
@@ -116,13 +115,16 @@ int	exec_bin(char *cmd, t_prompt *prompt)
 		if (!bin[0])
 			return (-1);
 		i = 0;
-		while (cmd && bin[i] && path == NULL)
-			path = check_dir(bin[i++], cmd);
+		while (request->cmd 
+		&& bin[i]
+		 && path == NULL)
+			path = check_dir(bin[i++], request->cmd);
 		free_pp(bin);
 	}
 	if (!env || path == NULL)
-		path = cmd;
-	ret = magic_box(path, cmd, env, prompt);
+		path = request->cmd;
+	ret = magic_box(path, request->tab, env, prompt);
 	free(path);
+	free(env);
 	return (ret);
 }

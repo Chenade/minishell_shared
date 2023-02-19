@@ -57,6 +57,7 @@ SRCS_GEN	=	env.c error.c parser.c token.c temp.c
 SRCS_UTL	=	utils/init.c \
 				utils/free.c \
 				utils/matrix.c \
+				utils/token.c \
 				utils/utils.c
 
 SRCS_PAR	=	parse/pre_check.c \

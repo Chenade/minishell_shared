@@ -89,20 +89,20 @@ char		*expansion(char *out, char **envp);
 int         separate_pipe(char *out, t_prompt *prompt);
 
 /* builtin  utils*/
-int			ft_print(char *str, t_prompt *prompt);
+int         ft_print(char *str, int	fd);
 int			del_envp(int index, t_token *token, t_prompt *prompt);
 int			add_envp(char *str, t_prompt *prompt);
 int			in_envp(char *token, t_prompt *prompt);
 int			update_oldpwd(t_prompt *prompt);
 
 /* builtin  func*/
-int			ft_pwd(t_prompt *prompt);
-int			ft_cd(int i, t_prompt *prompt);
-int			ft_echo(int i, t_prompt *prompt);
-int			ft_export(int i, t_prompt *prompt);
-int			ft_unset(int i, t_prompt *prompt);
+int         ft_pwd(t_request *request, t_prompt *prompt);
+int         ft_cd(t_request *request, t_prompt *prompt);
+int         ft_echo(t_request *request, t_prompt *prompt);
+int         ft_export(t_request *request, t_prompt *prompt);
+int         ft_unset(t_request *request, t_prompt *prompt);
 
 /* exec bin func*/
-int			exec_bin(char *cmd, t_prompt *prompt);
+int         exec_bin(t_request *request, t_prompt *prompt);
 
 #endif

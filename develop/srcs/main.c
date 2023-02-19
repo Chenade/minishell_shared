@@ -50,9 +50,12 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 
 int	minishell(char **out, t_prompt *prompt)
 {
+	int	status;
+
+	status = pre_check(*out);
 	if (*out[0] != '\0')
 		add_history(*out);
-	if (!*out[0] || !pre_check(*out))
+	if (!*out[0] || !status)
 	{
 		*out = expansion(*out, prompt->envp);
 		if (!*(out))
@@ -63,7 +66,7 @@ int	minishell(char **out, t_prompt *prompt)
 		// check_args(out, &prompt);
 		g_sig.exit_status = 0;
 	}
-	return (0);
+	return (status);
 }
 
 int	main(int argc, char **argv, char **envp)
