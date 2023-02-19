@@ -63,8 +63,6 @@ int	minishell(char *out, t_prompt *prompt)
 			return (1);
 		if (fill_request(out, prompt))
 			return (1);
-			// printf(">>>>>%s:tmp->str\n", prompt->requests[0].cmd);
-
 		process(prompt);
 		// check_args(out, &prompt);
 		g_sig.exit_status = 0;

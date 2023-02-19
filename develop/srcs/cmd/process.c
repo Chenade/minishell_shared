@@ -63,8 +63,8 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 
 int	process(t_prompt *prompt)
 {
-	if (prompt->nbr_request != 1)
-		return (0);
+	// if (prompt->nbr_request != 1)
+	// 	return (0);
 	// set_up(prompt);
 	int		status;
 	int		i;

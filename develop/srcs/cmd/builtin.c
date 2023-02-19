@@ -61,6 +61,7 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 	int	newline;
 
     newline = 1;
+	// print_token(request->token);
 	while (request->token)
 	{
 		if (request->token->type == 2)
@@ -71,8 +72,8 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 		}
         else if (request->token->type == 5 && ft_strcmp(request->token->str, "-n") == 0)
 			newline = 0;
-		else
-			break ;
+		// else
+		// 	break ;
 		request->token = request->token->next;
 	}
     if (newline)
