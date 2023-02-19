@@ -43,15 +43,15 @@ typedef struct s_request
 	int					nbr_token;
 	int					input_fd;
 	int					output_fd;
-	struct s_tokens		*token;
+	t_token				*token;
 }				t_request;
 
 typedef struct s_prompt
 {
 	char				*clean;
 	int					nbr_request;
-	t_token				*token;
 	char				**envp;
+	t_token				*token;
 	pid_t				pid;
 	struct s_request	*requests;
 }			t_prompt;

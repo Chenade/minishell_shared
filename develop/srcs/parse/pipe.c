@@ -41,8 +41,7 @@ int	set_request(t_prompt *prompt)
 	while (prompt->clean[++i])
 	{
 		check_quote(&data, prompt->clean[i]);
-		if (prompt->clean[i] == '|'
-			&& data.single_quote > 0 && data.double_quote > 0)
+		if (prompt->clean[i] == -'|')
 		{
 			if (process_request(prompt->clean + i + 1, &prompt->requests[t]))
 			return (1);

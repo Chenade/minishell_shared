@@ -45,26 +45,25 @@ void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 
 /* utils */
-t_prompt	init_envp(t_prompt prompt, char *str, char **argv);
-t_prompt	init_prompt(char **argv, char **envp);
+int	is_sep(char s);
+void	init_envp(t_prompt *prompt, char *str, char **argv);
+void	init_prompt(char **argv, char **envp, t_prompt *prompt);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
-void		free_token(t_token **token);
-void 		free_all(t_prompt *p);
-void		ft_close(int fd);
 int			ft_strchr_int(const char *s, int c);
 char		**dup_matrix(char **m);
-void		free_matrix(char ***m);
 int			get_matrixlen(char **m);
 // char		**extend_matrix(char **in, char *newstr);
 
 /* free */
+void		free_matrix(char ***m);
+void		free_token(t_token **token);
 void		free_all(t_prompt *p);
 void	    free_readline(char **out, t_prompt *prompt);
 void		ft_close(int fd);
 
 /* token */
-int	fill_token(char *cmd, t_prompt *prompt);
+int	fill_request(char *cmd, t_prompt *prompt);
 // void		fill_type(t_token *token, int separator, t_prompt *p);
 // t_token		*fill_nodes(char **args);
 
@@ -80,15 +79,12 @@ void		mini_getpid(t_prompt *p);
 int			main(int argc, char **argv, char **envp);
 
 /* cmd process */
+int	env_key_len(char *out);
 int			process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
-int 		redirect_input(t_prompt *prompt);
-int 		redirect_input2(t_prompt *prompt);
-int 		redirect_output(t_prompt *prompt);
-
 /* parsing fix*/
-void		parse_cmd(char *cmd);
+void	    parse_cmd(char *cmd, char **envp);
 int         pre_check(char *out, t_prompt *prompt);
 char		*expansion(char *out, char **envp);
 int			redirect_input(t_prompt *prompt);
@@ -97,7 +93,7 @@ int			redirect_output(t_prompt *prompt);
 
 int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
-int         separate_pipe(char *out, t_prompt *prompt);
+// int         separate_pipe(char *out, t_prompt *prompt);
 
 /* builtin  utils*/
 int			ft_print(char *str, t_prompt *prompt);

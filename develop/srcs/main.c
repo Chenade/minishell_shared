@@ -48,25 +48,19 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
-int	minishell(char **out, t_prompt *prompt)
+int	minishell(char *out, t_prompt *prompt)
 {
-	if (*out[0] != '\0')
-		add_history(*out);
-	if (!*out[0] || !pre_check(*out, prompt))
+	if (out[0] != '\0')
+		add_history(out);
+	if (!out[0] || !pre_check(out, prompt))
 	{
-		*out = expansion(*out, prompt->envp);
-		if (!*(out))
+		parse_cmd(out, prompt->envp);
+		out = expansion(out, prompt->envp);
+		if (!(out))
 			return (1);
-		if (separate_pipe(*out, prompt))
+		if (fill_request(out, prompt))
 			return (1);
-		printf("  out : %s\n", *out);
-		parse_cmd(*out);
-		printf("> out : %s\n", *out);
-		printf("**nbr_request : %d\n", prompt->nbr_request);
-		if(fill_token(*out, prompt))
-			return (1);
-		// check_args(out, &prompt);
-		g_sig.exit_status = 0;
+		g_sig.exit_status = process(prompt);
 	}
 	return (0);
 }
@@ -76,7 +70,7 @@ int	main(int argc, char **argv, char **envp)
 	char				*out;
 	t_prompt			prompt;
 	
-	prompt = init_prompt(argv, envp);
+	init_prompt(argv, envp, &prompt);
 	while (42)
 	{
 		signal(SIGINT, sigint_handler);
@@ -84,8 +78,9 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!out)
 			break;
-		if (!minishell(&out, &prompt))
-			free_readline (&out, &prompt);
+		if (!minishell(out, &prompt))
+		;
+			// free_readline (&out, &prompt);
 		free_token(&(prompt.token));
 	}
 	free_all(&prompt);

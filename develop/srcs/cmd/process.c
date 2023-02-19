@@ -98,7 +98,7 @@ int	process(t_prompt *prompt)
 	// pre_process(prompt);
 	if (g_sig.exit_status)
 		return (g_sig.exit_status);
-	token = prompt->token;
+	token = prompt->requests->token;
 	while (token && !status)
 	{
 		if (token->type == 1)
