@@ -61,6 +61,7 @@ void	free_all(t_prompt *p)
 	int	i;
 
 	i = 0;
+	printf("%d : p->nbr_request\n", p->nbr_request);
 	while (i < p->nbr_request)
 	{
 		free_token(&(p->requests[i].token));
@@ -68,10 +69,10 @@ void	free_all(t_prompt *p)
 		// free((p->requests[i].cmd));
 		i++;
 	}
-	free(p->requests);
-	free (p->clean);
 	ft_close(p->requests->input_fd);
 	ft_close(p->requests->output_fd);
+	free(p->requests);
+	free (p->clean);
 }
 
 // void	free_readline(char **out, t_prompt *prompt)
