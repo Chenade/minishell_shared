@@ -62,11 +62,13 @@ void	fill_cmd(t_prompt *prompt)
 	while (i < prompt->nbr_request)
 	{
 		tmp = prompt->requests[i].token;
-		while (tmp->next)
+		while (tmp)
 		{
+			// printf("%s:tmp->str\n", tmp->str);
 			if (tmp->type == CMD)
 				prompt->requests[i].cmd = tmp->str;
 			tmp = tmp->next;
+			// printf("%s:tmp->str\n", prompt->requests[i].cmd);
 		}
 		i++;
 	}
@@ -86,6 +88,7 @@ int	fill_request(char *cmd, t_prompt *prompt)
 	}
 	i=0;
 	fill_cmd(prompt);
+
 	// while (i < prompt->nbr_request)
 	// {
 	// 	print_token(prompt->requests[i++].token);
