@@ -22,12 +22,12 @@ void	mini_getpid(t_prompt *p)
 	if (pid < 0)
 	{
 		print_error(FORKERR, NULL, NULL);
-		free_matrix(&p->envp);
+		free_pp(p->envp);
 		exit(1);
 	}
 	if (pid == CHILD)
 	{
-		free_matrix(&p->envp);
+		free_pp(p->envp);
 		exit(1);
 	}
 	waitpid(pid, NULL, 0);
@@ -50,9 +50,12 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 
 int	minishell(char *out, t_prompt *prompt)
 {
+	int	status;
+
 	if (out[0] != '\0')
 		add_history(out);
-	if (!out[0] || !pre_check(out, prompt))
+	status = pre_check(out, prompt);
+	if (!out[0] || !status)
 	{
 		parse_cmd(out, prompt->envp);
 		out = expansion(out, prompt->envp);
@@ -60,9 +63,11 @@ int	minishell(char *out, t_prompt *prompt)
 			return (1);
 		if (fill_request(out, prompt))
 			return (1);
-		g_sig.exit_status = process(prompt);
+		process(prompt);
+		// check_args(out, &prompt);
+		g_sig.exit_status = 0;
 	}
-	return (0);
+	return (status);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -81,8 +86,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!minishell(out, &prompt))
 		;
 			// free_readline (&out, &prompt);
-		free_token(&(prompt.token));
+		free_all(&prompt);
 	}
-	free_all(&prompt);
+	free_pp(prompt.envp);
 	exit (g_sig.exit_status);
 }

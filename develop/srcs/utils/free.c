@@ -58,21 +58,33 @@ void	free_token(t_token **token)
 
 void	free_all(t_prompt *p)
 {
+	int	i;
+
+	i = 0;
+	while (i < p->nbr_request)
+	{
+		free_token(&(p->requests[i].token));
+		free(p->requests[i].str);
+		// free((p->requests[i].cmd));
+		i++;
+	}
+	free(p->requests);
+	free (p->clean);
 	ft_close(p->requests->input_fd);
 	ft_close(p->requests->output_fd);
 }
 
-void	free_readline(char **out, t_prompt *prompt)
-{
-	int	i;
+// void	free_readline(char **out, t_prompt *prompt)
+// {
+// 	int	i;
 
-	i = 0;
-	free (*out);
-	while (i <= prompt->nbr_request)
-	{
-		printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
-		free (prompt->requests[i].str);
-		i += 1;
-	}
-	free (prompt->requests);
-}
+// 	i = 0;
+// 	free (*out);
+// 	while (i <= prompt->nbr_request)
+// 	{
+// 		// printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
+// 		free (prompt->requests[i].str);
+// 		i += 1;
+// 	}
+// 	free (prompt->requests);
+// }

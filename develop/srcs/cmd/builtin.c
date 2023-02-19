@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-int	ft_cd(int i, t_prompt *prompt)
+int	ft_cd(t_request *request, t_prompt *prompt)
 {
 	int		cd_ret;
 	t_token	*token;
 	char	*dest;
 
-	token = move_to(prompt->token, i);
+	// token = move_to(prompt->token, i);
 	if (ft_strcmp(token->str, "cd") == 0)
 		dest = get_env("HOME", prompt->envp, 1);
 	else if (ft_strcmp(token->str, "-") == 0)
@@ -39,55 +39,53 @@ int	ft_cd(int i, t_prompt *prompt)
 	return (cd_ret);
 }
 
-int		ft_pwd(t_prompt *prompt)
+int		ft_pwd(t_request *request, t_prompt *prompt)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		ft_print(cwd, prompt);
-		ft_print("\n", prompt);
+		ft_print(cwd, 1);
+		ft_print("\n", 1);
 		return (0);
 	}
 	else
 		return (-1);
 }
 
-int	ft_echo(int i, t_prompt *prompt)
+int	ft_echo(t_request *request, t_prompt *prompt)
 {
-	t_token	*token;
-    int     newline;
+	printf("[DEBUG] echo\n");
+	int	i;
+	int	newline;
 
-	token = move_to(prompt->token, i);
     newline = 1;
-	while (token)
+	while (request->token)
 	{
-		if (token->type == 2)
+		if (request->token->type == 2)
 		{
-			ft_print (token->str, prompt);
-			if (token->next && token->next->type == 2)
-				ft_print (" ", prompt);
+			ft_print (request->token->str, 1);
+			if (request->token->next && request->token->next->type == 2)
+				ft_print (" ", 1);
 		}
-		else if (token->type == 4)
-			ft_print (get_env(token->str, prompt->envp, -1), prompt);
-        else if (token->type == 5 && ft_strcmp(token->str, "-n") == 0)
+        else if (request->token->type == 5 && ft_strcmp(request->token->str, "-n") == 0)
 			newline = 0;
 		else
 			break ;
-		token = token->next;
+		request->token = request->token->next;
 	}
     if (newline)
-	    ft_print("\n", prompt);
+	    ft_print("\n", 1);
 	return (0);
 }
 
-int	ft_export(int i, t_prompt *prompt)
+int	ft_export(t_request *request, t_prompt *prompt)
 {
 	int		index;
 	t_token	*token;
 
 	index = -1;
-	token = move_to(prompt->token, i);
+	// token = move_to(prompt->token, i);
 	if (token->type == 3)
 	{
 		index = in_envp(token->str, prompt);
@@ -99,13 +97,13 @@ int	ft_export(int i, t_prompt *prompt)
 	return (0);
 }
 
-int	ft_unset(int i, t_prompt *prompt)
+int	ft_unset(t_request *request, t_prompt *prompt)
 {
 	int		index;
 	t_token	*token;
 
 	index = -1;
-	token = move_to(prompt->token, i);
+	// token = move_to(prompt->token, i);
 	if (token->type == 4)
 	{
 		index = in_envp(token->str, prompt);

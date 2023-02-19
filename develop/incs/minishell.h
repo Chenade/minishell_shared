@@ -45,9 +45,10 @@ void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 
 /* utils */
-int	is_sep(char s);
-void	init_envp(t_prompt *prompt, char *str, char **argv);
-void	init_prompt(char **argv, char **envp, t_prompt *prompt);
+t_token	    *ft_token_last(t_token *token);
+int	        is_sep(char s);
+void	    init_envp(t_prompt *prompt, char *str, char **argv);
+void	    init_prompt(char **argv, char **envp, t_prompt *prompt);
 void		free_pp(char **pp);
 int			token_countcmd(t_token *token);
 int			ft_strchr_int(const char *s, int c);
@@ -59,16 +60,12 @@ int			get_matrixlen(char **m);
 void		free_matrix(char ***m);
 void		free_token(t_token **token);
 void		free_all(t_prompt *p);
-void	    free_readline(char **out, t_prompt *prompt);
+// void	    free_readline(char **out, t_prompt *prompt);
 void		ft_close(int fd);
 
 /* token */
-int	fill_request(char *cmd, t_prompt *prompt);
-// void		fill_type(t_token *token, int separator, t_prompt *p);
-// t_token		*fill_nodes(char **args);
-
-/* parser */
-void		*check_args(char *out, t_prompt *p);
+int	        fill_request(char *cmd, t_prompt *prompt);
+t_token	    *fill_token(t_request *request);
 
 /* env */
 char		*get_env(char *var, char **envp, int n);
@@ -79,7 +76,7 @@ void		mini_getpid(t_prompt *p);
 int			main(int argc, char **argv, char **envp);
 
 /* cmd process */
-int	env_key_len(char *out);
+int	        env_key_len(char *out);
 int			process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
@@ -96,20 +93,20 @@ int         check_quote(t_parse *data, char c);
 // int         separate_pipe(char *out, t_prompt *prompt);
 
 /* builtin  utils*/
-int			ft_print(char *str, t_prompt *prompt);
+int         ft_print(char *str, int	fd);
 int			del_envp(int index, t_token *token, t_prompt *prompt);
 int			add_envp(char *str, t_prompt *prompt);
 int			in_envp(char *token, t_prompt *prompt);
 int			update_oldpwd(t_prompt *prompt);
 
 /* builtin  func*/
-int			ft_pwd(t_prompt *prompt);
-int			ft_cd(int i, t_prompt *prompt);
-int			ft_echo(int i, t_prompt *prompt);
-int			ft_export(int i, t_prompt *prompt);
-int			ft_unset(int i, t_prompt *prompt);
+int         ft_pwd(t_request *request, t_prompt *prompt);
+int         ft_cd(t_request *request, t_prompt *prompt);
+int         ft_echo(t_request *request, t_prompt *prompt);
+int         ft_export(t_request *request, t_prompt *prompt);
+int         ft_unset(t_request *request, t_prompt *prompt);
 
 /* exec bin func*/
-int			exec_bin(char *cmd, t_prompt *prompt);
+int         exec_bin(t_request *request, t_prompt *prompt);
 
 #endif

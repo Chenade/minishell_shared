@@ -16,19 +16,10 @@ void	fill_type(t_token *token, int separator)
 		token->type = OPTN;
 	else if (ft_strchr_int(token->str, '=') > 0 && separator == 0)
 		token->type = ENV_DEF;
-	else if (!token->prev || )
+	else if (!token->prev)
 		token->type = CMD;
 	else if (token->type != ENV_VAL)
 		token->type = ARG;
-}
-
-t_token	*tokenlast(t_token *token)
-{
-	if (!token)
-		return (0);
-	while (token->next)
-		token = token->next;
-	return (token);
 }
 
 char *set_str(t_token *new, char *str, int len)
@@ -57,7 +48,7 @@ t_token	*add_node_end(t_token *token, char *str, int len)
 		return (NULL);
 	tmp = NULL;
 	end = token;
-	end = tokenlast(end);
+	end = ft_token_last(end);
 	if (!token->next && !token->str)
 		new = token;
 	else
@@ -70,7 +61,7 @@ t_token	*add_node_end(t_token *token, char *str, int len)
 	new->prev = tmp;
 	end->next = new;
 	new->next = NULL;
-	fill_type(tokenlast(token), 0);
+	fill_type(ft_token_last(token), 0);
 	return (token);
 }
 
@@ -113,74 +104,4 @@ t_token	*fill_token(t_request *request)
 		p += len;
 	}
 	return (token);
-}
-
-int	set_request(char *p, t_request *request)
-{
-	int	i;
-
-	i = 0;
-	request->str_len = 0;
-	request->nbr_token = 1;
-	while (p[i] && p[i] != -'|')
-		i++;
-	request->str_len = i;
-	request->str = (char *)malloc(sizeof(char) * (request->str_len + 1));
-	if (!request->str)
-		return (print_error(MEM, NULL, NULL));
-	i = 0;
-	while (*p && *p != -'|')
-	{
-		request->str[i] = *p;
-		if (*p == -' ')
-			request->nbr_token++;
-		else if (is_sep(*p) && *p != -' ')
-			request->nbr_token += 2;
-		i++;
-		p++;
-	}
-	request->str[i] = '\0';
-	return (0);
-}
-
-int	init_request(char *cmd, t_prompt *prompt)
-{
-	int	i;
-	int j;
-	char *p;
-
-	i = 0;
-	p = cmd;
-	prompt->clean = cmd;
-	prompt->requests = (t_request *) malloc(sizeof(t_request) * prompt->nbr_request);
-	if (!prompt->requests)
-		return (print_error(MEM, NULL, NULL));
-	while (i < prompt->nbr_request)
-	{
-		if (set_request(p, &(prompt->requests[i])))
-			return (1);
-		p += prompt->requests[i].str_len;
-		p++;
-		i++;
-	}
-	i = 0;
-	return (0);
-}
-
-int	fill_request(char *cmd, t_prompt *prompt)
-{
-	int	i;
-
-	// printf("nbr_request : %d\n", prompt->nbr_request);
-	if(init_request(cmd, prompt))
-		return (1);
-	i = 0;
-	while (i < prompt->nbr_request)
-	{
-		prompt->requests[i].token = fill_token(&(prompt->requests[i]));
-		i++;
-	}
-	i=0;
-	while (i < prompt->nbr_request)
-		print_token(prompt->requests[i++].token);
 }

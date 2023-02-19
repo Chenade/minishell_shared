@@ -24,7 +24,7 @@ int	error_message(char *path, char *cmd)
 	return (-1);
 }
 
-int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
+int			magic_box(char *path, t_request *request, char *env, t_prompt *prompt)
 {
 	char	*ptr;
 	int		ret;
@@ -34,14 +34,21 @@ int			magic_box(char *path, char *cmd, char *env, t_prompt *prompt)
 	g_sig.pid = fork();
 	if (g_sig.pid == 0)
 	{
-		char *ac[] = {cmd, NULL};
+		if (dup2(request->input_fd, 0) < 0)
+			return (perror("dup2-1"), 1);
+		if (dup2(request->output_fd, 1) < 0)
+			return (perror("dup2-2"), 1);
 		if (path && ft_strchr(path, '/') != NULL)
-			tmp = execve(path, ac, prompt->envp);
-		ret = error_message(path, cmd);
+			tmp = execve(path, request->tab, prompt->envp);
+		ret = error_message(path, request->tab[0]);
 		exit(ret);
 	}
 	else
-		waitpid(g_sig.pid, &ret, 0);
+	{
+		// waitpid(g_sig.pid, &ret, 0);
+		// if (WIFEXITED(ret))
+			// return (WEXITSTATUS(ret));
+	}
 	if (g_sig.sigint == 1 || g_sig.sigquit == 1)
 		return (g_sig.exit_status);
 	if (ret == 32256 || ret == 32512)
@@ -98,7 +105,7 @@ char	*check_path(char *cmd, char *env)
 	return (cmd);
 }
 
-int	exec_bin(char *cmd, t_prompt *prompt)
+int	exec_bin(t_request *request, t_prompt *prompt)
 {
 	int		i;
 	char	**bin;
@@ -116,13 +123,16 @@ int	exec_bin(char *cmd, t_prompt *prompt)
 		if (!bin[0])
 			return (-1);
 		i = 0;
-		while (cmd && bin[i] && path == NULL)
-			path = check_dir(bin[i++], cmd);
+		while (request->cmd 
+		&& bin[i]
+		 && path == NULL)
+			path = check_dir(bin[i++], request->cmd);
 		free_pp(bin);
 	}
 	if (!env || path == NULL)
-		path = cmd;
-	ret = magic_box(path, cmd, env, prompt);
+		path = request->cmd;
+	ret = magic_box(path, request, env, prompt);
 	free(path);
+	free(env);
 	return (ret);
 }

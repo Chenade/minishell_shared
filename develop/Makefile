@@ -57,13 +57,15 @@ SRCS_GEN	=	env.c error.c temp.c
 SRCS_UTL	=	utils/init.c \
 				utils/free.c \
 				utils/matrix.c \
+				utils/token.c \
 				utils/utils.c
 
 SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
 				parse/parse_cmd.c
 
-SRCS_TOK	=	token/token.c
+SRCS_TOK	=	token/fill_token.c \
+				token/request.c
 
 SRCS_CMD	=	cmd/process.c \
 				cmd/builtin.c \
