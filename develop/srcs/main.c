@@ -52,21 +52,25 @@ int	minishell(char *out, t_prompt *prompt)
 {
 	int	status;
 
-	if (out[0] != '\0')
-		add_history(out);
-	status = pre_check(out, prompt);
-	if (!out[0] || !status)
+	if (ft_strlen(out))
 	{
-		parse_cmd(out, prompt->envp);
-		out = expansion(out, prompt->envp);
-		if (!(out))
-			return (1);
-		if (fill_request(out, prompt))
-			return (1);
-		process(prompt);
-		// check_args(out, &prompt);
-		g_sig.exit_status = 0;
+		add_history(out);
+		status = pre_check(out, prompt);
+		if (!out[0] || !status)
+		{
+			parse_cmd(out, prompt->envp);
+			out = expansion(out, prompt->envp);
+			if (!(out))
+				return (1);
+			if (fill_request(out, prompt))
+				return (1);
+			process(prompt);
+			// check_args(out, &prompt);
+			g_sig.exit_status = 0;
+		}
 	}
+	else
+		return (1);
 	return (status);
 }
 
@@ -84,9 +88,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!out)
 			break;
 		if (!minishell(out, &prompt))
-		;
-			// free_readline (&out, &prompt);
-		free_all(&prompt);
+			free_all(&prompt);
+		// free_readline (&out, &prompt);
 	}
 	free_pp(prompt.envp);
 	exit (g_sig.exit_status);
