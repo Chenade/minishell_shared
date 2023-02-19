@@ -45,6 +45,7 @@ int	init_request(char *cmd, t_prompt *prompt)
 		if (set_request(p, &(prompt->requests[i])))
 			return (1);
 		p += prompt->requests[i].str_len;
+		prompt->requests[i].cmd = NULL;
 		p++;
 		i++;
 	}
@@ -52,11 +53,29 @@ int	init_request(char *cmd, t_prompt *prompt)
 	return (0);
 }
 
+void	fill_cmd(t_prompt *prompt)
+{
+	t_token	*tmp;
+	int	i;
+
+	i = 0;
+	while (i < prompt->nbr_request)
+	{
+		tmp = prompt->requests[i].token;
+		while (tmp->next)
+		{
+			if (tmp->type == CMD)
+				prompt->requests[i].cmd = tmp->str;
+			tmp = tmp->next;
+		}
+		i++;
+	}
+}
+
 int	fill_request(char *cmd, t_prompt *prompt)
 {
 	int	i;
 
-	// printf("nbr_request : %d\n", prompt->nbr_request);
 	if(init_request(cmd, prompt))
 		return (1);
 	i = 0;
@@ -66,6 +85,10 @@ int	fill_request(char *cmd, t_prompt *prompt)
 		i++;
 	}
 	i=0;
-	while (i < prompt->nbr_request)
-		print_token(prompt->requests[i++].token);
+	fill_cmd(prompt);
+	// while (i < prompt->nbr_request)
+	// {
+	// 	print_token(prompt->requests[i++].token);
+	// }
+	return (0);
 }

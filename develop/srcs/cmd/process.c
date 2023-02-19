@@ -5,6 +5,7 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 	int		result;
 
 	result = 0;
+	printf(">>  request->cmd : [%s]\n", request->cmd);
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
 	// else if (ft_strcmp(cmd, "cd") == 0)

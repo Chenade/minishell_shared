@@ -15,6 +15,7 @@
 int	ft_cd(t_request *request, t_prompt *prompt)
 {
 	int		cd_ret;
+	int		i;
 	t_token	*token;
 	char	*dest;
 

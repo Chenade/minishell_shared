@@ -65,16 +65,14 @@ t_token	*add_node_end(t_token *token, char *str, int len)
 	return (token);
 }
 
-t_token	*token_create(void)
+t_token	*token_create(t_token *token)
 {
-	t_token	*new;
-
-	new = (t_token *) malloc (sizeof(t_token));
-	if (!new)
+	token = (t_token *) malloc (sizeof(t_token));
+	if (!token)
 		return (0);
-	new->str = NULL;
-	new->next = NULL;
-	new->prev = NULL;
+	token->str = NULL;
+	token->next = NULL;
+	token->prev = NULL;
 }
 
 t_token	*fill_token(t_request *request)
@@ -84,7 +82,7 @@ t_token	*fill_token(t_request *request)
 	char *p;
 	t_token *token;
 
-	token = token_create();
+	token = token_create(token);
 	p = request->str;
 	i = -1;
 	while (*(p) != '\0' && ++i < request->nbr_token)
