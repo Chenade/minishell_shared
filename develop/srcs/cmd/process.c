@@ -50,12 +50,14 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 
 int	set_up(t_prompt *prompt)
 {
+	int		pipefd[2];
+	pipe(pipefd);
 	printf("[DEBUG] prompt->clean: %s\n", prompt->clean);
 	printf("[DEBUG] prompt->nbr_request: %d\n", prompt->nbr_request);
 
 	prompt->requests[0].nbr_token = 2;
-	prompt->requests[0].input_fd = dup(0);
-	prompt->requests[0].output_fd = dup(1);
+	prompt->requests[0].input_fd = 0;
+	prompt->requests[0].output_fd = pipefd[1];
 	prompt->requests[0].cmd = ft_strdup("ls");
 	prompt->requests[0].tab = (char **) malloc (3 * sizeof(char *));
 	prompt->requests[0].tab[0] = ft_strdup("ls");
@@ -65,14 +67,14 @@ int	set_up(t_prompt *prompt)
 	prompt->requests[0].token = ft_token_add_back(&prompt->requests[0].token, ft_token_new("-l", 1));
 
 	prompt->requests[1].nbr_token = 2;
-	prompt->requests[1].input_fd = dup(0);
-	prompt->requests[1].output_fd = dup(1);
-	prompt->requests[1].cmd = ft_strdup("echo");
+	prompt->requests[1].input_fd = pipefd[0];
+	prompt->requests[1].output_fd = 1;
+	prompt->requests[1].cmd = ft_strdup("wc");
 	prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
-	prompt->requests[1].tab[0] = ft_strdup("echo");
-	prompt->requests[1].tab[1] = ft_strdup("NAME");
+	prompt->requests[1].tab[0] = ft_strdup("wc");
+	prompt->requests[1].tab[1] = ft_strdup("-l");
 	prompt->requests[1].tab[2] = '\0';
-	prompt->requests[1].token = ft_token_new("echo", 1);
+	prompt->requests[1].token = ft_token_new("wc", 1);
 	// prompt->requests[1].token = ft_token_add_back(&prompt->requests[0].token, ft_token_new("NAME", 1));
 
 	// prompt->requests[1].nbr_token = 2;
@@ -107,12 +109,7 @@ int	process(t_prompt *prompt)
 	i = 0;
 	while (i <= prompt->nbr_request)
 	{
-		// reset_std(&prompt->requests[i]);
-		if (i > 0)
-			minipipe (&prompt->requests[i], prompt);
 		process_cmd(&prompt->requests[i], prompt);
-		ft_close(prompt->requests[i].input_fd);
-		ft_close(prompt->requests[i].output_fd);
 		i += 1;
 	}
 	free_tmp(prompt);
@@ -138,6 +135,10 @@ int	free_tmp(t_prompt *prompt)
 		free (prompt->requests[j].cmd);
 		free (prompt->requests[j].tab);
 		ft_token_clear(prompt->requests[j].token);
+		if (prompt->requests[j].input_fd != 0)
+			ft_close(prompt->requests[j].input_fd);
+		if (prompt->requests[j].output_fd != 1)
+			ft_close(prompt->requests[j].output_fd);
 		j += 1;
 	}
 	// printf("[DEBUG] ====== End Process =====\n");

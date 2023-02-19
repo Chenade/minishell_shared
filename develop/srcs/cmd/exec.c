@@ -24,7 +24,7 @@ int	error_message(char *path, char *cmd)
 	return (-1);
 }
 
-int			magic_box(char *path, char **tab, char *env, t_prompt *prompt)
+int			magic_box(char *path, t_request *request, char *env, t_prompt *prompt)
 {
 	char	*ptr;
 	int		ret;
@@ -34,9 +34,11 @@ int			magic_box(char *path, char **tab, char *env, t_prompt *prompt)
 	g_sig.pid = fork();
 	if (g_sig.pid == 0)
 	{
+		dup2(request->input_fd, 0);
+		dup2(request->output_fd, 1);
 		if (path && ft_strchr(path, '/') != NULL)
-			tmp = execve(path, tab, prompt->envp);
-		ret = error_message(path, tab[0]);
+			tmp = execve(path, request->tab, prompt->envp);
+		ret = error_message(path, request->tab[0]);
 		exit(ret);
 	}
 	else
@@ -123,7 +125,7 @@ int	exec_bin(t_request *request, t_prompt *prompt)
 	}
 	if (!env || path == NULL)
 		path = request->cmd;
-	ret = magic_box(path, request->tab, env, prompt);
+	ret = magic_box(path, request, env, prompt);
 	free(path);
 	free(env);
 	return (ret);
