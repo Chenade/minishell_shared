@@ -1,31 +1,5 @@
 #include "minishell.h"
 
-int		minipipe(t_request *request, t_prompt *prompt)
-{
-	pid_t	pid;
-	int		pipefd[2];
-
-	pipe(pipefd);
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_close(pipefd[1]);
-		int i = dup2(pipefd[0], 0);
-		printf("[%d]\n", i);
-		request->input_fd = pipefd[0];
-		prompt->pid = -1;
-		return (2);
-	}
-	else
-	{
-		ft_close(pipefd[0]);
-		dup2(pipefd[1], 1);
-		request->output_fd = pipefd[1];
-		prompt->pid = pid;
-		return (1);
-	}
-}
-
 int	process_cmd(t_request *request, t_prompt *prompt)
 {
 	int		result;
@@ -45,6 +19,7 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 	// 	result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
+	printf("====%d====\n", result);
 	return (result);
 }
 
@@ -52,16 +27,18 @@ int	set_up(t_prompt *prompt)
 {
 	int		pipefd[2];
 	pipe(pipefd);
-	printf("[DEBUG] prompt->clean: %s\n", prompt->clean);
-	printf("[DEBUG] prompt->nbr_request: %d\n", prompt->nbr_request);
+	// printf("[DEBUG] prompt->clean: %s\n", prompt->clean);
+	// printf("[DEBUG] prompt->nbr_request: %d\n", prompt->nbr_request);
 
 	prompt->requests[0].nbr_token = 2;
+	int tmp = open("Makefile", O_RDONLY);
+	close(tmp);
 	prompt->requests[0].input_fd = 0;
 	prompt->requests[0].output_fd = pipefd[1];
-	prompt->requests[0].cmd = ft_strdup("ls");
+	prompt->requests[0].cmd = ft_strdup("cat");
 	prompt->requests[0].tab = (char **) malloc (3 * sizeof(char *));
-	prompt->requests[0].tab[0] = ft_strdup("ls");
-	prompt->requests[0].tab[1] = ft_strdup("-l");
+	prompt->requests[0].tab[0] = ft_strdup("cat");
+	prompt->requests[0].tab[1] = ft_strdup("Makefile");
 	prompt->requests[0].tab[2] = '\0';
 	prompt->requests[0].token = ft_token_new("ls", 1);
 	prompt->requests[0].token = ft_token_add_back(&prompt->requests[0].token, ft_token_new("-l", 1));
@@ -69,32 +46,20 @@ int	set_up(t_prompt *prompt)
 	prompt->requests[1].nbr_token = 2;
 	prompt->requests[1].input_fd = pipefd[0];
 	prompt->requests[1].output_fd = 1;
-	prompt->requests[1].cmd = ft_strdup("wc");
+	prompt->requests[1].cmd = ft_strdup("ls");
 	prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
-	prompt->requests[1].tab[0] = ft_strdup("wc");
+	prompt->requests[1].tab[0] = ft_strdup("ls");
 	prompt->requests[1].tab[1] = ft_strdup("-l");
 	prompt->requests[1].tab[2] = '\0';
-	prompt->requests[1].token = ft_token_new("wc", 1);
-	// prompt->requests[1].token = ft_token_add_back(&prompt->requests[0].token, ft_token_new("NAME", 1));
-
-	// prompt->requests[1].nbr_token = 2;
-	// prompt->requests[1].cmd = ft_strdup("grep");
-	// prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
-	// prompt->requests[1].tab[0] = ft_strdup("grep");
-	// prompt->requests[1].tab[1] = ft_strdup("NAME");
-	// prompt->requests[1].tab[2] = '\0';
-	// prompt->requests[1].token = ft_token_new("grep", 1);
-	// prompt->requests[0].token = ft_token_add_back(&prompt->requests[0].token, ft_token_new("NAME", 1));
-
-
+	prompt->requests[1].token = ft_token_new("ls", 1);
 	return (0);
 }
 
-void	reset_std(t_request *request)
-{
-	dup2(request->input_fd, 0);
-	dup2(request->output_fd, 1);
-}
+// Question
+//    ls -l | wc -l 
+// -> no output
+//    ls -l | wc -l 
+// -> invalid free
 
 int	process(t_prompt *prompt)
 {
@@ -120,13 +85,13 @@ int	process(t_prompt *prompt)
 int	free_tmp(t_prompt *prompt)
 {
 
-	// printf("[DEBUG] ====== End Process =====\n");
+	printf("[DEBUG] ====== End Process =====\n");
 	int	j = 0;
 	int i;
 	while (j <= prompt->nbr_request)
 	{
 		i = -1;
-		// printf("\n[DEBUG] prompt->requests[%d].cmd: %s\n", j, prompt->requests[j].cmd);
+		// printf("\n[DEBUG 88] prompt->requests[%d].cmd: %s\n", j, prompt->requests[j].cmd);
 		while (prompt->requests[j].tab[++i])
 		{
 			// printf("[DEBUG] prompt->requests[%d].tab[%d]: %s\n",j,  i, prompt->requests[j].tab[i]);
@@ -141,6 +106,6 @@ int	free_tmp(t_prompt *prompt)
 			ft_close(prompt->requests[j].output_fd);
 		j += 1;
 	}
-	// printf("[DEBUG] ====== End Process =====\n");
+	printf("[DEBUG] ====== End Process =====\n");
 	return (0);
 }

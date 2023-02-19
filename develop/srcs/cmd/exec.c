@@ -34,15 +34,21 @@ int			magic_box(char *path, t_request *request, char *env, t_prompt *prompt)
 	g_sig.pid = fork();
 	if (g_sig.pid == 0)
 	{
-		dup2(request->input_fd, 0);
-		dup2(request->output_fd, 1);
+		if (dup2(request->input_fd, 0) < 0)
+			return (perror("dup2-1"), 1);
+		if (dup2(request->output_fd, 1) < 0)
+			return (perror("dup2-2"), 1);
 		if (path && ft_strchr(path, '/') != NULL)
 			tmp = execve(path, request->tab, prompt->envp);
 		ret = error_message(path, request->tab[0]);
 		exit(ret);
 	}
 	else
-		waitpid(g_sig.pid, &ret, 0);
+	{
+		// waitpid(g_sig.pid, &ret, 0);
+		// if (WIFEXITED(ret))
+			// return (WEXITSTATUS(ret));
+	}
 	if (g_sig.sigint == 1 || g_sig.sigquit == 1)
 		return (g_sig.exit_status);
 	if (ret == 32256 || ret == 32512)
