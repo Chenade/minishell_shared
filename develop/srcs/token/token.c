@@ -12,15 +12,11 @@ void	fill_type(t_token *token, int separator)
 		token->type = INPUT;
 	else if (!ft_strcmp(token->str, "<<") && separator == 0)
 		token->type = DELIM;
-	else if (!ft_strcmp(token->str, "|") && separator == 0)
-		token->type = PIPE;
-	else if (separator == ENV_VAL)
-		token->type = ENV_VAL;
 	else if (ft_strchr("-", token->str[0]) && separator == 0)
 		token->type = OPTN;
 	else if (ft_strchr_int(token->str, '=') > 0 && separator == 0)
 		token->type = ENV_DEF;
-	else if (!token->prev || token->prev->type == PIPE)
+	else if (!token->prev || )
 		token->type = CMD;
 	else if (token->type != ENV_VAL)
 		token->type = ARG;
