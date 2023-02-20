@@ -51,12 +51,12 @@ int	add_envp(char *str, t_prompt *prompt)
 	int		j;
 	char	**env_new;
 
-	env_new = (char **) malloc((get_matrixlen(prompt->envp) + 1)
+	env_new = (char **) malloc((get_matrixlen(prompt->envp) + 2)
 			* sizeof(char *));
 	if (!env_new)
 		return (1);
 	j = -1;
-	while (prompt->envp[++j])
+	while (prompt->envp && prompt->envp[++j])
 	{
 		env_new[j] = ft_strdup(prompt->envp[j]);
 		if (!env_new)

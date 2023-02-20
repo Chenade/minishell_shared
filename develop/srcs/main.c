@@ -63,8 +63,6 @@ int	minishell(char *out, t_prompt *prompt)
 		parse_cmd(out, prompt->envp);
 		if (!status)
 		{
-			// if (!(out))
-			// 	return (1);
 			if (fill_request(out, prompt))
 				return (1);
 			if (process(prompt))

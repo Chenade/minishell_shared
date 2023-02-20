@@ -26,7 +26,7 @@ char	**dup_matrix(char **m)
 		out[i] = ft_strdup(m[i]);
 		if (!out[i])
 		{
-			free_matrix(&out);
+			free_pp(out);
 			return (NULL);
 		}
 		i++;
