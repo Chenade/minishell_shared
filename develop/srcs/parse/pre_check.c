@@ -81,6 +81,7 @@ int	pre_check(char *out, t_prompt *prompt)
 	t_parse	data;
 
 	i = -1;
+	prompt->nbr_request = 1;
 	reset_bool(&data, 1);
 	while (out[++i])
 	{

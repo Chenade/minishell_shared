@@ -34,7 +34,8 @@ void	init_prompt(char **argv, char **envp, t_prompt *prompt)
 	g_sig.exit_status = 0;
 	prompt->envp = dup_matrix(envp);
 	prompt->clean = NULL;
-	prompt->nbr_request = 1;
+	prompt->nbr_request = 0;
+	prompt->requests = NULL;
 	mini_getpid(prompt);
 	init_envp(prompt, str, argv);
 }

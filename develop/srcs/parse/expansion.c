@@ -27,6 +27,8 @@ int	get_malloc_size(char *out, char **envp, int q[2])
 
 	i = -1;
 	malloc_len = 0;
+	while (*out == ' ')
+		out++;
 	while (out[++i])
 	{
 		q[0] = (q[0] + (!q[1] && out[i] == '\'')) % 2;
@@ -98,12 +100,14 @@ char	*expansion(char *out, char **envp)
 	q[0] = 0;
 	q[1] = 0;
 	malloc_len = get_malloc_size(out, envp, q);
-	new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
-	if (!new_out)
+	printf("malloc_len = %d\n", malloc_len);
+	if (malloc_len)
+		new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
+	if (malloc_len == 0 || !new_out)
 		return (NULL);
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp, q);
 	free (out);
-	printf("[DEBUG] %s\n", new_out);
+	printf("[DEBUG] [%s]\n", new_out);
 	return (new_out);
 }

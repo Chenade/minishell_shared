@@ -46,6 +46,7 @@ int	init_request(char *cmd, t_prompt *prompt)
 			return (1);
 		p += prompt->requests[i].str_len;
 		prompt->requests[i].cmd = NULL;
+		prompt->requests[i].token = NULL;
 		p++;
 		i++;
 	}

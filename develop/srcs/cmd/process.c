@@ -19,7 +19,6 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 		result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
-	printf("\n\nRESULT > %d\n\n", result);
 	return (result);
 }
 
@@ -72,7 +71,6 @@ int	process(t_prompt *prompt)
 
 	status = 0;
 	i = 0;
-	printf("nbr_request : %d \n", prompt->nbr_request);
 	while (i < prompt->nbr_request)
 	{
 		status = process_cmd(&prompt->requests[i], prompt);

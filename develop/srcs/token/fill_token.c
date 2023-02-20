@@ -18,7 +18,7 @@ void	fill_type(t_token *token, int separator)
 		token->type = ENV_DEF;
 	else if (!token->prev)
 		token->type = CMD;
-	else if (token->type != ENV_VAL)
+	else
 		token->type = ARG;
 }
 

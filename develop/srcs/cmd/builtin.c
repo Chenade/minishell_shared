@@ -87,7 +87,6 @@ int	ft_export(t_request *request, t_prompt *prompt)
 	int		index;
 	t_token	*token;
 
-printf("")
 	index = -1;
 	token = request->token;
 	while(token)

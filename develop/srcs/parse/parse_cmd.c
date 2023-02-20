@@ -67,19 +67,17 @@ void	parse_cmd(char *cmd, char **envp)
 	i = 0;
 	quot = '\0';
 	tmp = cmd;
-	while (*cmd == ' ')
-		cmd++;
 	while (*cmd)
 	{
 		if (!quot && is_quot(*cmd) && ++i)
 			quot = *cmd;
 		else if (quot && (*cmd == quot) && ++i)
 			quot = '\0'; 
-		else if (quot && *cmd == '$')
-		{
-			*cmd = check_expand(cmd, envp, i);
-			cmd++;
-		}
+		// else if (quot && *cmd == '$')
+		// {
+		// 	*cmd = check_expand(cmd, envp, i);
+		// 	cmd++;
+		// }
 		else
 			cmd++;
 		*cmd = *(cmd + i);

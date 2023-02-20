@@ -51,31 +51,32 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 int	minishell(char *out, t_prompt *prompt)
 {
 	int	status;
+	char *cmd;
 
-	if (ft_strlen(out))
+	cmd = ft_strdup(out);
+	out = expansion(out, prompt->envp);
+	if (out)
 	{
-		add_history(out);
-		out = expansion(out, prompt->envp);
-		printf("OUT : %s\n", out);
+		add_history(cmd);
+		free(cmd);
 		status = pre_check(out, prompt);
-		printf(">> OUT : %s\n", out);
-		if (!out[0] || !status)
+		parse_cmd(out, prompt->envp);
+		if (!status)
 		{
-			// out = expansion(out, prompt->envp);
-			parse_cmd(out, prompt->envp);
-			printf(">>>>> OUT : %s\n", out);
-			if (!(out))
-				return (1);
+			// if (!(out))
+			// 	return (1);
 			if (fill_request(out, prompt))
 				return (1);
 			if (process(prompt))
 				return (1);
-			// check_args(out, &prompt);
 			g_sig.exit_status = 0;
 		}
 	}
 	else
+	{
+		free(cmd);
 		return (1);
+	}
 	return (status);
 }
 
