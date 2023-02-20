@@ -52,9 +52,11 @@ int	minishell(char **out, t_prompt *prompt)
 {
 	int	status;
 
-	status = pre_check(*out);
 	if (*out[0] != '\0')
 		add_history(*out);
+	status = 0;
+	if (*out[0])
+		status = pre_check(*out);
 	if (!*out[0] || !status)
 	{
 		*out = expansion(*out, prompt->envp);

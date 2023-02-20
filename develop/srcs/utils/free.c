@@ -31,7 +31,7 @@ void	free_matrix(char ***m)
 
 void	ft_close(int fd)
 {
-	if (fd > 0)
+	if (fd > 2)
 		close(fd);
 }
 

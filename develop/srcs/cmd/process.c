@@ -1,5 +1,23 @@
 #include "minishell.h"
 
+int	minipipe(t_prompt *prompt)
+{
+	int	i;
+	int	pipefd[2];
+
+	i = 1;
+	while (i <= prompt->nbr_request)
+	{
+		pipe(pipefd);
+		prompt->requests[i].input_fd = pipefd[0];
+		prompt->requests[i - 1].pipout_fd = pipefd[0];
+		prompt->requests[i - 1].output_fd = pipefd[1];
+		i += 1;
+	}
+	prompt->requests[i - 1].pipout_fd = -1;
+	return (0);
+}
+
 int	process_cmd(t_request *request, t_prompt *prompt)
 {
 	int		result;
@@ -19,47 +37,56 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 	// 	result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
-	printf("====%d====\n", result);
 	return (result);
 }
+
+
+
+// cat | ls -l
+// cat | cat | ls -l
 
 int	set_up(t_prompt *prompt)
 {
 	int		pipefd[2];
-	pipe(pipefd);
-	// printf("[DEBUG] prompt->clean: %s\n", prompt->clean);
-	// printf("[DEBUG] prompt->nbr_request: %d\n", prompt->nbr_request);
+	// pipe(pipefd);
 
-	prompt->requests[0].nbr_token = 2;
 	int tmp = open("Makefile", O_RDONLY);
 	close(tmp);
+	prompt->requests[0].nbr_token = 1;
 	prompt->requests[0].input_fd = 0;
-	prompt->requests[0].output_fd = pipefd[1];
+	prompt->requests[0].pipout_fd = -1;
+	prompt->requests[0].output_fd = 1;
 	prompt->requests[0].cmd = ft_strdup("cat");
 	prompt->requests[0].tab = (char **) malloc (3 * sizeof(char *));
 	prompt->requests[0].tab[0] = ft_strdup("cat");
-	prompt->requests[0].tab[1] = ft_strdup("Makefile");
+	prompt->requests[0].tab[1] = NULL;//
+	// prompt->requests[0].tab[1] = ft_strdup("Makefile");
 	prompt->requests[0].tab[2] = '\0';
-	prompt->requests[0].token = ft_token_new("ls", 1);
+	prompt->requests[0].token = ft_token_new("cat", 1);
 	prompt->requests[0].token = ft_token_add_back(&prompt->requests[0].token, ft_token_new("-l", 1));
 
 	prompt->requests[1].nbr_token = 2;
-	prompt->requests[1].input_fd = pipefd[0];
+	prompt->requests[1].input_fd = 0;
+	prompt->requests[1].pipout_fd = -1;
 	prompt->requests[1].output_fd = 1;
 	prompt->requests[1].cmd = ft_strdup("ls");
 	prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
 	prompt->requests[1].tab[0] = ft_strdup("ls");
-	prompt->requests[1].tab[1] = ft_strdup("-l");
-	prompt->requests[1].tab[2] = '\0';
+	// prompt->requests[1].tab[1] = ft_strdup("-l");
+	prompt->requests[1].tab[1] = NULL;
 	prompt->requests[1].token = ft_token_new("ls", 1);
+
+	// prompt->requests[2].nbr_token = 3;
+	// prompt->requests[2].input_fd = 0;
+	// prompt->requests[2].output_fd = 1;
+	// prompt->requests[2].cmd = ft_strdup("ls");
+	// prompt->requests[2].tab = (char **) malloc (3 * sizeof(char *));
+	// prompt->requests[2].tab[0] = ft_strdup("ls");
+	// prompt->requests[2].tab[1] = ft_strdup("-l");
+	// prompt->requests[2].tab[2] = NULL;
+	// prompt->requests[2].token = ft_token_new("ls", 1);
 	return (0);
 }
-
-// Question
-//    ls -l | wc -l 
-// -> no output
-//    ls -l | wc -l 
-// -> invalid free
 
 int	process(t_prompt *prompt)
 {
@@ -72,10 +99,21 @@ int	process(t_prompt *prompt)
 
 	status = 0;
 	i = 0;
+	// minipipe(prompt);
+	prompt->prev_pipefd[0] = -1;
+	prompt->prev_pipefd[1] = -1;
 	while (i <= prompt->nbr_request)
 	{
-		process_cmd(&prompt->requests[i], prompt);
-		i += 1;
+		// redirect_fd(&prompt->requests[i]);
+		process_cmd(&prompt->requests[i++], prompt);
+	}
+	i = 0;
+	ft_close(prompt->prev_pipefd[0]);
+	ft_close(prompt->prev_pipefd[1]);
+	while (i <= prompt->nbr_request)
+	{
+		waitpid(prompt->requests[i].pid, &status, WNOHANG);
+		i ++;
 	}
 	free_tmp(prompt);
 	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
@@ -84,28 +122,24 @@ int	process(t_prompt *prompt)
 
 int	free_tmp(t_prompt *prompt)
 {
-
-	printf("[DEBUG] ====== End Process =====\n");
 	int	j = 0;
 	int i;
 	while (j <= prompt->nbr_request)
 	{
 		i = -1;
-		// printf("\n[DEBUG 88] prompt->requests[%d].cmd: %s\n", j, prompt->requests[j].cmd);
 		while (prompt->requests[j].tab[++i])
-		{
-			// printf("[DEBUG] prompt->requests[%d].tab[%d]: %s\n",j,  i, prompt->requests[j].tab[i]);
 			free (prompt->requests[j].tab[i]);
-		}
 		free (prompt->requests[j].cmd);
 		free (prompt->requests[j].tab);
 		ft_token_clear(prompt->requests[j].token);
-		if (prompt->requests[j].input_fd != 0)
-			ft_close(prompt->requests[j].input_fd);
-		if (prompt->requests[j].output_fd != 1)
-			ft_close(prompt->requests[j].output_fd);
+		// printf("[DEBUG] input: %d, output: %d \n", prompt->requests[j].input_fd, prompt->requests[j].output_fd);
+		ft_close(prompt->requests[j].input_fd);
+		ft_close(prompt->requests[j].output_fd);
 		j += 1;
 	}
-	printf("[DEBUG] ====== End Process =====\n");
 	return (0);
 }
+
+// Question
+//    yes | head
+// -> no output

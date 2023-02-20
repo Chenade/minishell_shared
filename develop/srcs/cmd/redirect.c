@@ -39,21 +39,21 @@ int	ft_open(int type, char *path)
 	return (fd);
 }
 
-int	redirect_output(t_prompt *prompt)
+int	redirect_output(t_request *request)
 {
 	t_token	*token;
 
-	token = prompt->token;
+	token = request->token;
 	while (token)
 	{
 		if (token->type == 7 || token->type == 9)
 		{
 			if (token->next && token->next->type == 2)
 			{
-				if (prompt->output_fd != 1)
-					ft_close(prompt->output_fd);
-				prompt->output_fd = ft_open(token->type, token->next->str);
-				if (prompt->output_fd < 0)
+				if (request->output_fd != 1)
+					ft_close(request->output_fd);
+				request->output_fd = ft_open(token->type, token->next->str);
+				if (request->output_fd < 0)
 					return (error_message_fd(token->type, token->next->str));
 			}
 			else
@@ -66,11 +66,11 @@ int	redirect_output(t_prompt *prompt)
 	return (0);
 }
 
-int	redirect_input2(t_prompt *prompt)
+int	redirect_input2(t_request *request)
 {
 	t_token	*token;
 
-	token = prompt->token;
+	token = request->token;
 	while (token)
 	{
 		if (!token->next)
@@ -80,21 +80,21 @@ int	redirect_input2(t_prompt *prompt)
 	return (0);
 }
 
-int	redirect_input(t_prompt *prompt)
+int	redirect_input(t_request *request)
 {
 	t_token	*token;
 
-	token = prompt->token;
+	token = request->token;
 	while (token)
 	{
 		if (token->type == 6)
 		{
 			if (token->next && token->next->type == 2)
 			{
-				if (prompt->input_fd != 0)
-					close(prompt->input_fd);
-				prompt->input_fd = ft_open(token->type, token->next->str);
-				if (prompt->input_fd < 0)
+				if (request->input_fd != 0)
+					close(request->input_fd);
+				request->input_fd = ft_open(token->type, token->next->str);
+				if (request->input_fd < 0)
 					return (error_message_fd(token->type, token->next->str));
 			}
 			else
@@ -104,5 +104,12 @@ int	redirect_input(t_prompt *prompt)
 			break ;
 		token = token->next;
 	}
+	return (0);
+}
+
+
+int	redirect_fd(t_request *request)
+{
+	redirect_output (request);
 	return (0);
 }

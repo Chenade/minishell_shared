@@ -43,6 +43,7 @@ typedef struct s_request
 	char				**tab;
 	int					nbr_token;
 	int					input_fd;
+	int					pipout_fd;
 	int					output_fd;
 	int					pid;
 	struct s_token		*token;
@@ -58,6 +59,8 @@ typedef struct s_prompt
 	char				**envp;
 	int					has_pipe;
 	pid_t				pid;
+	int					pipefd[2];
+	int					prev_pipefd[2];
 	struct s_request	*requests;
 }			t_prompt;
 
