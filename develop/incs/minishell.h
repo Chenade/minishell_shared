@@ -81,6 +81,11 @@ int			redirect_input(t_prompt *prompt);
 int			redirect_input2(t_prompt *prompt);
 int			redirect_output(t_prompt *prompt);
 
+void	    ft_token_clear(t_token *token);
+t_token	    *ft_token_new(void *content, int type);
+void	    ft_token_add_back(t_token **token, t_token *new);
+t_token	    *ft_token_last(t_token *token);
+
 /* parsing fix*/
 int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);

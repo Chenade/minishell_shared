@@ -34,6 +34,11 @@ int	print_error(int err_type, char *cmd, char *param)
 		g_sig.exit_status = 2;
 		ft_putstr_fd(": syntax error near unexpected token: ", 2);
 	}
+	else if (err_type == TM_ARGS)
+	{
+		g_sig.exit_status = 1;
+		ft_putstr_fd(": too many arguments", 2);
+	}
 	// else if (err_type == DUPERR)
 	// 	ft_putstr_fd("Dup failed", 2);
 	// else if (err_type == FORKERR)

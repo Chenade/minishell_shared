@@ -15,7 +15,7 @@ void	ft_token_add_back(t_token **token, t_token *new)
 
 	if (!new)
 		return ;
-	if (!(*token))
+	if (!*token || !token)
 		*token = new;
 	else
 	{
@@ -43,8 +43,10 @@ void	ft_token_clear(t_token *token)
 
 	while ((token))
 	{
+		printf("[DEBUG] free_token: %s\n", token->str);
 		tmp = (token)->next;
 		free (token);
 		(token) = tmp;
 	}
+	free (token);
 }

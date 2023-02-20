@@ -14,29 +14,33 @@
 
 int	ft_cd(t_request *request, t_prompt *prompt)
 {
-	int		cd_ret;
 	t_token	*token;
 	char	*dest;
 
-	// token = move_to(prompt->token, i);
-	if (ft_strcmp(token->str, "cd") == 0)
+
+	if (request->nbr_token > 2)
+		return (print_error(TM_ARGS, "cd", NULL));
+	if (request->nbr_token == 1)
 		dest = get_env("HOME", prompt->envp, 1);
-	else if (ft_strcmp(token->str, "-") == 0)
-	{
-		dest = get_env("OLD_PWD", prompt->envp, 1);
-		if (!dest)
-		{
-			print_error(OP_NS, "cd", NULL);
-			return (-1);
-		}
-	}
 	else
-		dest = token->str;
+	{
+		token = request->token->next;
+		if (ft_strcmp(token->str, "-") == 0)
+		{
+			dest = get_env("OLD_PWD", prompt->envp, 1);
+			if (!dest)
+			{
+				print_error(OP_NS, "cd", NULL);
+				return (-1);
+			}
+		}
+		else
+			dest = token->str;
+	}
 	update_oldpwd(prompt);
-	cd_ret = chdir(dest);
-	if (cd_ret < 0)
+	if (chdir(dest) < 0)
 		print_error(NDIR, "cd", token->str);
-	return (cd_ret);
+	return (0);
 }
 
 int		ft_pwd(t_request *request, t_prompt *prompt)
@@ -45,8 +49,8 @@ int		ft_pwd(t_request *request, t_prompt *prompt)
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		ft_print(cwd, 1);
-		ft_print("\n", 1);
+		ft_print(cwd, request->output_fd);
+		ft_print("\n", request->output_fd);
 		return (0);
 	}
 	else
@@ -55,7 +59,6 @@ int		ft_pwd(t_request *request, t_prompt *prompt)
 
 int	ft_echo(t_request *request, t_prompt *prompt)
 {
-	printf("[DEBUG] echo\n");
 	int	i;
 	int	newline;
 
@@ -64,9 +67,9 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 	{
 		if (request->token->type == 2)
 		{
-			ft_print (request->token->str, 1);
+			ft_print (request->token->str, request->output_fd);
 			if (request->token->next && request->token->next->type == 2)
-				ft_print (" ", 1);
+				ft_print (" ", request->output_fd);
 		}
         else if (request->token->type == 5 && ft_strcmp(request->token->str, "-n") == 0)
 			newline = 0;
@@ -75,24 +78,27 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 		request->token = request->token->next;
 	}
     if (newline)
-	    ft_print("\n", 1);
+	    ft_print("\n", request->output_fd);
 	return (0);
 }
 
 int	ft_export(t_request *request, t_prompt *prompt)
 {
 	int		index;
-	t_token	*token;
 
 	index = -1;
-	// token = move_to(prompt->token, i);
-	if (token->type == 3)
+	request->token = request->token->next;
+	while(request->token)
 	{
-		index = in_envp(token->str, prompt);
-		if (index > 0)
-			prompt->envp[index] = token->str;
-		else
-			add_envp(token->str, prompt);
+		if (request->token->type == 3)
+		{
+			index = in_envp(request->token->str, prompt);
+			if (index > 0)
+				prompt->envp[index] = request->token->str;
+			else
+				add_envp(request->token->str, prompt);
+		}
+		request->token = request->token->next;
 	}
 	return (0);
 }
@@ -100,15 +106,18 @@ int	ft_export(t_request *request, t_prompt *prompt)
 int	ft_unset(t_request *request, t_prompt *prompt)
 {
 	int		index;
-	t_token	*token;
 
 	index = -1;
-	// token = move_to(prompt->token, i);
-	if (token->type == 4)
+	request->token = request->token->next;
+	while (request->token)
 	{
-		index = in_envp(token->str, prompt);
-		if (index > 0)
-			del_envp(index, token, prompt);
+		if (request->token->type == 4)
+		{
+			index = in_envp(request->token->str, prompt);
+			if (index > 0)
+				del_envp(index, request->token, prompt);
+		}
+		request->token = request->token->next;
 	}
 	return (0);
 }
