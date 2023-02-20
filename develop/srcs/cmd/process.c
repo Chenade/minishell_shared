@@ -29,12 +29,12 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 		result = ft_cd(request, prompt);
 	else if (ft_strcmp(request->cmd, "pwd") == 0)
 		result = ft_pwd(request, prompt);
-	// else if (ft_strcmp(cmd, "export") == 0)
-	// 	result = ft_export(i + 1, prompt);
-	// else if (ft_strcmp(cmd, "unset") == 0)
-	// 	result = ft_unset(i + 1, prompt);
-	// else if (ft_strcmp(cmd, "env") == 0)
-	// 	result = print_env(prompt->envp);
+	else if (ft_strcmp(request->cmd, "export") == 0)
+		result = ft_export(request, prompt);
+	else if (ft_strcmp(request->cmd, "unset") == 0)
+		result = ft_unset(request, prompt);
+	else if (ft_strcmp(request->cmd, "env") == 0)
+		result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
 	return (result);
@@ -47,26 +47,27 @@ int	set_up(t_prompt *prompt)
 	prompt->requests[0].pipout_fd = -1;
 	prompt->requests[0].pid = 0;
 	prompt->requests[0].output_fd = 1;
-	prompt->requests[0].cmd = ft_strdup("cd");
+	prompt->requests[0].cmd = ft_strdup("export");
 	prompt->requests[0].tab = (char **) malloc (3 * sizeof(char *));
-	prompt->requests[0].tab[0] = ft_strdup("cd");
-	prompt->requests[0].tab[1] = ft_strdup("srcs");
+	prompt->requests[0].tab[0] = ft_strdup("export");
+	prompt->requests[0].tab[1] = ft_strdup("test1=test1");
 	prompt->requests[0].tab[2] = '\0';
-	prompt->requests[0].token = ft_token_new("cd", 1);
-	ft_token_add_back(&prompt->requests[0].token, ft_token_new("srcs", 2));
+	prompt->requests[0].token = ft_token_new("export", 1);
+	ft_token_add_back(&prompt->requests[0].token, ft_token_new("tessst1=test1", 3));
+	ft_token_add_back(&prompt->requests[0].token, ft_token_new("test2=test3", 3));
 
 	prompt->requests[1].nbr_token = 2;
 	prompt->requests[1].input_fd = 0;
 	prompt->requests[1].pipout_fd = -1;
 	prompt->requests[1].pid = 0;
 	prompt->requests[1].output_fd = 1;
-	prompt->requests[1].cmd = ft_strdup("pwd");
+	prompt->requests[1].cmd = ft_strdup("unset");
 	prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
-	prompt->requests[1].tab[0] = ft_strdup("pwd");
-	prompt->requests[1].tab[1] = ft_strdup("cmd");
+	prompt->requests[1].tab[0] = ft_strdup("unset");
+	prompt->requests[1].tab[1] = ft_strdup("test1=test1");
 	prompt->requests[1].tab[2] = '\0';
-	prompt->requests[1].token = ft_token_new("pwd", 1);
-	ft_token_add_back(&prompt->requests[1].token, ft_token_new("cmd", 2));
+	prompt->requests[1].token = ft_token_new("unset", 1);
+	ft_token_add_back(&prompt->requests[1].token, ft_token_new("test1", 4));
 
 	// prompt->requests[2].nbr_token = 3;
 	// prompt->requests[2].input_fd = 0;
@@ -99,6 +100,7 @@ int	process(t_prompt *prompt)
 		// redirect_fd(&prompt->requests[i]);
 		process_cmd(&prompt->requests[i++], prompt);
 	}
+	print_env(prompt->envp);
 	i = 0;
 	ft_close(prompt->prev_pipefd[0]);
 	ft_close(prompt->prev_pipefd[1]);

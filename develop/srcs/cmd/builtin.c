@@ -85,20 +85,21 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 int	ft_export(t_request *request, t_prompt *prompt)
 {
 	int		index;
+	t_token	*token;
 
 	index = -1;
-	request->token = request->token->next;
-	while(request->token)
+	token = request->token;
+	while(token)
 	{
-		if (request->token->type == 3)
+		if (token->type == 3)
 		{
-			index = in_envp(request->token->str, prompt);
+			index = in_envp(token->str, prompt);
 			if (index > 0)
-				prompt->envp[index] = request->token->str;
+				prompt->envp[index] = token->str;
 			else
-				add_envp(request->token->str, prompt);
+				add_envp(token->str, prompt);
 		}
-		request->token = request->token->next;
+		token = token->next;
 	}
 	return (0);
 }
@@ -106,18 +107,19 @@ int	ft_export(t_request *request, t_prompt *prompt)
 int	ft_unset(t_request *request, t_prompt *prompt)
 {
 	int		index;
-
+	t_token	*token;
+	
 	index = -1;
-	request->token = request->token->next;
-	while (request->token)
+	token = request->token;
+	while (token)
 	{
-		if (request->token->type == 4)
+		if (token->type == 4)
 		{
-			index = in_envp(request->token->str, prompt);
+			index = in_envp(token->str, prompt);
 			if (index > 0)
-				del_envp(index, request->token, prompt);
+				del_envp(index, token, prompt);
 		}
-		request->token = request->token->next;
+		token = token->next;
 	}
 	return (0);
 }
