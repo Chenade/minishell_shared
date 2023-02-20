@@ -7,19 +7,19 @@ int	process_cmd(t_request *request, t_prompt *prompt)
 	result = 0;
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
-	// else if (ft_strcmp(cmd, "cd") == 0)
-	// 	result = ft_cd(i + 1, prompt);
-	// else if (ft_strcmp(cmd, "pwd") == 0)
-	// 	result = ft_pwd(prompt);
-	// else if (ft_strcmp(cmd, "export") == 0)
-	// 	result = ft_export(i + 1, prompt);
-	// else if (ft_strcmp(cmd, "unset") == 0)
-	// 	result = ft_unset(i + 1, prompt);
-	// else if (ft_strcmp(cmd, "env") == 0)
-	// 	result = print_env(prompt->envp);
-	// else
-	// 	result = exec_bin(request, prompt);
-	// printf("====%d====\n", result);
+	else if (ft_strcmp(request->cmd, "cd") == 0)
+		result = ft_cd(request, prompt);
+	else if (ft_strcmp(request->cmd, "pwd") == 0)
+		result = ft_pwd(request, prompt);
+	else if (ft_strcmp(request->cmd, "export") == 0)
+		result = ft_export(request, prompt);
+	else if (ft_strcmp(request->cmd, "unset") == 0)
+		result = ft_unset(request, prompt);
+	else if (ft_strcmp(request->cmd, "env") == 0)
+		result = print_env(prompt->envp);
+	else
+		result = exec_bin(request, prompt);
+	printf("\n\nRESULT > %d\n\n", result);
 	return (result);
 }
 
@@ -72,9 +72,10 @@ int	process(t_prompt *prompt)
 
 	status = 0;
 	i = 0;
+	printf("nbr_request : %d \n", prompt->nbr_request);
 	while (i < prompt->nbr_request)
 	{
-		process_cmd(&prompt->requests[i], prompt);
+		status = process_cmd(&prompt->requests[i], prompt);
 		i += 1;
 	}
 	// free_tmp(prompt);

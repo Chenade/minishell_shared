@@ -46,6 +46,7 @@ enum	e_mini_error
 	NOT_DIR = 11,
 	OP_NS = 12,
 	SYNERR = 13,
+	TM_ARGS = 14,
 };
 
 #endif

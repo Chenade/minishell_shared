@@ -55,16 +55,21 @@ int	minishell(char *out, t_prompt *prompt)
 	if (ft_strlen(out))
 	{
 		add_history(out);
+		out = expansion(out, prompt->envp);
+		printf("OUT : %s\n", out);
 		status = pre_check(out, prompt);
+		printf(">> OUT : %s\n", out);
 		if (!out[0] || !status)
 		{
+			// out = expansion(out, prompt->envp);
 			parse_cmd(out, prompt->envp);
-			out = expansion(out, prompt->envp);
+			printf(">>>>> OUT : %s\n", out);
 			if (!(out))
 				return (1);
 			if (fill_request(out, prompt))
 				return (1);
-			process(prompt);
+			if (process(prompt))
+				return (1);
 			// check_args(out, &prompt);
 			g_sig.exit_status = 0;
 		}
