@@ -66,14 +66,12 @@ void	free_all(t_prompt *p)
 	{
 		if (p->requests)
 		{
-				if (p->requests[i].token)
-					free_token(&(p->requests[i].token));
-				free(p->requests[i].str);
-				ft_close(p->requests->input_fd);
-				ft_close(p->requests->output_fd);
-			
+			if (p->requests[i].token)
+				free_token(&(p->requests[i].token));
+			free(p->requests[i].str);
+			ft_close(p->requests->input_fd);
+			ft_close(p->requests->output_fd);
 		}
-		// free((p->requests[i].cmd));
 		i++;
 	}
 	free(p->requests);

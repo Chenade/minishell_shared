@@ -45,6 +45,7 @@ void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 
 /* utils */
+void	ft_token_add_back(t_token **token, t_token *new);
 t_token	    *ft_token_last(t_token *token);
 int	        is_sep(char s);
 void	    init_envp(t_prompt *prompt, char *str, char **argv);
