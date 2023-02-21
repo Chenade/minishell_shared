@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/21 09:06:59 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/21 09:07:01 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	process_request(char *str, t_request *request)
@@ -45,7 +57,7 @@ int	set_request(t_prompt *prompt)
 			&& data.single_quote > 0 && data.double_quote > 0)
 		{
 			if (process_request(prompt->clean + i + 1, &prompt->requests[t]))
-			return (1);
+				return (1);
 			t += 1;
 		}
 	}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/21 09:06:45 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/21 09:06:48 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	env_key_len(char *out)
@@ -10,7 +22,8 @@ int	env_key_len(char *out)
 	while (out[++j])
 	{
 		if (out[j] == ' ' || out[j] == '|' || out[j] == '<' || out[j] == '>'
-			|| out[j] == '$' || out[j] == '\'' || out[j] == '"')
+			|| out[j] == '$' || out[j] == '\'' || out[j] == '"'
+			|| out[j] == ';')
 			break ;
 		len += 1;
 	}
@@ -21,18 +34,17 @@ int	get_malloc_size(char *out, char **envp)
 {
 	int		i;
 	int		j;
-	int		single_quote;
+	t_parse	data;
 	int		malloc_len;
 	char	*str;
 
 	i = -1;
-	single_quote = 1;
 	malloc_len = 0;
+	reset_bool(&data, 1);
 	while (out[++i])
 	{
-		if (out[i] == '\'')
-			single_quote *= -1;
-		if (out[i] == '$' && single_quote > 0)
+		check_quote(&data, out[i]);
+		if (out[i] == '$' && data.single_quote > 0)
 		{
 			j = env_key_len(out + i);
 			str = get_env(out + i + 1, envp, j);
@@ -66,17 +78,16 @@ int	replace_env(char *out, char *new_out, char **envp)
 	int		i;
 	int		j;
 	int		nout_i;
-	int		single_quote;
+	t_parse	data;
 	char	*val;
 
 	i = -1;
-	single_quote = 1;
 	nout_i = 0;
+	reset_bool(&data, 1);
 	while (out[++i])
 	{
-		if (out[i] == '\'')
-			single_quote *= -1;
-		if (out[i] == '$' && single_quote > 0)
+		check_quote(&data, out[i]);
+		if (out[i] == '$' && data.single_quote > 0)
 		{
 			j = env_key_len(out + i);
 			val = get_env(out + i + 1, envp, j);

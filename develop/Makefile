@@ -123,7 +123,7 @@ norminette:		clear
 
 
 project:		clean $(OBJS)
-				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $@
+				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $(NAME)
 				@echo ${GREEN}"Minishell Compile Successfully"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 
