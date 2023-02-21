@@ -21,6 +21,12 @@ typedef struct s_sig
 	pid_t			pid;
 }				t_sig;
 
+// typedef struct s_tokens
+// {
+// 	char			*str;
+// 	int				type;
+// }				t_tokens;
+
 typedef struct s_token
 {
 	char			*str;
@@ -28,12 +34,6 @@ typedef struct s_token
 	struct s_token	*prev;
 	struct s_token	*next;
 }				t_token;
-
-typedef struct s_tokens
-{
-	char			*str;
-	int				type;
-}				t_tokens;
 
 typedef struct s_request
 {
@@ -45,19 +45,16 @@ typedef struct s_request
 	int					input_fd;
 	int					pipout_fd;
 	int					output_fd;
+	t_token				*token;
 	int					pid;
-	struct s_token		*token;
 }				t_request;
 
 typedef struct s_prompt
 {
 	char				*clean;
 	int					nbr_request;
-	t_token				*token;
-	t_list				*env;
-	char				*result;
 	char				**envp;
-	int					has_pipe;
+	t_token				*token;
 	pid_t				pid;
 	int					pipefd[2];
 	int					prev_pipefd[2];

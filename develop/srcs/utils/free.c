@@ -35,31 +35,60 @@ void	ft_close(int fd)
 		close(fd);
 }
 
-void	free_all(t_prompt *p)
+void	free_token(t_token **token)
 {
-	t_token	*tmp;
+	t_token	*ptr;
 
-	free_matrix(&p->envp);
-	while (p->token)
+	ptr = (*token);
+	if (!ptr)
+		return ;
+	while (ptr->next)
 	{
-		tmp = (p->token)->next;
-		free(p->token->str);
-		free(p->token);
-		(p->token) = tmp;
+		ptr = ptr->next;
+		free(ptr->prev->str);
+		free(ptr->prev);
 	}
+	if (ptr)
+	{
+		free(ptr->str);
+		free(ptr);
+	}
+	*token = NULL;
 }
 
-void	free_readline(char **out, t_prompt *prompt)
+void	free_all(t_prompt *p)
 {
 	int	i;
 
 	i = 0;
-	free (*out);
-	while (i <= prompt->nbr_request)
+	printf("nbr_request : %d\n", p->nbr_request);
+	while (i < p->nbr_request)
 	{
-		// printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
-		free (prompt->requests[i].str);
-		i += 1;
+		if (p->requests)
+		{
+			if (p->requests[i].token)
+				free_token(&(p->requests[i].token));
+			free(p->requests[i].str);
+			// ft_close(p->requests->input_fd);
+			// ft_close(p->requests->output_fd);
+		}
+		i++;
 	}
-	free (prompt->requests);
+	free(p->requests);
+	free (p->clean);
 }
+
+// void	free_readline(char **out, t_prompt *prompt)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	free (*out);
+// 	while (i <= prompt->nbr_request)
+// 	{
+// 		// printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
+// 		free (prompt->requests[i].str);
+// 		i += 1;
+// 	}
+// 	free (prompt->requests);
+// }

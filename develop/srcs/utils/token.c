@@ -21,6 +21,7 @@ void	ft_token_add_back(t_token **token, t_token *new)
 	{
 		tmp = ft_token_last(*token);
 		tmp->next = new;
+		new->prev = tmp;
 	}
 }
 

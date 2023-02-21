@@ -96,9 +96,9 @@ int	set_up(t_prompt *prompt)
 int	process(t_prompt *prompt)
 {
 	printf("[DEBUG] nbr_request: %d\n", prompt->nbr_request);
-	if (prompt->nbr_request != 1)
-		return (0);
-	set_up(prompt);
+	// if (prompt->nbr_request != 1)
+	// 	return (0);
+	// set_up(prompt);
 	int		status;
 	int		i;
 	t_token	*token;
@@ -107,21 +107,20 @@ int	process(t_prompt *prompt)
 	i = 0;
 	prompt->prev_pipefd[0] = -1;
 	prompt->prev_pipefd[1] = -1;
-	while (i <= prompt->nbr_request)
+	while (i < prompt->nbr_request)
 	{
-		// redirect_fd(&prompt->requests[i]);
-		process_cmd(&prompt->requests[i++], prompt);
+	// 	// redirect_fd(&prompt->requests[i]);
+		// process_cmd(&prompt->requests[i++], prompt);
+		print_token(prompt->requests[i++].token);
+
 	}
-	print_env(prompt->envp);
+	// print_env(prompt->envp);
 	i = 0;
 	ft_close(prompt->prev_pipefd[0]);
 	ft_close(prompt->prev_pipefd[1]);
-	while (i <= prompt->nbr_request)
-	{
-		waitpid(prompt->requests[i].pid, &status, WNOHANG);
-		i ++;
-	}
-	free_tmp(prompt);
+	// while (i <= prompt->nbr_request)
+		// waitpid(prompt->requests[i++].pid, &status, WNOHANG);
+	// free_tmp(prompt);
 	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
 	return (status);
 }

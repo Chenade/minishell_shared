@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/01/31 14:41:17 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/18 04:20:49 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	mini_getpid(t_prompt *p)
 	if (pid < 0)
 	{
 		print_error(FORKERR, NULL, NULL);
-		free_matrix(&p->envp);
+		free_pp(p->envp);
 		exit(1);
 	}
 	if (pid == CHILD)
 	{
-		free_matrix(&p->envp);
+		free_pp(p->envp);
 		exit(1);
 	}
 	waitpid(pid, NULL, 0);
@@ -48,25 +48,32 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
-int	minishell(char **out, t_prompt *prompt)
+int	minishell(char *out, t_prompt *prompt)
 {
 	int	status;
+	char *cmd;
 
-	if (*out[0] != '\0')
-		add_history(*out);
-	status = 0;
-	if (*out[0])
-		status = pre_check(*out);
-	if (!*out[0] || !status)
+	cmd = ft_strdup(out);
+	out = expansion(out, prompt->envp);
+	if (out)
 	{
-		*out = expansion(*out, prompt->envp);
-		if (!*(out))
-			return (1);
-		if (separate_pipe(*out, prompt))
-			return (1);
-		// process(prompt);
-		// check_args(out, &prompt);
-		g_sig.exit_status = 0;
+		add_history(cmd);
+		free(cmd);
+		status = pre_check(out, prompt);
+		parse_cmd(out, prompt->envp);
+		if (!status)
+		{
+			if (fill_request(out, prompt))
+				return (1);
+			if (process(prompt))
+				return (1);
+			g_sig.exit_status = 0;
+		}
+	}
+	else
+	{
+		free(cmd);
+		return (1);
 	}
 	return (status);
 }
@@ -99,7 +106,7 @@ int	main(int argc, char **argv, char **envp)
 	char				*out;
 	t_prompt			prompt;
 	
-	prompt = init_prompt(argv, envp);
+	init_prompt(argv, envp, &prompt);
 	while (42)
 	{
 		signal(SIGINT, sigint_handler);
@@ -107,9 +114,10 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!out)
 			break;
-		if (!minishell(&out, &prompt))
-			free_readline (&out, &prompt);
+		if (!minishell(out, &prompt))
+			free_all(&prompt);
+		// free_readline (&out, &prompt);
 	}
-	free_all(&prompt);
+	free_pp(prompt.envp);
 	exit (g_sig.exit_status);
 }

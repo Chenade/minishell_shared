@@ -73,8 +73,8 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 		}
         else if (request->token->type == 5 && ft_strcmp(request->token->str, "-n") == 0)
 			newline = 0;
-		else
-			break ;
+		// else
+		// 	break ;
 		request->token = request->token->next;
 	}
     if (newline)

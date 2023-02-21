@@ -21,6 +21,9 @@ int	env_key_len(char *out)
 	len = 0;
 	while (out[++j])
 	{
+		// if (out[j] == -' ' || out[j] == -'|' || out[j] == -'<' || out[j] == -'>'
+		// 	|| out[j] == '$' || out[j] == '\'' || out[j] == '\"' || out[j] == '\0'
+		// 	|| out[j] == ' ')
 		if (out[j] == ' ' || out[j] == '|' || out[j] == '<' || out[j] == '>'
 			|| out[j] == '$' || out[j] == '\'' || out[j] == '"'
 			|| out[j] == ';')
@@ -95,6 +98,8 @@ int	replace_env(char *out, char *new_out, char **envp)
 			free (val);
 			i += j;
 		}
+		else if (out[i] == -'$')
+			out[i] = '$';
 		else
 			insert_str (new_out, &nout_i, &out[i], 1);
 	}
@@ -107,14 +112,14 @@ char	*expansion(char *out, char **envp)
 	char	*new_out;
 
 	malloc_len = get_malloc_size(out, envp);
-	new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
-	if (!new_out)
-	{
-		print_error(MEM, NULL, NULL);
+	printf("malloc_len = %d\n", malloc_len);
+	if (malloc_len)
+		new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
+	if (malloc_len == 0 || !new_out)
 		return (NULL);
-	}
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp);
 	free (out);
+	printf("[DEBUG] [%s]\n", new_out);
 	return (new_out);
 }
