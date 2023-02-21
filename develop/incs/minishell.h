@@ -43,6 +43,8 @@ int			print_env(char **envp);
 /* error */
 void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
+int         print_syntax_error(t_parse data);
+int         print_fd_error(char *path, char *cmd);
 
 /* utils */
 void	ft_token_add_back(t_token **token, t_token *new);

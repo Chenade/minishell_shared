@@ -59,22 +59,27 @@ void	free_token(t_token **token)
 void	free_all(t_prompt *p)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	printf("nbr_request : %d\n", p->nbr_request);
+	// printf("nbr_request : %d\n", p->nbr_request);
 	while (i < p->nbr_request)
 	{
 		if (p->requests)
 		{
+			j = -1;
+			// while (p->requests[i].tab[++j])
+			// 	free (p->requests[i].tab[j]);
+			// free (p->requests[i].tab);
 			if (p->requests[i].token)
 				free_token(&(p->requests[i].token));
-			free(p->requests[i].str);
+			free (p->requests[i].str);
 			// ft_close(p->requests->input_fd);
 			// ft_close(p->requests->output_fd);
 		}
 		i++;
 	}
-	free(p->requests);
+	free (p->requests);
 	free (p->clean);
 }
 

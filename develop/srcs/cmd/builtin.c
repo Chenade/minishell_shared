@@ -49,8 +49,8 @@ int		ft_pwd(t_request *request, t_prompt *prompt)
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		ft_print(cwd, request->output_fd);
-		ft_print("\n", request->output_fd);
+		ft_print(cwd, 1);
+		ft_print("\n", 1);
 		return (0);
 	}
 	else
@@ -67,18 +67,16 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 	{
 		if (request->token->type == 2)
 		{
-			ft_print (request->token->str, request->output_fd);
+			ft_print (request->token->str, 1);
 			if (request->token->next && request->token->next->type == 2)
-				ft_print (" ", request->output_fd);
+				ft_print (" ", 1);
 		}
         else if (request->token->type == 5 && ft_strcmp(request->token->str, "-n") == 0)
 			newline = 0;
-		// else
-		// 	break ;
 		request->token = request->token->next;
 	}
     if (newline)
-	    ft_print("\n", request->output_fd);
+	    ft_print("\n", 1);
 	return (0);
 }
 

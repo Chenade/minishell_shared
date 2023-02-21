@@ -21,12 +21,6 @@ typedef struct s_sig
 	pid_t			pid;
 }				t_sig;
 
-// typedef struct s_tokens
-// {
-// 	char			*str;
-// 	int				type;
-// }				t_tokens;
-
 typedef struct s_token
 {
 	char			*str;
@@ -42,9 +36,6 @@ typedef struct s_request
 	char				*cmd;
 	char				**tab;
 	int					nbr_token;
-	int					input_fd;
-	int					pipout_fd;
-	int					output_fd;
 	t_token				*token;
 	int					pid;
 }				t_request;

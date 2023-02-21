@@ -71,10 +71,7 @@ int	minishell(char *out, t_prompt *prompt)
 		}
 	}
 	else
-	{
-		free(cmd);
-		return (1);
-	}
+		return (free(cmd), 1);
 	return (status);
 }
 

@@ -40,7 +40,8 @@ char	**set_env(char *var, char *value, char **envp, int n)
 		if (!ft_strncmp(envp[i[0]], var, i[1]))
 		{
 			aux[0] = envp[i[0]];
-			envp[i[0]] = aux[1];
+			envp[i[0]] = ft_strdup(aux[1]);
+			free(aux[1]);
 			free(aux[0]);
 			return (envp);
 		}

@@ -7,6 +7,46 @@ void	exit_minishell(t_prompt *prompt, int status)
 	exit (g_sig.exit_status);
 }
 
+int	print_syntax_error(t_parse data)
+{
+	if (data.single_quote < 0)
+		return (print_error(SYNERR, "", "'"));
+	if (data.double_quote < 0)
+		return (print_error(SYNERR, "", "\""));
+	if (data.is_pipe < 0 && data.infile == 0 && data.outfile == 0)
+		return (print_error(SYNERR, "", "|"));
+	if (data.infile > 0)
+		return (print_error(SYNERR, "", "<"));
+	if (data.outfile > 0)
+		return (print_error(SYNERR, "", ">"));
+	return (0);
+}
+
+int	print_fd_error(char *path, char *cmd)
+{
+	DIR	*folder;
+	int	fd;
+	int	ret;
+
+	fd = open(path, O_WRONLY);
+	folder = NULL;
+	if (path)
+		folder = opendir(path);
+	if (ft_strchr(path, '/') == NULL)
+		print_error(NCMD, cmd, NULL);
+	else if (fd == -1 && folder == NULL)
+		print_error(NDIR, cmd, NULL);
+	else if (fd == -1 && folder != NULL)
+		print_error(IS_DIR, cmd, NULL);
+	else if (fd != -1 && folder == NULL)
+		print_error(NPERM, cmd, NULL);
+	if (folder)
+		closedir(folder);
+	ft_close(fd);
+	return (-1);
+}
+
+
 int	print_error(int err_type, char *cmd, char *param)
 {
 	ft_putstr_fd("minishell: ", 2);
