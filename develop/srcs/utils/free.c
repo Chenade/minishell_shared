@@ -12,23 +12,6 @@ void	free_pp(char **pp)
 	free(pp);
 }
 
-void	free_matrix(char ***m)
-{
-	int	i;
-
-	i = 0;
-	while (m && m[0] && m[0][i])
-	{
-		free(m[0][i]);
-		i++;
-	}
-	if (m)
-	{
-		free(m[0]);
-		*m = NULL;
-	}
-}
-
 void	ft_close(int fd)
 {
 	if (fd > 0)
@@ -61,7 +44,6 @@ void	free_all(t_prompt *p)
 	int	i;
 
 	i = 0;
-	printf("nbr_request : %d\n", p->nbr_request);
 	while (i < p->nbr_request)
 	{
 		if (p->requests)

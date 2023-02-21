@@ -58,7 +58,6 @@ int			get_matrixlen(char **m);
 // char		**extend_matrix(char **in, char *newstr);
 
 /* free */
-void		free_matrix(char ***m);
 void		free_token(t_token **token);
 void		free_all(t_prompt *p);
 // void	    free_readline(char **out, t_prompt *prompt);

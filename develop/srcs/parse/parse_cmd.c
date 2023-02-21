@@ -21,10 +21,15 @@ void	rm_space_sep(char *cmd)
 	i = 0;
 	while (*cmd)
 	{
-		if ((is_sep(*cmd) && *(cmd - 1) == - ' ') && ++i)
-			*(cmd - 1) = *(cmd + i - 1);
-		else if ((*(cmd) == - ' ' && is_sep(*(cmd - 1))) && ++i)
+		// if ((is_sep(*cmd) && *(cmd - 1) == - ' ') && ++i)
+			// *(cmd - 1) = *(cmd + i - 1);
+		if ((*(cmd) == - ' ' && (is_sep(*(cmd + 1)) && *(cmd + 1) != - ' ')) && ++i)
+			;
+		else if ((*(cmd) == - ' ' && (is_sep(*(cmd - 1)) && *(cmd - 1) != - ' ')) && ++i)
+		{
 			*(cmd) = *(cmd + i);
+			cmd++;
+		}
 		else if ((*cmd) == -'$')
 			i += ((env_key_len(cmd )) + 1);
 		else

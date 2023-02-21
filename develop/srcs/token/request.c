@@ -16,11 +16,13 @@ int	set_request(char *p, t_request *request)
 	i = 0;
 	while (*p && *p != -'|')
 	{
-		request->str[i] = *p;
 		if (*p == -' ')
 			request->nbr_token++;
+		else if ((*p == -'>' && *(p + 1) == -'>') || (*p == -'<' && *(p + 1) == -'<'))
+			;
 		else if (is_sep(*p) && *p != -' ')
 			request->nbr_token += 2;
+		request->str[i] = *p;
 		i++;
 		p++;
 	}
