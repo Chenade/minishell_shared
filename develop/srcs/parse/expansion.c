@@ -100,7 +100,6 @@ char	*expansion(char *out, char **envp)
 	q[0] = 0;
 	q[1] = 0;
 	malloc_len = get_malloc_size(out, envp, q);
-	printf("malloc_len = %d\n", malloc_len);
 	if (malloc_len)
 		new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
 	if (malloc_len == 0 || !new_out)

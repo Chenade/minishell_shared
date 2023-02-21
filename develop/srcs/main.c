@@ -73,12 +73,15 @@ int	minishell(char *out, t_prompt *prompt)
 
 	cmd = ft_strdup(out);
 	out = expansion(out, prompt->envp);
+	printf("OUT-1- [%s]\n", out);
 	if (out)
 	{
 		add_history(cmd);
 		free(cmd);
 		status = pre_check(out, prompt);
+		printf("OUT-2- [%s]\n", out);
 		parse_cmd(out, prompt->envp);
+		printf("OUT-3- [%s]\n", out);
 		if (!status)
 		{
 			if (fill_request(out, prompt))

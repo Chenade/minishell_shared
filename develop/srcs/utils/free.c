@@ -36,8 +36,8 @@ void	free_token(t_token **token)
 		free(ptr->str);
 		free(ptr);
 	}
-	free(*token);
-	// *token = NULL;
+	// free(*token);
+	*token = NULL;
 }
 
 void	free_all(t_prompt *p)
@@ -52,7 +52,6 @@ void	free_all(t_prompt *p)
 			if (p->requests[i].token)
 			{
 				free_token(&(p->requests[i].token));
-				// free(p->requests[i].token);
 			}
 			free(p->requests[i].str);
 			ft_close(p->requests->input_fd);

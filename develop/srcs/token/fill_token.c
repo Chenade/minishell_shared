@@ -2,7 +2,7 @@
 
 void	fill_type(t_token *token, int separator)
 {
-	if (!ft_strcmp(token->str, ""))
+	if (!ft_strcmp(token->str, "") || token->str[0] == -'e')
 		token->type = EMPTY;
 	else if (!ft_strcmp(token->str, ">") && separator == 0)
 		token->type = OUTPUT;
@@ -31,7 +31,7 @@ char *set_str(t_token *new, char *str, int len, int *sep)
 	{
 		if (str[i] == '<' || str[i] == '>')
 			*sep = 1;
-		if (is_sep(str[i]))
+		else if (is_sep(str[i]) && str[i] != -'e')
 			str[i] *= -1;
 		new->str[i] = str[i];
 		i++;
@@ -87,13 +87,9 @@ t_token	*fill_token(t_request *request)
 	char *p;
 	t_token *token;
 
-	int d;
-
-	d = 0;
 	p = request->str;
 	token = NULL;
 	i = -1;
-	printf("nbr_TOKEN : %d\n", request->nbr_token);
 	while (*(p) != '\0' && ++i < request->nbr_token)
 	{
 		len = 0;
@@ -104,15 +100,11 @@ t_token	*fill_token(t_request *request)
 			if (!len)
 				len = check_append_delim(p);
 			if (len)
-			{
-				d++;
 				token = add_node_end(token, p, len);
-			}
 			if (p[len] == -' ')
 				len++;
 		}
 		p += len;
 	}
-	printf("HOW MANY TOKEN : %d\n", d);
 	return (token);
 }
