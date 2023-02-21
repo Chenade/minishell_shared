@@ -36,7 +36,8 @@ void	free_token(t_token **token)
 		free(ptr->str);
 		free(ptr);
 	}
-	*token = NULL;
+	free(*token);
+	// *token = NULL;
 }
 
 void	free_all(t_prompt *p)
@@ -49,13 +50,17 @@ void	free_all(t_prompt *p)
 		if (p->requests)
 		{
 			if (p->requests[i].token)
+			{
 				free_token(&(p->requests[i].token));
+				// free(p->requests[i].token);
+			}
 			free(p->requests[i].str);
 			ft_close(p->requests->input_fd);
 			ft_close(p->requests->output_fd);
 		}
 		i++;
 	}
+	printf("FREED %d  TIMES\n", i);
 	free(p->requests);
 	free (p->clean);
 }

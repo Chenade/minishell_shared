@@ -35,16 +35,34 @@ void	mini_getpid(t_prompt *p)
 	g_sig.pid = pid - 1;
 }
 
+int	join_putstr_fd(char *a, char *b, char *c, int fd)
+{
+	if (a)
+		ft_putstr_fd(a, fd);
+	if (b)
+		ft_putstr_fd(b, fd);
+	if (c)
+		ft_putstr_fd(c, fd);
+}
+
 void	sigint_handler(int sig)		// need to change exit_code -> 130;
 {
+	char *str;
+
 	if (sig == SIGINT)
 	{
+		str = ft_strdup(rl_line_buffer);
+		rl_replace_line("", 0);
+		join_putstr_fd("minishell $ ", str, "\n", 1);
+		rl_on_new_line();
+		rl_redisplay();
+		free(str);
 		g_sig.exit_status = 130;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		if (rl_on_new_line() == -1)
-			exit(1);
-		rl_replace_line("", 0);		//set string from readline as ""
-		rl_on_new_line();			//set next line while readline
+		// ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		// if (rl_on_new_line() == -1)
+		// 	exit(1);
+		// rl_replace_line("", 0);		//set string from readline as ""
+		// rl_on_new_line();			//set next line while readline
 	}
 }
 
