@@ -29,8 +29,11 @@ char *set_str(t_token *new, char *str, int len, int *sep)
 	i = 0;
 	while (i < len)
 	{
+		printf("str[%d] : %c ===> len :%d\n", i, str[i], len);
 		if (str[i] == '<' || str[i] == '>')
 			*sep = 1;
+		else if (str[i] == -'e')
+			str[i] = '\0';
 		else if (is_sep(str[i]) && str[i] != -'e')
 			str[i] *= -1;
 		new->str[i] = str[i];
@@ -72,11 +75,11 @@ t_token	*add_node_end(t_token *token, char *str, int len)
 
 int check_append_delim(char *p)
 {
-	if (p[0] != -' ')
-		return (1);
-	else if (((p[0] == -'>' && p[1] == -'>')
+	if (((p[0] == -'>' && p[1] == -'>')
 		||	(p[0] == -'<' && p[1] == -'<')))
 		return (2);
+	if (p[0] != -' ' || p[0] == -'e')
+		return (1);
 	return (0);
 }
 

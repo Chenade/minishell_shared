@@ -59,7 +59,6 @@ void	free_all(t_prompt *p)
 		}
 		i++;
 	}
-	printf("FREED %d  TIMES\n", i);
 	free(p->requests);
 	free (p->clean);
 }
