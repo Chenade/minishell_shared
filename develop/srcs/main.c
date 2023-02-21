@@ -71,6 +71,29 @@ int	minishell(char **out, t_prompt *prompt)
 	return (status);
 }
 
+// int	minishell_bk(char **out, t_prompt *prompt)
+// {
+// 	int	status;
+
+// 	if (*out[0] != '\0')
+// 		add_history(*out);
+// 	status = 0;
+// 	if (*out[0])
+// 		status = pre_check(*out);
+// 	if (!*out[0] || !status)
+// 	{
+// 		*out = expansion(*out, prompt->envp);
+// 		if (!*(out))
+// 			return (1);
+// 		if (separate_pipe(*out, prompt))
+// 			return (1);
+// 		// process(prompt);
+// 		// check_args(out, &prompt);
+// 		g_sig.exit_status = 0;
+// 	}
+// 	return (status);
+// }
+
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
