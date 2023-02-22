@@ -36,6 +36,6 @@ void	init_prompt(char **argv, char **envp, t_prompt *prompt)
 	prompt->clean = NULL;
 	prompt->nbr_request = 0;
 	prompt->requests = NULL;
-	mini_getpid(prompt);
+	// mini_getpid(prompt);
 	init_envp(prompt, str, argv);
 }

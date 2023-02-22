@@ -10,15 +10,15 @@ RM			=	rm -rf
 
 CC			=	cc
 
-CFLAGS		=	-Wall -Werror -Wextra -lreadline
+CFLAGS		=	-Wall -Werror -Wextra 
 CFLAGS		+=	-I $(INCS_DIR) -I $(LIBFT_DIR) 
 CFLAGS		+=	-g3 -MMD
 
-CFLAGS		= 	-I $(INCS_DIR) -I $(LIBFT_DIR) -lreadline -g3 -MMD
+CFLAGS		= 	-I $(INCS_DIR) -I $(LIBFT_DIR)  -g3 -MMD
 
 LFLAGS		= 	-L . -lmlx_Linux -lX11 -lXext -lm -I ${MLX_DIR}
 
-CLIBS		=	-L . -lft
+CLIBS		=	-L . -lft 
 
 Y			= "\033[33m"
 R			= "\033[31m"
@@ -98,7 +98,7 @@ $(LIBFT):
 				@echo ${GREEN}"===== Libft Compile Successfully =====\n"${X}
 
 $(NAME):		$(LIBFT) $(OBJS)
-				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $@
+				${CC} ${OBJS} ${CFLAGS} -lreadline $(LIBFT) -o $@
 				@echo ${GREEN}"===== Minishell Compile Successfully =====\n"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 
@@ -128,7 +128,7 @@ norminette:		clear
 
 
 project:		clean $(OBJS)
-				${CC} ${OBJS} ${CFLAGS} $(LIBFT) -o $(NAME)
+				${CC} ${OBJS} ${CFLAGS} -lreadline $(LIBFT) -o $(NAME)
 				@echo ${GREEN}"Minishell Compile Successfully"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 

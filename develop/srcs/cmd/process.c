@@ -31,6 +31,9 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 		result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
+	free_all(prompt);
+	free_pp(prompt->envp);
+	clear_history();
 	return (result);
 }
 
@@ -43,7 +46,7 @@ void	dupnclose(int oldfd, int newfd)
 	ft_close(oldfd);
 }
 
-int	exec_cmd(t_request *request, t_prompt *prompt)
+int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
 	int		ret;
 	int		tmp;
@@ -53,38 +56,100 @@ int	exec_cmd(t_request *request, t_prompt *prompt)
 	request->pid = fork();
 	if (request->pid == 0)
 	{
+		if (prompt->nbr_request != request->id)
+			dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
+		if (request->id != 1)
+			dupnclose(prompt->prev_pipefd, STDIN_FILENO);
 		close(prompt->pipefd[READEND]);
-		// if is not first cmd
-		if (prompt->prev_pipefd[READEND] != -1)
-			dupnclose(prompt->prev_pipefd[READEND], STDIN_FILENO);
-		// todo: if is not last cmd
-		if (request->nbr_token != 1)
-			dupnclose(prompt->pipefd[WRITEEND], STDOUT_FILENO);
-		dispatch_cmd(request, prompt);
-		free_all(prompt);
-		free_pp(prompt->envp);
-		clear_history();
-		exit (0);
+		close(prompt->pipefd[WRITEEND]);
+		exit (dispatch_cmd(request, prompt));
 	}
 	else
 	{
-		close(prompt->pipefd[WRITEEND]);
-		close(prompt->pipefd[READEND]);
-		ft_close(prompt->prev_pipefd[READEND]);
-		ft_close(prompt->prev_pipefd[WRITEEND]);
-		prompt->prev_pipefd[READEND] = prompt->pipefd[READEND];
-		prompt->prev_pipefd[WRITEEND] = prompt->pipefd[WRITEEND];
+		close (prompt->pipefd[WRITEEND]);
+		if (prompt->prev_pipefd != -1)
+			close(prompt->prev_pipefd);
+		prompt->prev_pipefd = prompt->pipefd[READEND];
 	}
 	return (0);
 }
 
-int	process_cmd(t_request *request)
+int	ft_array_push(char ***array, char *str)
 {
-	request->pid = 0;
-	request->tab = NULL;
-	// todo: redirect_fd(&prompt->requests[i]);
+	int		i;
+	char	**tmp;
 
+	i = 0;
+	if (*array == NULL)
+	{
+		*array = (char **)malloc(sizeof(char *) * 2);
+		(*array)[0] = ft_strdup(str);
+		(*array)[1] = NULL;
+		return (0);
+	}
+	while ((*array)[i] != NULL)
+		i++;
+	tmp = (char **)malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while ((*array)[i] != NULL)
+	{
+		tmp[i] = ft_strdup((*array)[i]);
+		i++;
+	}
+	tmp[i] = ft_strdup(str);
+	tmp[i + 1] = NULL;
+	free_pp(*array);
+	*array = tmp;
 	return (0);
+}
+
+int	post_parse(t_request *request, int index)
+{
+	int		i;
+	int		redirect;
+	t_token	*token;
+
+	i = 0;
+	redirect = 0;
+	request->pid = 0;
+	request->id = index + 1;
+	request->tab = NULL;
+	token = request->token;
+	while (i < request->nbr_token)
+	{
+		if (token->type == 1)
+		{
+			request->cmd = ft_strdup(token->str);
+			ft_array_push(&request->tab, token->str);
+		}
+		else if ((token->type == 2 || token->type == 5) && redirect == 0)
+			ft_array_push(&request->tab, token->str);
+		else if (token->type == 2 && redirect > 0)
+			redirect -= 1;
+		else if (token->type > 5 && token->type < 10)
+			redirect = 1;
+		token = token->next;
+		i++;
+	}
+	i = -1;
+	while (request->tab[++i] != NULL)
+		printf("[DEBUG] tab[%d]: %s\n", i, request->tab[i]);
+	// todo: redirect_fd(&prompt->requests[i]);
+	return (0);
+}
+
+void	ft_wait(t_prompt *prompt)
+{
+	int		status;
+	int		i;
+
+	i = -1;
+	while (++i < prompt->nbr_request)
+	{
+		waitpid(prompt->requests[i].pid, &status, 0);
+		if (WIFEXITED(status))
+			g_sig.exit_status = WEXITSTATUS(status);
+	}
 }
 
 int	process(t_prompt *prompt)
@@ -95,66 +160,17 @@ int	process(t_prompt *prompt)
 	t_token	*token;
 
 	status = 0;
+	i = -1;
+	prompt->prev_pipefd = -1;
+	while (++i < prompt->nbr_request)
+		post_parse(&prompt->requests[i], i);
+	i = -1;
+	while (++i < prompt->nbr_request)
+		status = exec_cmd(&prompt->requests[i], prompt, i);
 	i = 0;
-	prompt->prev_pipefd[0] = -1;
-	prompt->prev_pipefd[1] = -1;
-	while (i < prompt->nbr_request)
-	{
-		process_cmd(&prompt->requests[i]);
-		exec_cmd(&prompt->requests[i], prompt);
-		print_token(prompt->requests[i++].token);
-	}
-	i = 0;
-	ft_close(prompt->prev_pipefd[0]);
-	ft_close(prompt->prev_pipefd[1]);
-	while (i < prompt->nbr_request)
-		waitpid(prompt->requests[i++].pid, &status, WNOHANG);
+	ft_wait(prompt);
 	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
+	if (prompt->nbr_request)
+		close(prompt->pipefd[0]);
 	return (status);
 }
-
-// Question
-//    yes | head
-// -> no output
-
-
-// int	set_up(t_prompt *prompt)
-// {
-// 	prompt->requests[0].nbr_token = 2;
-// 	prompt->requests[0].input_fd = 0;
-// 	prompt->requests[0].pipout_fd = -1;
-// 	prompt->requests[0].pid = 0;
-// 	prompt->requests[0].output_fd = 1;
-// 	prompt->requests[0].cmd = ft_strdup("export");
-// 	prompt->requests[0].tab = (char **) malloc (3 * sizeof(char *));
-// 	prompt->requests[0].tab[0] = ft_strdup("export");
-// 	prompt->requests[0].tab[1] = ft_strdup("test1=test1");
-// 	prompt->requests[0].tab[2] = '\0';
-// 	prompt->requests[0].token = ft_token_new("export", 1);
-// 	ft_token_add_back(&prompt->requests[0].token, ft_token_new("tessst1=test1", 3));
-// 	ft_token_add_back(&prompt->requests[0].token, ft_token_new("test2=test3", 3));
-
-// 	prompt->requests[1].nbr_token = 2;
-// 	prompt->requests[1].input_fd = 0;
-// 	prompt->requests[1].pipout_fd = -1;
-// 	prompt->requests[1].pid = 0;
-// 	prompt->requests[1].output_fd = 1;
-// 	prompt->requests[1].cmd = ft_strdup("unset");
-// 	prompt->requests[1].tab = (char **) malloc (3 * sizeof(char *));
-// 	prompt->requests[1].tab[0] = ft_strdup("unset");
-// 	prompt->requests[1].tab[1] = ft_strdup("test1=test1");
-// 	prompt->requests[1].tab[2] = '\0';
-// 	prompt->requests[1].token = ft_token_new("unset", 1);
-// 	ft_token_add_back(&prompt->requests[1].token, ft_token_new("test1", 4));
-
-// 	// prompt->requests[2].nbr_token = 3;
-// 	// prompt->requests[2].input_fd = 0;
-// 	// prompt->requests[2].output_fd = 1;
-// 	// prompt->requests[2].cmd = ft_strdup("ls");
-// 	// prompt->requests[2].tab = (char **) malloc (3 * sizeof(char *));
-// 	// prompt->requests[2].tab[0] = ft_strdup("ls");
-// 	// prompt->requests[2].tab[1] = ft_strdup("-l");
-// 	// prompt->requests[2].tab[2] = NULL;
-// 	// prompt->requests[2].token = ft_token_new("ls", 1);
-// 	return (0);
-// }

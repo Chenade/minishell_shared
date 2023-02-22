@@ -14,11 +14,13 @@
 
 int			magic_box2(char *path, t_request *request, t_prompt *prompt)
 {
-	// todo: request->tab
+	int tmp;
+	int ret;
+
 	if (path && ft_strchr(path, '/') != NULL)
 		tmp = execve(path, request->tab, prompt->envp);
 	ret = print_fd_error(path, request->cmd);
-	return (0);
+	return (ret);
 }
 
 char	*check_dir(char *bin, char *command)

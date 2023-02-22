@@ -68,17 +68,20 @@ void	free_all(t_prompt *p)
 		if (p->requests)
 		{
 			j = -1;
-			// while (p->requests[i].tab[++j])
-			// 	free (p->requests[i].tab[j]);
-			// free (p->requests[i].tab);
+			while (p->requests[i].tab[++j])
+				free (p->requests[i].tab[j]);
+			free (p->requests[i].tab);
 			if (p->requests[i].token)
 				free_token(&(p->requests[i].token));
 			free (p->requests[i].str);
+			free (p->requests[i].cmd);
 			// ft_close(p->requests->input_fd);
 			// ft_close(p->requests->output_fd);
 		}
 		i++;
 	}
+	// ft_close(p->prev_pipefd[0]);
+	// ft_close(p->prev_pipefd[1]);
 	free (p->requests);
 	free (p->clean);
 }

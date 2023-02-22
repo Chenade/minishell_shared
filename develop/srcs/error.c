@@ -43,7 +43,7 @@ int	print_fd_error(char *path, char *cmd)
 	if (folder)
 		closedir(folder);
 	ft_close(fd);
-	return (-1);
+	return (127);
 }
 
 

@@ -83,18 +83,18 @@ int	minishell(char *out, t_prompt *prompt)
 // 		add_history(*out);
 // 	status = 0;
 // 	if (*out[0])
-// 		status = pre_check(*out);
-// 	if (!*out[0] || !status)
-// 	{
-// 		*out = expansion(*out, prompt->envp);
-// 		if (!*(out))
-// 			return (1);
-// 		if (separate_pipe(*out, prompt))
-// 			return (1);
-// 		// process(prompt);
-// 		// check_args(out, &prompt);
-// 		g_sig.exit_status = 0;
-// 	}
+// 		status = pre_check(*out, prompt);
+// 	// if (!*out[0] || !status)
+// 	// {
+// 	// 	*out = expansion(*out, prompt->envp);
+// 	// 	if (!*(out))
+// 	// 		return (1);
+// 	// 	if (fill_request(out, prompt))
+// 	// 		return (1);
+// 	// 	if (process(prompt))
+// 	// 			return (1);
+// 	// 	g_sig.exit_status = 0;
+// 	// }
 // 	return (status);
 // }
 

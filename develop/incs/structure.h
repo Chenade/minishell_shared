@@ -31,6 +31,7 @@ typedef struct s_token
 
 typedef struct s_request
 {
+	int					id;
 	char				*str;
 	int					str_len;
 	char				*cmd;
@@ -48,7 +49,7 @@ typedef struct s_prompt
 	t_token				*token;
 	pid_t				pid;
 	int					pipefd[2];
-	int					prev_pipefd[2];
+	int					prev_pipefd;
 	struct s_request	*requests;
 }			t_prompt;
 
