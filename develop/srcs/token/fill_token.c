@@ -42,17 +42,6 @@ char *set_str(t_token *new, char *str, int len, int *sep)
 	return (new->str);
 }
 
-t_token	*token_create(t_token *token)
-{
-	token = (t_token *) malloc (sizeof(t_token));
-	if (!token)
-		return (0);
-	token->str = NULL;
-	token->next = NULL;
-	token->prev = NULL;
-	return (token);
-}
-
 t_token	*add_node_end(t_token *token, char *str, int len)
 {
 	t_token	*new;

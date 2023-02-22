@@ -25,18 +25,30 @@ void	ft_token_add_back(t_token **token, t_token *new)
 	}
 }
 
-t_token	*ft_token_new(void *content, int type)
-{
-	t_token	*ans;
 
-	ans = (t_token *) malloc (sizeof(t_token));
-	if (!ans)
+t_token	*token_create(t_token *token)
+{
+	token = (t_token *) malloc (sizeof(t_token));
+	if (!token)
 		return (0);
-	ans->str = content;
-	ans->type = type;
-	ans->next = NULL;
-	return (ans);
+	token->str = NULL;
+	token->next = NULL;
+	token->prev = NULL;
+	return (token);
 }
+
+// t_token	*ft_token_new(void *content, int type)
+// {
+// 	t_token	*ans;
+
+// 	ans = (t_token *) malloc (sizeof(t_token));
+// 	if (!ans)
+// 		return (0);
+// 	ans->str = content;
+// 	ans->type = type;
+// 	ans->next = NULL;
+// 	return (ans);
+// }
 
 void	ft_token_clear(t_token *token)
 {
