@@ -2,9 +2,9 @@
 
 void	exit_minishell(t_prompt *prompt, int status)
 {
-	g_sig.exit_status = status;
+	g_exit_status = status;
 	free_all(prompt);
-	exit (g_sig.exit_status);
+	exit (g_exit_status);
 }
 
 int	print_syntax_error(t_parse data)
@@ -69,12 +69,12 @@ int	print_error(int err_type, char *cmd, char *param)
 		write(1, ": \e[91mCommand not found\e[0m", 29);
 	else if (err_type == SYNERR)
 	{
-		g_sig.exit_status = 2;
+		g_exit_status = 2;
 		ft_putstr_fd(": syntax error near unexpected token: ", 2);
 	}
 	else if (err_type == TM_ARGS)
 	{
-		g_sig.exit_status = 1;
+		g_exit_status = 1;
 		ft_putstr_fd(": too many arguments", 2);
 	}
 	// else if (err_type == DUPERR)
@@ -85,7 +85,7 @@ int	print_error(int err_type, char *cmd, char *param)
 	// 	ft_putstr_fd("Pipe error", 2);
 	else if (err_type == MEM)
 	{
-		g_sig.exit_status = 2;
+		g_exit_status = 2;
 		ft_putstr_fd("No memory left on device", 2);
 	}
 	else if (err_type == IS_DIR)
@@ -93,6 +93,6 @@ int	print_error(int err_type, char *cmd, char *param)
 	else if (err_type == NOT_DIR)
 		write(1, ": Not a directory", 18);
 	ft_putendl_fd(param, 2);
-	return (g_sig.exit_status);
+	return (g_exit_status);
 	// return (NULL);
 }

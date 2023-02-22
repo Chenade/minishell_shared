@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int			magic_box2(char *path, t_request *request, t_prompt *prompt)
+int			call_execve(char *path, t_request *request, t_prompt *prompt)
 {
 	int tmp;
 	int ret;
@@ -74,7 +74,7 @@ int	exec_bin(t_request *request, t_prompt *prompt)
 	if (!env || path == NULL)
 		path = ft_strdup(request->cmd);
 	free(env);
-	ret = magic_box2(path, request, prompt);
+	ret = call_execve(path, request, prompt);
 	free(path);
 	return (ret);
 }

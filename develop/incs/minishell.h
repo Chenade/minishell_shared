@@ -37,7 +37,7 @@
 
 #define TIOCSTI     0x5412
 
-extern t_sig	g_sig;
+extern int	g_exit_status;
 
 /* TEMP */
 void		print_token(t_token *token);
@@ -101,15 +101,13 @@ void	    init_prompt(char **argv, char **envp, t_prompt *prompt);
 void	    set_signal(void);
 int			main(int argc, char **argv, char **envp);
 
-/* CMD - process */
-int			process(t_prompt *prompt);
-t_token		*move_to(t_token *pre, int index);
-
-
 /* parsing fix*/
 int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
-// int         separate_pipe(char *out, t_prompt *prompt);
+
+/* CMD - process */
+int			process(t_prompt *prompt);
+void	    ft_wait(t_prompt *prompt);
 
 /* exec bin func*/
 int         exec_bin(t_request *request, t_prompt *prompt);

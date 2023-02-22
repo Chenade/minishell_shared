@@ -31,8 +31,8 @@ int	error_message_fd(int type, char *path)
 	if (folder)
 		closedir(folder);
 	close(fd);
-	g_sig.exit_status = 1;
-	return (g_sig.exit_status);
+	g_exit_status = 1;
+	return (g_exit_status);
 }
 
 int	ft_open(int type, char *path)

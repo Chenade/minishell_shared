@@ -94,4 +94,8 @@ void	ft_putchar(char c, int *len);
 void	ft_printf_func(const char s, va_list lst, int *len);
 int		ft_printf(const char *s, ...);
 
+void	ft_free_matrix(char **str);
+void	ft_close(int fd);
+void	dupnclose(int oldfd, int newfd);
+int		ft_array_push(char ***array, char *str);
 #endif

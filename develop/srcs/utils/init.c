@@ -1,26 +1,5 @@
 #include "minishell.h"
 
-void	mini_getpid(t_prompt *p)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		print_error(FORKERR, NULL, NULL);
-		free_pp(p->envp);
-		exit(1);
-	}
-	if (pid == CHILD)
-	{
-		free_pp(p->envp);
-		exit(1);
-	}
-	waitpid(pid, NULL, 0);
-	p->pid = pid - 1;
-	g_sig.pid = pid - 1;
-}
-
 void	init_envp(t_prompt *prompt, char *str, char **argv)
 {
 	char	*num;
@@ -52,11 +31,10 @@ void	init_prompt(char **argv, char **envp, t_prompt *prompt)
 	char		*str;
 
 	str = NULL;
-	g_sig.exit_status = 0;
+	g_exit_status = 0;
 	prompt->envp = dup_matrix(envp);
 	prompt->clean = NULL;
 	prompt->nbr_request = 0;
 	prompt->requests = NULL;
-	// mini_getpid(prompt);
 	init_envp(prompt, str, argv);
 }

@@ -57,15 +57,6 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	return (result);
 }
 
-#define READEND 0
-#define WRITEEND 1
-
-void	dupnclose(int oldfd, int newfd)
-{
-	dup2(oldfd, newfd);
-	ft_close(oldfd);
-}
-
 int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
 	int		ret;
@@ -92,35 +83,6 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 			close(prompt->prev_pipefd);
 		prompt->prev_pipefd = prompt->pipefd[READEND];
 	}
-	return (0);
-}
-
-int	ft_array_push(char ***array, char *str)
-{
-	int		i;
-	char	**tmp;
-
-	i = 0;
-	if (*array == NULL)
-	{
-		*array = (char **)malloc(sizeof(char *) * 2);
-		(*array)[0] = ft_strdup(str);
-		(*array)[1] = NULL;
-		return (0);
-	}
-	while ((*array)[i] != NULL)
-		i++;
-	tmp = (char **)malloc(sizeof(char *) * (i + 2));
-	i = 0;
-	while ((*array)[i] != NULL)
-	{
-		tmp[i] = ft_strdup((*array)[i]);
-		i++;
-	}
-	tmp[i] = ft_strdup(str);
-	tmp[i + 1] = NULL;
-	free_pp(*array);
-	*array = tmp;
 	return (0);
 }
 
@@ -154,24 +116,9 @@ int	post_parse(t_request *request, int index)
 	return (0);
 }
 
-void	ft_wait(t_prompt *prompt)
-{
-	int		status;
-	int		i;
-
-	i = -1;
-	status = 0;
-	while (++i < prompt->nbr_request)
-	{
-		waitpid(prompt->requests[i].pid, &status, 0);
-		if (WIFEXITED(status))
-			g_sig.exit_status = WEXITSTATUS(status);
-	}
-}
-
 int	process(t_prompt *prompt)
 {
-	printf("[DEBUG] nbr_request: %d\n", prompt->nbr_request);
+	// printf("[DEBUG] nbr_request: %d\n", prompt->nbr_request);
 	int		status;
 	int		i;
 	t_token	*token;
@@ -187,11 +134,11 @@ int	process(t_prompt *prompt)
 	{
 		i = -1;
 		while (++i < prompt->nbr_request)
-			status = exec_cmd(&prompt->requests[i], prompt, i);
+			exec_cmd(&prompt->requests[i], prompt, i);
 	}
 	ft_wait(prompt);
 	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
 		close(prompt->pipefd[0]);
-	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
+	printf("[DEBUG] g_exit_status: %d\n", g_exit_status);
 	return (status);
 }

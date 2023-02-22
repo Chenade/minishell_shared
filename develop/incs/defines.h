@@ -17,6 +17,9 @@
 # define WRITE	1
 # define CHILD	0
 
+# define READEND 0
+# define WRITEEND 1
+
 enum	e_token_type
 {
 	EMPTY = 0,

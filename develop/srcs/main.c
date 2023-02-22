@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_sig g_sig;
+int	g_exit_status;
 
 void	sigint_handler(int sig)		// need to change exit_code -> 130;
 {
@@ -24,7 +24,7 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_sig.exit_status = 130;
+		g_exit_status = 130;
 		// ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		// if (rl_on_new_line() == -1)
 		// 	exit(1);
@@ -41,8 +41,8 @@ void	set_signal(void)
 
 int	minishell(char *out, t_prompt *prompt)
 {
-	int	status;
-	char *cmd;
+	int		status;
+	char	*cmd;
 
 	cmd = ft_strdup(out);
 	out = expansion(out, prompt->envp);
@@ -58,7 +58,7 @@ int	minishell(char *out, t_prompt *prompt)
 				return (1);
 			if (process(prompt))
 				return (1);
-			g_sig.exit_status = 0;
+			g_exit_status = 0;
 		}
 	}
 	else
@@ -84,7 +84,7 @@ int	minishell(char *out, t_prompt *prompt)
 // 	// 		return (1);
 // 	// 	if (process(prompt))
 // 	// 			return (1);
-// 	// 	g_sig.exit_status = 0;
+// 	// 	g_exit_status = 0;
 // 	// }
 // 	return (status);
 // }
@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
 	t_prompt			prompt;
-	
+
 	init_prompt(argv, envp, &prompt);
 	while (42)
 	{
@@ -101,12 +101,11 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!out)
 		{
-			break;
+			break ;
 		}
 		if (!minishell(out, &prompt))
 			free_all(&prompt);
-		// free_readline (&out, &prompt);
 	}
 	free_pp(prompt.envp);
-	exit (g_sig.exit_status);
+	exit (g_exit_status);
 }
