@@ -33,7 +33,9 @@ int	get_malloc_size(char *out, char **envp, int q[2])
 	{
 		q[0] = (q[0] + (!q[1] && out[i] == '\'')) % 2;
 		q[1] = (q[1] + (!q[0] && out[i] == '\"')) % 2;
-		if (out[i] == '$' && !q[0])
+		if (out[i] =='$' && out[i + 1] == '?' && !q[0] && i++)
+			malloc_len += exit_strlen();
+		else if (out[i] == '$' && !q[0])
 		{
 			j = env_key_len(out + i);
 			str = get_env(out + i + 1, envp, j);
@@ -75,7 +77,9 @@ int	replace_env(char *out, char *new_out, char **envp, int q[2])
 	{
 		q[0] = (q[0] + (!q[1] && out[i] == '\'')) % 2;
 		q[1] = (q[1] + (!q[0] && out[i] == '\"')) % 2;
-		if (out[i] == '$' && !q[0])
+		if (out[i] =='$' && out[i + 1] == '?' && !q[0] && i++)
+			nout_i = expand_exit(new_out, nout_i);
+		else if (out[i] == '$' && !q[0])
 		{
 			j = env_key_len(out + i);
 			val = get_env(out + i + 1, envp, j);
@@ -83,8 +87,8 @@ int	replace_env(char *out, char *new_out, char **envp, int q[2])
 			free (val);
 			i += j;
 		}
-		else if (out[i] == -'$')
-			out[i] = '$';
+		// else if (out[i] == -'$')
+		// 	out[i] = '$';
 		else
 			insert_str (new_out, &nout_i, &out[i], 1);
 	}

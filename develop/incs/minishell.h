@@ -66,7 +66,7 @@ t_token	    *token_create(t_token *token);
 void	    ft_token_add_back(t_token **token, t_token *new);
 
 /* UTILS - utils */
-void push_str(char *str);
+void        push_str(char *str);
 int	        is_sep(char s);
 int	        is_quot(char s);
 int			token_countcmd(t_token *token);
@@ -78,9 +78,14 @@ int	        fill_request(char *cmd, t_prompt *prompt);
 
 /* PARSE */
 int	        env_key_len(char *out);
+int	        insert_str(char *new_out, int *nout_i, char *str, int len);
 void	    parse_cmd(char *cmd, char **envp);
 int	        pre_check(char *out, t_prompt *prompt);
 char	    *expansion(char *out, char **envp);
+
+/* PARSE - exit_status */
+int	        exit_strlen(void);
+int         expand_exit(char *new_out, int nout_i);
 
 /* ENV */
 char		*get_env(char *var, char **envp, int n);
