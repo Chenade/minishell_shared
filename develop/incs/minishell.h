@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+# include <linux/ioctl.h>
 # include "libft.h"
 
 # include <string.h>
@@ -34,72 +35,89 @@
 # include "defines.h"
 # include "structure.h"
 
+#define TIOCSTI     0x5412
+
 extern t_sig	g_sig;
 
-/* temp */
+/* TEMP */
 void		print_token(t_token *token);
 int			print_env(char **envp);
 
-/* error */
+/* ERROR */
 void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 int         print_syntax_error(t_parse data);
 int         print_fd_error(char *path, char *cmd);
 
-/* utils */
-void	ft_token_add_back(t_token **token, t_token *new);
-t_token	    *ft_token_last(t_token *token);
-int	        is_sep(char s);
+/* UTILS - free */
+void		free_pp(char **pp);
+void	    ft_close(int fd);
+void	    free_all(t_prompt *p);
+
+/* UTILS - init */
 void	    init_envp(t_prompt *prompt, char *str, char **argv);
 void	    init_prompt(char **argv, char **envp, t_prompt *prompt);
-void		free_pp(char **pp);
-int			token_countcmd(t_token *token);
-int			ft_strchr_int(const char *s, int c);
+
+/* UTILS - matrix */
 char		**dup_matrix(char **m);
 int			get_matrixlen(char **m);
-// char		**extend_matrix(char **in, char *newstr);
 
-/* free */
-void		free_matrix(char ***m);
-void		free_token(t_token **token);
-void		free_all(t_prompt *p);
-// void	    free_readline(char **out, t_prompt *prompt);
-void		ft_close(int fd);
+/* UTILS - token */
+t_token	    *ft_token_last(t_token *token);
+t_token	    *token_create(t_token *token);
+void	    ft_token_add_back(t_token **token, t_token *new);
 
-/* token */
-int	        fill_request(char *cmd, t_prompt *prompt);
+/* UTILS - utils */
+void        push_str(char *str);
+int	        is_sep(char s);
+int	        is_quot(char s);
+int			token_countcmd(t_token *token);
+int			ft_strchr_int(const char *s, int c);
+
+/* TOKEN */
 t_token	    *fill_token(t_request *request);
+int	        fill_request(char *cmd, t_prompt *prompt);
 
-/* env */
+/* PARSE */
+int	        env_key_len(char *out);
+int	        insert_str(char *new_out, int *nout_i, char *str, int len);
+void	    parse_cmd(char *cmd, char **envp);
+int	        pre_check(char *out, t_prompt *prompt);
+char	    *expansion(char *out, char **envp);
+
+/* PARSE - exit_status */
+int	        exit_strlen(void);
+int         expand_exit(char *new_out, int nout_i);
+
+/* ENV */
 char		*get_env(char *var, char **envp, int n);
 char		**set_env(char *var, char *value, char **envp, int n);
 
-/* main, init */
-void		mini_getpid(t_prompt *p);
+/* INIT */
+void	    init_envp(t_prompt *prompt, char *str, char **argv);
+void	    init_prompt(char **argv, char **envp, t_prompt *prompt);
+
+/* MAIN & SIGNAL */
+void	    set_signal(void);
 int			main(int argc, char **argv, char **envp);
 
-/* cmd process */
-int	        env_key_len(char *out);
+/* CMD - process */
 int			process(t_prompt *prompt);
 t_token		*move_to(t_token *pre, int index);
 
-/* parsing fix*/
-void	    parse_cmd(char *cmd, char **envp);
-int         pre_check(char *out, t_prompt *prompt);
-char		*expansion(char *out, char **envp);
-int			redirect_input(t_prompt *prompt);
-int			redirect_input2(t_prompt *prompt);
-int			redirect_output(t_prompt *prompt);
-
-void	    ft_token_clear(t_token *token);
-t_token	    *ft_token_new(void *content, int type);
-void	    ft_token_add_back(t_token **token, t_token *new);
-t_token	    *ft_token_last(t_token *token);
 
 /* parsing fix*/
 int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
 // int         separate_pipe(char *out, t_prompt *prompt);
+
+/* exec bin func*/
+int         exec_bin(t_request *request, t_prompt *prompt);
+
+/* CMD - redirect */
+// int			redirect_input(t_prompt *prompt);
+// int			redirect_input2(t_prompt *prompt);
+// int			redirect_output(t_prompt *prompt);
 
 /* builtin  utils*/
 int         ft_print(char *str, int	fd);
@@ -108,14 +126,11 @@ int			add_envp(char *str, t_prompt *prompt);
 int			in_envp(char *token, t_prompt *prompt);
 int			update_oldpwd(t_prompt *prompt);
 
-/* builtin  func*/
+/* CMD - builtin */
 int         ft_pwd(t_request *request, t_prompt *prompt);
 int         ft_cd(t_request *request, t_prompt *prompt);
 int         ft_echo(t_request *request, t_prompt *prompt);
 int         ft_export(t_request *request, t_prompt *prompt);
 int         ft_unset(t_request *request, t_prompt *prompt);
-
-/* exec bin func*/
-int         exec_bin(t_request *request, t_prompt *prompt);
 
 #endif

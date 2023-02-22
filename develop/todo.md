@@ -95,7 +95,7 @@ char * clean =ls -la      "  ykuoykuoykuoykuo" "ykuo" '$USER'= 47len
 
 ```
 Input line:
-    echo bonjour | cat
+    <Makefile echo bonjour > test| cat
 ```
 ##### Struct
 ```
@@ -110,14 +110,16 @@ general_struct {
 struct_request { A
     char *request; "echo bonjour" 
     tab_request; {"echo", "bonjour"} 
+    cmd: echo
     nbr token; 2
-    tab_token[]; x2
+    tab_token[]; x4
     input; STDIN
     output; fd of the inpipe;
 }
 
 struct_request { B
     char *request; "cat" 
+    cmd: cat
     tab_request; {"cat"} 
     nbr token; 1
     tab_token[]; x1

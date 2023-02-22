@@ -95,6 +95,8 @@ int	replace_env(char *out, char *new_out, char **envp)
 			free (val);
 			i += j;
 		}
+		// else if (out[i] == -'$')
+		// 	out[i] = '$';
 		else
 			insert_str (new_out, &nout_i, &out[i], 1);
 	}
@@ -114,5 +116,6 @@ char	*expansion(char *out, char **envp)
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp);
 	free (out);
+	// printf("[DEBUG] [%s]\n", new_out);
 	return (new_out);
 }

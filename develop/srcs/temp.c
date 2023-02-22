@@ -3,17 +3,19 @@
 void	print_token(t_token *token)
 {
 	int	i;
+	t_token *tmp;
 
 	i = 1;
-	printf("======print_token======\n");
-	while (token->str)
+	tmp = token;
+	// printf("======print_token======\n");
+	while (tmp->str)
 	{
-		printf("%d ) STR : %15s  TYPE : %d  \n", i++, token->str, token->type);
-		if (!token->next)
+		printf("		%d ) STR : %15s  TYPE : %d  \n", i++, tmp->str, tmp->type);
+		if (!tmp->next)
 			break;
-		token = token->next;
+		tmp = tmp->next;
 	}
-	printf("======print_token======\n");
+	// printf("======print_token======\n");
 }
 
 int	print_env(char **envp)

@@ -1,5 +1,28 @@
 #include "minishell.h"
 
+void push_str(char *str)
+{
+	while (*str)
+	{
+		*str = *(str + 1);
+		str++;
+	}
+}
+
+int	is_sep(char s)
+{
+	if (s == - '<' || s == - '>' || s == - '|' || s == - ' ' || s == - 'e')
+		return (1);
+	return (0);
+}
+
+int	is_quot(char s)
+{
+	if (s == '\'' || s == '\"')
+		return (1);
+	return (0);
+}
+
 int	ft_strchr_int(const char *s, int c)
 {
 	unsigned char	c_unsigned;
@@ -32,18 +55,4 @@ int	token_countcmd(t_token *token)
 		token = token->next;
 	}
 	return (ans);
-}
-
-void	ft_lstclear(t_list **lst, void (*del)(void *))
-{
-	t_list	*tmp;
-
-	if (!del)
-		return ;
-	while (*lst)
-	{
-		tmp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		(*lst) = tmp;
-	}
 }

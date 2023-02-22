@@ -62,7 +62,8 @@ SRCS_UTL	=	utils/init.c \
 
 SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
-				parse/parse_cmd.c
+				parse/parse_cmd.c \
+				parse/expand_exit.c
 
 SRCS_TOK	=	token/fill_token.c \
 				token/request.c

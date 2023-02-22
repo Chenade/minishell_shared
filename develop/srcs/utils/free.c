@@ -12,23 +12,6 @@ void	free_pp(char **pp)
 	free(pp);
 }
 
-void	free_matrix(char ***m)
-{
-	int	i;
-
-	i = 0;
-	while (m && m[0] && m[0][i])
-	{
-		free(m[0][i]);
-		i++;
-	}
-	if (m)
-	{
-		free(m[0]);
-		*m = NULL;
-	}
-}
-
 void	ft_close(int fd)
 {
 	if (fd > 2)
@@ -42,6 +25,7 @@ void	free_token(t_token **token)
 	ptr = (*token);
 	if (!ptr)
 		return ;
+	
 	while (ptr->next)
 	{
 		ptr = ptr->next;
@@ -53,6 +37,7 @@ void	free_token(t_token **token)
 		free(ptr->str);
 		free(ptr);
 	}
+	// free(*token);
 	*token = NULL;
 }
 
