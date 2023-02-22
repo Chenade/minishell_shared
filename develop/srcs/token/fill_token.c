@@ -29,7 +29,6 @@ char *set_str(t_token *new, char *str, int len, int *sep)
 	i = 0;
 	while (i < len)
 	{
-		printf("str[%d] : %c ===> len :%d\n", i, str[i], len);
 		if (str[i] == '<' || str[i] == '>')
 			*sep = 1;
 		else if (str[i] == -'e')
@@ -63,6 +62,7 @@ t_token	*add_node_end(t_token *token, char *str, int len)
 	if (!str)
 		return (NULL);
 	new = token_create(new);
+	printf("$$$\n");
 	new->str = (char *)malloc(sizeof(char) * (len + 1));
 	new->str = set_str(new, str, len, &sep);
 	ft_token_add_back(&token, new);

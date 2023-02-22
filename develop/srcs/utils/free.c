@@ -25,6 +25,7 @@ void	free_token(t_token **token)
 	ptr = (*token);
 	if (!ptr)
 		return ;
+	
 	while (ptr->next)
 	{
 		ptr = ptr->next;

@@ -61,21 +61,23 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 {
 	int	i;
 	int	newline;
+	t_token *token;
 
+	token = request->token;
     newline = 1;
-	while (request->token)
+	while (token)
 	{
-		if (request->token->type == 2)
+		if (token->type == 2)
 		{
-			ft_print (request->token->str, request->output_fd);
-			if (request->token->next && request->token->next->type == 2)
+			ft_print (token->str, request->output_fd);
+			if (token->next && token->next->type == 2)
 				ft_print (" ", request->output_fd);
 		}
-        else if (request->token->type == 5 && ft_strcmp(request->token->str, "-n") == 0)
+        else if (token->type == 5 && ft_strcmp(token->str, "-n") == 0)
 			newline = 0;
 		// else
 		// 	break ;
-		request->token = request->token->next;
+		token = token->next;
 	}
     if (newline)
 	    ft_print("\n", request->output_fd);

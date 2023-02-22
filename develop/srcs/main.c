@@ -79,9 +79,9 @@ int	minishell(char *out, t_prompt *prompt)
 		add_history(cmd);
 		free(cmd);
 		status = pre_check(out, prompt);
-		printf("OUT-2- [%s]\n", out);
+		// printf("OUT-2- [%s]\n", out);
 		parse_cmd(out, prompt->envp);
-		printf("OUT-3- [%s]\n", out);
+		// printf("OUT-3- [%s]\n", out);
 		if (!status)
 		{
 			if (fill_request(out, prompt))
@@ -111,7 +111,9 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		out = readline("minishell $ ");
 		if (!out)
+		{
 			break;
+		}
 		if (!minishell(out, &prompt))
 			free_all(&prompt);
 		// free_readline (&out, &prompt);
