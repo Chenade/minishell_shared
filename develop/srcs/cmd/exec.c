@@ -115,24 +115,24 @@ int	exec_bin(t_request *request, t_prompt *prompt)
 
 	i = 0;
 	ret = 0;
-	env = get_env("PATH", prompt->envp, -1);
-	path = NULL;
-	if (env)
-	{
-		bin = ft_split(env, ':');
-		if (!bin[0])
-			return (-1);
-		i = 0;
-		while (request->cmd 
-		&& bin[i]
-		 && path == NULL)
-			path = check_dir(bin[i++], request->cmd);
-		free_pp(bin);
-	}
-	if (!env || path == NULL)
-		path = request->cmd;
-	ret = magic_box(path, request, env, prompt);
-	free(path);
-	free(env);
+	// env = get_env("PATH", prompt->envp, -1);
+	// path = NULL;
+	// if (env)
+	// {
+	// 	bin = ft_split(env, ':');
+	// 	if (!bin[0])
+	// 		return (-1);
+	// 	i = 0;
+	// 	while (request->cmd 
+	// 	&& bin[i]
+	// 	 && path == NULL)
+	// 		path = check_dir(bin[i++], request->cmd);
+	// 	free_pp(bin);
+	// }
+	// if (!env || path == NULL)
+	// 	path = request->cmd;
+	// ret = magic_box(path, request, env, prompt);
+	// free(path);
+	// free(env);
 	return (ret);
 }
