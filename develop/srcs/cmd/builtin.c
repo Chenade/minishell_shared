@@ -17,7 +17,6 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 	t_token	*token;
 	char	*dest;
 
-
 	if (request->nbr_token > 2)
 		return (print_error(TM_ARGS, "cd", NULL));
 	if (request->nbr_token == 1)
@@ -29,10 +28,7 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 		{
 			dest = get_env("OLD_PWD", prompt->envp, 1);
 			if (!dest)
-			{
-				print_error(OP_NS, "cd", NULL);
-				return (-1);
-			}
+				return (print_error(OP_NS, "cd", NULL), -1);
 		}
 		else
 			dest = token->str;

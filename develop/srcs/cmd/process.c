@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+int	is_builtin(char	*cmd)
+{
+	if (ft_strcmp(cmd, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "export") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "env") == 0)
+		return (1);
+	return (0);
+}
+
 int	dispatch_cmd(t_request *request, t_prompt *prompt)
 {
 	int		result;
@@ -31,9 +48,12 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 		result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
-	free_all(prompt);
-	free_pp(prompt->envp);
-	clear_history();
+	if (prompt->nbr_request == 1 && is_builtin(request->cmd))
+	{
+		free_all(prompt);
+		free_pp(prompt->envp);
+		clear_history();
+	}
 	return (result);
 }
 
@@ -144,6 +164,7 @@ void	ft_wait(t_prompt *prompt)
 	int		i;
 
 	i = -1;
+	status = 0;
 	while (++i < prompt->nbr_request)
 	{
 		waitpid(prompt->requests[i].pid, &status, 0);
@@ -164,13 +185,18 @@ int	process(t_prompt *prompt)
 	prompt->prev_pipefd = -1;
 	while (++i < prompt->nbr_request)
 		post_parse(&prompt->requests[i], i);
-	i = -1;
-	while (++i < prompt->nbr_request)
-		status = exec_cmd(&prompt->requests[i], prompt, i);
+	if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
+		dispatch_cmd(&prompt->requests[0], prompt);
+	else
+	{
+		i = -1;
+		while (++i < prompt->nbr_request)
+			status = exec_cmd(&prompt->requests[i], prompt, i);
+	}
 	i = 0;
 	ft_wait(prompt);
-	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
-	if (prompt->nbr_request)
+	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
 		close(prompt->pipefd[0]);
+	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
 	return (status);
 }
