@@ -98,6 +98,7 @@ int	ft_export(t_request *request, t_prompt *prompt)
 	return (0);
 }
 
+//todo: unset
 int	ft_unset(t_request *request, t_prompt *prompt)
 {
 	int		index;

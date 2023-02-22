@@ -82,6 +82,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 			dupnclose(prompt->prev_pipefd, STDIN_FILENO);
 		close(prompt->pipefd[READEND]);
 		close(prompt->pipefd[WRITEEND]);
+		// todo: redirect_fd(request);
 		exit (dispatch_cmd(request, prompt));
 	}
 	else
@@ -152,9 +153,6 @@ int	post_parse(t_request *request, int index)
 		i++;
 	}
 	i = -1;
-	while (request->tab[++i] != NULL)
-		printf("[DEBUG] tab[%d]: %s\n", i, request->tab[i]);
-	// todo: redirect_fd(&prompt->requests[i]);
 	return (0);
 }
 
