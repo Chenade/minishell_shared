@@ -48,6 +48,7 @@ void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 int         print_syntax_error(t_parse data);
 int         print_fd_error(char *path, char *cmd);
+int         print_redirect_error(int type, char *path);
 
 /* UTILS - free */
 void		free_pp(char **pp);
@@ -107,18 +108,14 @@ int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
 
 /* CMD - process */
+int         redirection(t_request *request, t_prompt *prompt);
 int			process(t_prompt *prompt);
-void	    ft_wait(t_prompt *prompt);
 
 /* exec bin func*/
 int         exec_bin(t_request *request, t_prompt *prompt);
 
-/* CMD - redirect */
-// int			redirect_input(t_prompt *prompt);
-// int			redirect_input2(t_prompt *prompt);
-// int			redirect_output(t_prompt *prompt);
-
 /* builtin  utils*/
+int         is_builtin(char	*cmd);
 int         ft_print(char *str, int	fd);
 int			del_envp(int index, t_token *token, t_prompt *prompt);
 int			add_envp(char *str, t_prompt *prompt);

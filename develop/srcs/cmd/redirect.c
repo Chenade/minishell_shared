@@ -12,29 +12,6 @@
 
 #include "minishell.h"
 
-int	error_message_fd(int type, char *path)
-{
-	DIR	*folder;
-	int	fd;
-	int	ret;
-
-	fd = open(path, O_WRONLY);
-	folder = opendir(path);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(path, 2);
-	if ((type == 7 || type == 9) && fd == -1 && folder == NULL)
-		ft_putendl_fd(": Permission denied", 2);
-	if ((type == 6) && fd == -1 && folder == NULL)
-		ft_putendl_fd(": No such file or directory", 2);
-	else if (fd == -1 && folder != NULL)
-		ft_putendl_fd(": is a directory", 2);
-	if (folder)
-		closedir(folder);
-	close(fd);
-	g_exit_status = 1;
-	return (g_exit_status);
-}
-
 int	ft_open(int type, char *path)
 {
 	int	fd;
@@ -46,82 +23,61 @@ int	ft_open(int type, char *path)
 		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	else if (type == 6)
 		fd = open(path, O_RDONLY, 0666);
-	else if (type == 8)
-		fd = open(path, O_RDONLY, 0666);
 	return (fd);
 }
 
-int	redirect_output(t_request *request)
+int	exit_fork(t_request *request, t_prompt *prompt, int status)
 {
-	t_token	*token;
-
-	token = request->token;
-	while (token)
+	if (prompt->nbr_request > 1 || !is_builtin(request->cmd))
 	{
-		if (token->type == 7 || token->type == 9)
+		free_all(prompt);
+		free_pp(prompt->envp);
+		clear_history();
+	}
+	exit (status);
+}
+
+int	redirection_heredoc(t_request *request, t_prompt *prompt, t_token *token)
+{
+	return (0);
+}
+
+int	redirection_child(t_request *request, t_prompt *prompt, t_token *token)
+{
+	int	fd;
+
+	if (token->next && token->next->type == 2)
+	{
+		fd = ft_open(token->type, token->next->str);
+		if (fd < 0)
+			exit_fork(request, prompt, print_redirect_error(token->type, token->next->str));
+		else
 		{
-			if (token->next && token->next->type == 2)
-			{
-				if (request->output_fd != 1)
-					ft_close(request->output_fd);
-				request->output_fd = ft_open(token->type, token->next->str);
-				if (request->output_fd < 0)
-					return (error_message_fd(token->type, token->next->str));
-			}
-			else
-				return (print_error(SYNERR, "", token->str));
+			if (token->type == 7 || token->type == 9)
+				dupnclose(fd, STDOUT_FILENO);
+			if (token->type == 6)
+				dupnclose(fd, STDIN_FILENO);
 		}
-		if (!token->next)
-			break ;
-		token = token->next;
 	}
-	return (0);
+	else
+		exit_fork(request, prompt, print_error(SYNERR, "", token->str));
 }
 
-int	redirect_input2(t_request *request)
+int	redirection(t_request *request, t_prompt *prompt)
 {
+	int		fd;	
 	t_token	*token;
 
 	token = request->token;
 	while (token)
 	{
+		if (token->type == 7 || token->type == 9 || token->type == 6)
+			redirection_child(request, prompt, token);
+		if (token->type == 8)
+			redirection_heredoc(request, prompt, token);
 		if (!token->next)
 			break ;
 		token = token->next;
 	}
-	return (0);
-}
-
-int	redirect_input(t_request *request)
-{
-	t_token	*token;
-
-	token = request->token;
-	while (token)
-	{
-		if (token->type == 6)
-		{
-			if (token->next && token->next->type == 2)
-			{
-				if (request->input_fd != 0)
-					close(request->input_fd);
-				request->input_fd = ft_open(token->type, token->next->str);
-				if (request->input_fd < 0)
-					return (error_message_fd(token->type, token->next->str));
-			}
-			else
-				return (print_error(SYNERR, "", token->str));
-		}
-		if (!token->next)
-			break ;
-		token = token->next;
-	}
-	return (0);
-}
-
-
-int	redirect_fd(t_request *request)
-{
-	redirect_output (request);
 	return (0);
 }

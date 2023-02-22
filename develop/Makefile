@@ -71,11 +71,10 @@ SRCS_TOK	=	token/fill_token.c \
 				token/request.c
 
 SRCS_CMD	=	cmd/process.c \
+				cmd/redirect.c \
 				cmd/builtin.c \
 				cmd/builtin_utils.c \
-				cmd/ft_wait.c \
 				cmd/exec.c
-				# cmd/redirect.c
 
 SRCS		=	$(SRCS_GEN)
 SRCS		+=	$(SRCS_UTL)

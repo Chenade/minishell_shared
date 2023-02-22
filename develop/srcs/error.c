@@ -22,6 +22,31 @@ int	print_syntax_error(t_parse data)
 	return (0);
 }
 
+
+int	print_redirect_error(int type, char *path)
+{
+	DIR	*folder;
+	int	fd;
+	int	ret;
+
+	fd = open(path, O_WRONLY);
+	folder = opendir(path);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(path, 2);
+	if ((type == 7 || type == 9) && fd == -1 && folder == NULL)
+		ft_putendl_fd(": Permission denied", 2);
+	if ((type == 6) && fd == -1 && folder == NULL)
+		ft_putendl_fd(": No such file or directory", 2);
+	else if (fd == -1 && folder != NULL)
+		ft_putendl_fd(": is a directory", 2);
+	if (folder)
+		closedir(folder);
+	close(fd);
+	g_exit_status = 1;
+	return (g_exit_status);
+}
+
+
 int	print_fd_error(char *path, char *cmd)
 {
 	DIR	*folder;

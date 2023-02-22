@@ -60,9 +60,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
 	int		ret;
-	int		tmp;
 
-	tmp = 0;
 	pipe(prompt->pipefd);
 	request->pid = fork();
 	if (request->pid == 0)
@@ -74,7 +72,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 			dupnclose(prompt->prev_pipefd, STDIN_FILENO);
 		close(prompt->pipefd[READEND]);
 		close(prompt->pipefd[WRITEEND]);
-		// todo: redirect_fd(request);
+		redirection(request, prompt);
 		exit (dispatch_cmd(request, prompt));
 	}
 	else
@@ -85,6 +83,21 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 		prompt->prev_pipefd = prompt->pipefd[READEND];
 	}
 	return (0);
+}
+
+void	ft_wait(t_prompt *prompt)
+{
+	int		status;
+	int		i;
+
+	i = -1;
+	status = 0;
+	while (++i < prompt->nbr_request)
+	{
+		waitpid(prompt->requests[i].pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+	}
 }
 
 int	process(t_prompt *prompt)
