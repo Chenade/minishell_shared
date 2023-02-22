@@ -136,7 +136,6 @@ int	post_parse(t_request *request, int index)
 	request->id = index + 1;
 	request->tab = NULL;
 	token = request->token;
-	print_token(token);
 	while (i < request->nbr_token)
 	{
 		if (token->type == 1)
@@ -184,17 +183,17 @@ int	process(t_prompt *prompt)
 	prompt->prev_pipefd = -1;
 	while (++i < prompt->nbr_request)
 		post_parse(&prompt->requests[i], i);
-	// if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
-	// 	dispatch_cmd(&prompt->requests[0], prompt);
-	// else
-	// {
-	// 	i = -1;
-	// 	while (++i < prompt->nbr_request)
-	// 		status = exec_cmd(&prompt->requests[i], prompt, i);
-	// }
+	if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
+		dispatch_cmd(&prompt->requests[0], prompt);
+	else
+	{
+		i = -1;
+		while (++i < prompt->nbr_request)
+			status = exec_cmd(&prompt->requests[i], prompt, i);
+	}
 	ft_wait(prompt);
-	// if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
-		// close(prompt->pipefd[0]);
+	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
+		close(prompt->pipefd[0]);
 	printf("[DEBUG] status: %d, g_rsig.exit_status: %d\n", status, g_sig.exit_status);
 	return (status);
 }
