@@ -136,7 +136,7 @@ int	post_parse(t_request *request, int index)
 	request->id = index + 1;
 	request->tab = NULL;
 	token = request->token;
-	while (i < request->nbr_token)
+	while (token)
 	{
 		if (token->type == 1)
 		{
@@ -150,9 +150,7 @@ int	post_parse(t_request *request, int index)
 		else if (token->type > 5 && token->type < 10)
 			redirect = 1;
 		token = token->next;
-		i++;
 	}
-	i = -1;
 	return (0);
 }
 

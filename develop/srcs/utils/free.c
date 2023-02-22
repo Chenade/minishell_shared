@@ -53,7 +53,7 @@ void	free_all(t_prompt *p)
 		if (p->requests)
 		{
 			j = -1;
-			while (p->requests[i].tab[++j])
+			while (p->requests[	i].tab[++j])
 				free (p->requests[i].tab[j]);
 			free (p->requests[i].tab);
 			if (p->requests[i].token)

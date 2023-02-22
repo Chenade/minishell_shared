@@ -54,7 +54,9 @@ int	minishell(char *out, t_prompt *prompt)
 		parse_cmd(out, prompt->envp);
 		if (!status)
 		{
-			if (fill_request(out, prompt) || process(prompt))
+			if (fill_request(out, prompt))
+				return (1);
+			if (process(prompt))
 				return (1);
 			g_sig.exit_status = 0;
 		}
