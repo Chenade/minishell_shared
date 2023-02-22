@@ -35,28 +35,16 @@ void	mini_getpid(t_prompt *p)
 	g_sig.pid = pid - 1;
 }
 
-int	join_putstr_fd(char *a, char *b, char *c, int fd)
-{
-	if (a)
-		ft_putstr_fd(a, fd);
-	if (b)
-		ft_putstr_fd(b, fd);
-	if (c)
-		ft_putstr_fd(c, fd);
-}
-
 void	sigint_handler(int sig)		// need to change exit_code -> 130;
 {
 	char *str;
 
 	if (sig == SIGINT)
 	{
-		str = ft_strdup(rl_line_buffer);
-		rl_replace_line("", 0);
-		join_putstr_fd("minishell $ ", str, "\n", 1);
+		printf("\n");
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
-		free(str);
 		g_sig.exit_status = 130;
 		// ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		// if (rl_on_new_line() == -1)
@@ -66,6 +54,12 @@ void	sigint_handler(int sig)		// need to change exit_code -> 130;
 	}
 }
 
+void	set_signal(void)
+{
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 int	minishell(char *out, t_prompt *prompt)
 {
 	int	status;
@@ -73,20 +67,15 @@ int	minishell(char *out, t_prompt *prompt)
 
 	cmd = ft_strdup(out);
 	out = expansion(out, prompt->envp);
-	// printf("OUT-1- [%s]\n", out);
 	if (out)
 	{
 		add_history(cmd);
 		free(cmd);
 		status = pre_check(out, prompt);
-		// printf("OUT-2- [%s]\n", out);
 		parse_cmd(out, prompt->envp);
-		// printf("OUT-3- [%s]\n", out);
 		if (!status)
 		{
-			if (fill_request(out, prompt))
-				return (1);
-			if (process(prompt))
+			if (fill_request(out, prompt) || process(prompt))
 				return (1);
 			g_sig.exit_status = 0;
 		}
@@ -107,8 +96,7 @@ int	main(int argc, char **argv, char **envp)
 	init_prompt(argv, envp, &prompt);
 	while (42)
 	{
-		signal(SIGINT, sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
+		set_signal();
 		out = readline("minishell $ ");
 		if (!out)
 		{
