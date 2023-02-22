@@ -19,6 +19,8 @@ int	env_key_len(char *out)
 
 	j = 0;
 	len = 0;
+	if (out[j] == '?')
+		return (1);
 	while (out[++j])
 	{
 		if (out[j] == -' ' || out[j] == -'|' || out[j] == -'<' || out[j] == -'>'
