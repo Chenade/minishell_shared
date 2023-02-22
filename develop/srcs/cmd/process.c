@@ -48,7 +48,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 		result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
-	if (prompt->nbr_request == 1 && is_builtin(request->cmd))
+	if (prompt->nbr_request > 1 || !is_builtin(request->cmd))
 	{
 		free_all(prompt);
 		free_pp(prompt->envp);
