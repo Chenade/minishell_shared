@@ -67,6 +67,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	request->pid = fork();
 	if (request->pid == 0)
 	{
+		set_signal();
 		if (prompt->nbr_request != request->id)
 			dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
 		if (request->id != 1)
@@ -86,39 +87,8 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	return (0);
 }
 
-int	post_parse(t_request *request, int index)
-{
-	int		i;
-	int		redirect;
-	t_token	*token;
-
-	i = 0;
-	redirect = 0;
-	request->pid = 0;
-	request->id = index + 1;
-	request->tab = NULL;
-	token = request->token;
-	while (token)
-	{
-		if (token->type == 1)
-		{
-			request->cmd = ft_strdup(token->str);
-			ft_array_push(&request->tab, token->str);
-		}
-		else if ((token->type == 2 || token->type == 5) && redirect == 0)
-			ft_array_push(&request->tab, token->str);
-		else if (token->type == 2 && redirect > 0)
-			redirect -= 1;
-		else if (token->type > 5 && token->type < 10)
-			redirect = 1;
-		token = token->next;
-	}
-	return (0);
-}
-
 int	process(t_prompt *prompt)
 {
-	// printf("[DEBUG] nbr_request: %d\n", prompt->nbr_request);
 	int		status;
 	int		i;
 	t_token	*token;
@@ -128,14 +98,12 @@ int	process(t_prompt *prompt)
 	prompt->prev_pipefd = -1;
 	while (++i < prompt->nbr_request)
 		post_parse(&prompt->requests[i], i);
+	i = -1;
 	if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
 		dispatch_cmd(&prompt->requests[0], prompt);
 	else
-	{
-		i = -1;
 		while (++i < prompt->nbr_request)
 			exec_cmd(&prompt->requests[i], prompt, i);
-	}
 	ft_wait(prompt);
 	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
 		close(prompt->pipefd[0]);

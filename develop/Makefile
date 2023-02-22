@@ -52,16 +52,18 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	env.c error.c temp.c
+SRCS_GEN	=	env.c error.c
 
 SRCS_UTL	=	utils/init.c \
 				utils/free.c \
 				utils/matrix.c \
 				utils/token.c \
+				utils/print.c \
 				utils/utils.c
 
 SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
+				parse/post_parse.c \
 				parse/parse_cmd.c \
 				parse/expand_exit.c
 

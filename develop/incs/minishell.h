@@ -84,6 +84,7 @@ int	        insert_str(char *new_out, int *nout_i, char *str, int len);
 void	    parse_cmd(char *cmd, char **envp);
 int	        pre_check(char *out, t_prompt *prompt);
 char	    *expansion(char *out, char **envp);
+int         post_parse(t_request *request, int index);
 
 /* PARSE - exit_status */
 int	        exit_strlen(void);
