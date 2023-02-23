@@ -58,7 +58,7 @@ int	minishell(char *out, t_prompt *prompt)
 				return (1);
 			if (process(prompt))
 				return (1);
-			g_exit_status = 0;
+	// 		g_exit_status = 0;
 		}
 	}
 	else
@@ -95,6 +95,8 @@ int	main(int argc, char **argv, char **envp)
 	t_prompt			prompt;
 
 	init_prompt(argv, envp, &prompt);
+	out	= NULL;
+	g_exit_status = 0;
 	while (42)
 	{
 		set_signal();

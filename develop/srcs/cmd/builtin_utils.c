@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-int	ft_print(char *str, int	fd)
-{
-	ft_putstr_fd (str, fd);
-    return (0);
-}
-
 int	del_envp(int index, t_token *token, t_prompt *prompt)
 {
 	int		i;
@@ -51,7 +45,8 @@ int	add_envp(char *str, t_prompt *prompt)
 	int		j;
 	char	**env_new;
 
-	env_new = (char **) malloc((get_matrixlen(prompt->envp) + 2) * sizeof(char *));
+	env_new = (char **) malloc((get_matrixlen(prompt->envp) + 2)
+			* sizeof(char *));
 	if (!env_new)
 		return (1);
 	j = -1;
@@ -108,5 +103,5 @@ int	update_oldpwd(t_prompt *prompt)
 		free (val);
 		return (0);
 	}
-    return (-1);
+	return (-1);
 }

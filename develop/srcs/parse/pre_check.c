@@ -42,7 +42,7 @@ int	check_pipe(t_parse *data, char *c, t_prompt *prompt)
 
 int	check_redirect(t_parse *data, char *c)
 {
-	if (*c == -'<')
+	if (*c == - '<')
 	{
 		if (data->outfile > 0)
 			return (1);
@@ -50,7 +50,7 @@ int	check_redirect(t_parse *data, char *c)
 		if (data->infile > 2)
 			return (1);
 	}
-	if (*c == -'>')
+	if (*c == - '>')
 	{
 		if (data->infile > 0)
 			return (1);
@@ -58,7 +58,7 @@ int	check_redirect(t_parse *data, char *c)
 		if (data->outfile > 2)
 			return (1);
 	}
-	if (*c == -' ')
+	if (*c == - ' ')
 	{
 		if (data->infile > 0)
 			data->infile += 1;

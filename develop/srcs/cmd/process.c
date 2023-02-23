@@ -34,6 +34,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	int		result;
 
 	result = 0;
+	redirection(request, prompt);
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
 	else if (ft_strcmp(request->cmd, "cd") == 0)
@@ -72,7 +73,6 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 			dupnclose(prompt->prev_pipefd, STDIN_FILENO);
 		close(prompt->pipefd[READEND]);
 		close(prompt->pipefd[WRITEEND]);
-		redirection(request, prompt);
 		exit (dispatch_cmd(request, prompt));
 	}
 	else

@@ -6,6 +6,8 @@ char	*get_env(char *var, char **envp, int n)
 	int	n2;
 
 	i = 0;
+	if (var[0] == '?')
+		return (ft_itoa(g_exit_status));
 	if (n < 0)
 		n = ft_strlen(var);
 	while (!ft_strchr(var, '=') && envp && envp[i])

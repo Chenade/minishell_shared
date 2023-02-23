@@ -42,7 +42,7 @@ int	redirection_heredoc(t_request *request, t_prompt *prompt, t_token *token)
 	return (0);
 }
 
-int	redirection_child(t_request *request, t_prompt *prompt, t_token *token)
+int	redirect_fd(t_request *request, t_prompt *prompt, t_token *token)
 {
 	int	fd;
 
@@ -50,7 +50,8 @@ int	redirection_child(t_request *request, t_prompt *prompt, t_token *token)
 	{
 		fd = ft_open(token->type, token->next->str);
 		if (fd < 0)
-			exit_fork(request, prompt, print_redirect_error(token->type, token->next->str));
+			exit_fork(request, prompt,
+				print_redirect_error(token->type, token->next->str));
 		else
 		{
 			if (token->type == 7 || token->type == 9)
@@ -72,7 +73,7 @@ int	redirection(t_request *request, t_prompt *prompt)
 	while (token)
 	{
 		if (token->type == 7 || token->type == 9 || token->type == 6)
-			redirection_child(request, prompt, token);
+			redirect_fd(request, prompt, token);
 		if (token->type == 8)
 			redirection_heredoc(request, prompt, token);
 		if (!token->next)

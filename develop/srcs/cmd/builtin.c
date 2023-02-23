@@ -39,14 +39,14 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 	return (0);
 }
 
-int		ft_pwd(t_request *request, t_prompt *prompt)
+int	ft_pwd(t_request *request, t_prompt *prompt)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		ft_print(cwd, 1);
-		ft_print("\n", 1);
+		printf("%s", cwd);
+		printf("\n");
 		return (0);
 	}
 	else
@@ -57,24 +57,24 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 {
 	int		i;
 	int		newline;
-	t_token *token;
+	t_token	*token;
 
 	token = request->token;
-    newline = 1;
+	newline = 1;
 	while (token)
 	{
 		if (token->type == 2)
 		{
-			ft_print (token->str, 1);
+			printf ("%s", token->str);
 			if (token->next && token->next->type == 2)
-				ft_print (" ", 1);
+				printf (" ");
 		}
-        else if (token->type == 5 && ft_strcmp(token->str, "-n") == 0)
+		else if (token->type == 5 && ft_strcmp(token->str, "-n") == 0)
 			newline = 0;
 		token = token->next;
 	}
-    if (newline)
-	    ft_print("\n", 1);
+	if (newline)
+		printf("\n");
 	return (0);
 }
 
@@ -85,13 +85,13 @@ int	ft_export(t_request *request, t_prompt *prompt)
 
 	index = -1;
 	token = request->token;
-	while(token)
+	while (token)
 	{
 		if (token->type == 3)
 		{
 			index = in_envp(token->str, prompt);
 			if (index > 0)
-				prompt->envp[index] = token->str;
+				prompt->envp[index] = ft_strdup(token->str);
 			else
 				add_envp(token->str, prompt);
 		}
@@ -105,7 +105,7 @@ int	ft_unset(t_request *request, t_prompt *prompt)
 {
 	int		index;
 	t_token	*token;
-	
+
 	index = -1;
 	token = request->token;
 	while (token)

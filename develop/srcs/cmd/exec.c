@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-int			call_execve(char *path, t_request *request, t_prompt *prompt)
+int	call_execve(char *path, t_request *request, t_prompt *prompt)
 {
-	int tmp;
-	int ret;
+	int	tmp;
+	int	ret;
 
 	if (path && ft_strchr(path, '/') != NULL)
 		tmp = execve(path, request->tab, prompt->envp);
@@ -57,7 +57,6 @@ int	exec_bin(t_request *request, t_prompt *prompt)
 	char	*env;
 	int		ret;
 
-	i = 0;
 	ret = 0;
 	env = get_env("PATH", prompt->envp, -1);
 	path = NULL;
