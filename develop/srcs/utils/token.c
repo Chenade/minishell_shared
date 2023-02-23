@@ -30,7 +30,7 @@ t_token	*token_create(t_token *token)
 {
 	token = (t_token *) malloc (sizeof(t_token));
 	if (!token)
-		return (0);
+		return (NULL);
 	token->str = NULL;
 	token->next = NULL;
 	token->prev = NULL;

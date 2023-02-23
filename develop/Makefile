@@ -59,7 +59,8 @@ SRCS_UTL	=	utils/init.c \
 				utils/print.c \
 				utils/env.c \
 				utils/error.c \
-				utils/utils.c
+				utils/utils.c \
+				signal.c
 
 SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
