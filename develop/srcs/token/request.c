@@ -5,7 +5,6 @@ int	set_request(char *p, t_request *request)
 	int	i;
 
 	i = 0;
-	printf("p : %s\n", p);
 	request->str_len = 0;
 	request->nbr_token = 1;
 	while (p[i] && p[i] != -'|')
@@ -17,10 +16,6 @@ int	set_request(char *p, t_request *request)
 	i = 0;
 	while (*p && *p != -'|')
 	{
-		if (is_sep(*p))
-			printf("*P == %c\n", -(*p));
-		else
-			printf("*P == %c\n", (*p));
 		if (*p == -' ')
 			request->nbr_token++;
 		else if ((*p == -'>' && *(p + 1) == -'>') || (*p == -'<' && *(p + 1) == -'<'))
@@ -32,7 +27,6 @@ int	set_request(char *p, t_request *request)
 		p++;
 	}
 	request->str[i] = '\0';
-	printf("NBR_TOKEN : %d\n", request->nbr_token);
 	return (0);
 }
 
