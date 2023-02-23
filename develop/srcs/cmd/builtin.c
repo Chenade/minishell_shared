@@ -20,13 +20,13 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 	if (request->nbr_token > 2)
 		return (print_error(TM_ARGS, "cd", NULL));
 	if (request->nbr_token == 1)
-		dest = get_env("HOME", prompt->envp, 1);
+		dest = get_env("HOME", prompt->envp, 4);
 	else
 	{
 		token = request->token->next;
 		if (ft_strcmp(token->str, "-") == 0)
 		{
-			dest = get_env("OLD_PWD", prompt->envp, 1);
+			dest = get_env("OLD_PWD", prompt->envp, 7);
 			if (!dest)
 				return (print_error(OP_NS, "cd", NULL), -1);
 		}
