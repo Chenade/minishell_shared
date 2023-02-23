@@ -14,6 +14,8 @@
 
 int	is_builtin(char	*cmd)
 {
+	if (!cmd)
+		return (1);
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "cd") == 0)
@@ -37,7 +39,7 @@ int	del_envp(int index, t_token *token, t_prompt *prompt)
 	int		j;
 	char	**env_new;
 
-	env_new = (char **) malloc((get_matrixlen(prompt->envp) - 1)
+	env_new = (char **) malloc((get_matrixlen(prompt->envp))
 			* sizeof(char *));
 	if (!env_new)
 		return (print_error(MEM, "unset", NULL));
@@ -102,7 +104,7 @@ int	in_envp(char *str, t_prompt *prompt)
 		free_pp (env_val);
 	}
 	free_pp (value);
-	return (0);
+	return (-1);
 }
 
 int	update_oldpwd(t_prompt *prompt)

@@ -20,6 +20,8 @@ int	call_execve(char *path, t_request *request, t_prompt *prompt)
 	if (path && ft_strchr(path, '/') != NULL)
 		tmp = execve(path, request->tab, prompt->envp);
 	ret = print_fd_error(path, request->cmd);
+	g_exit_status = 127;
+	ret = 127;
 	return (ret);
 }
 

@@ -35,7 +35,7 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 	}
 	update_oldpwd(prompt);
 	if (chdir(dest) < 0)
-		print_error(NDIR, "cd", token->str);
+		return (print_error(NDIR, "cd", token->str));
 	return (0);
 }
 
@@ -45,8 +45,7 @@ int	ft_pwd(t_request *request, t_prompt *prompt)
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		printf("%s", cwd);
-		printf("\n");
+		printf("%s\n", cwd);
 		return (0);
 	}
 	else
@@ -92,7 +91,7 @@ int	ft_export(t_request *request, t_prompt *prompt)
 		if (token->type == 3)
 		{
 			index = in_envp(token->str, prompt);
-			if (index > 0)
+			if (index >= 0)
 				prompt->envp[index] = ft_strdup(token->str);
 			else
 				status = add_envp(token->str, prompt);
@@ -104,7 +103,6 @@ int	ft_export(t_request *request, t_prompt *prompt)
 	return (status);
 }
 
-//todo: unset
 int	ft_unset(t_request *request, t_prompt *prompt)
 {
 	int		status;
@@ -116,10 +114,10 @@ int	ft_unset(t_request *request, t_prompt *prompt)
 	token = request->token;
 	while (token)
 	{
-		if (token->type == 4)
+		if (token->type == 2)
 		{
 			index = in_envp(token->str, prompt);
-			if (index > 0)
+			if (index >= 0)
 				status = del_envp(index, token, prompt);
 			if (status)
 				break ;

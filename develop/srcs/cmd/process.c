@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	free_cmd(t_prompt *prompt, int fd_stdout)
+int	free_cmd(t_prompt *prompt, int fd_stdout, int status)
 {
 	dupnclose(fd_stdout, STDOUT_FILENO);
 	if (!(prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd)))
@@ -21,7 +21,7 @@ int	free_cmd(t_prompt *prompt, int fd_stdout)
 		free_pp(prompt->envp);
 		clear_history();
 	}
-	return (0);
+	return (status);
 }
 
 int	dispatch_cmd(t_request *request, t_prompt *prompt)
@@ -29,10 +29,11 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	int		result;
 	int		fd_stdout;
 
-	result = 0;
+	if (request->cmd == NULL)
+		return (print_error(NCMD, "\'\'", NULL));
 	fd_stdout = dup(STDOUT_FILENO);
 	if (redirection(request, prompt, fd_stdout))
-		return (1);
+		return (free_cmd(prompt, fd_stdout, 1));
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
 	else if (ft_strcmp(request->cmd, "cd") == 0)
@@ -49,8 +50,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 		exit_minishell(request, prompt, fd_stdout);
 	else
 		result = exec_bin(request, prompt);
-	free_cmd(prompt, fd_stdout);
-	return (result);
+	return (free_cmd(prompt, fd_stdout, result));
 }
 
 int	exec_cmd(t_request *request, t_prompt *prompt, int i)
@@ -93,13 +93,12 @@ int	process(t_prompt *prompt)
 		post_parse(&prompt->requests[i], i);
 	i = -1;
 	if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
-		dispatch_cmd(&prompt->requests[0], prompt);
+		return (g_exit_status = dispatch_cmd(&prompt->requests[0], prompt));
 	else
 		while (++i < prompt->nbr_request)
 			exec_cmd(&prompt->requests[i], prompt, i);
 	ft_wait(prompt);
 	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
 		ft_close(prompt->pipefd[0]);
-	// printf("[DEBUG] g_exit_status: %d\n", g_exit_status);
 	return (status);
 }

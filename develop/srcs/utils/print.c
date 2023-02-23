@@ -23,12 +23,10 @@ int	print_env(char **envp)
 	int i;
 
 	i = 0;
-	printf("======print_env======\n");
 	while(envp && envp[i])
 	{
-		printf("%d : %s\n", i + 1, envp[i]);
+		printf("%s\n", envp[i]);
 		i++;
 	}
-	printf("======print_env======\n");
 	return (0);
 }
