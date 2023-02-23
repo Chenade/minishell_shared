@@ -61,12 +61,13 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
 	int		ret;
+	int		status;
+	pid_t	pid;
 
 	pipe(prompt->pipefd);
 	request->pid = fork();
 	if (request->pid == 0)
 	{
-		set_signal();
 		if (prompt->nbr_request != request->id)
 			dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
 		if (request->id != 1)
@@ -77,6 +78,8 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	}
 	else
 	{
+		// signal(SIGINT, sig_process_handler);
+		// signal(SIGQUIT, sig_process_handler);
 		close (prompt->pipefd[WRITEEND]);
 		if (prompt->prev_pipefd != -1)
 			close(prompt->prev_pipefd);
@@ -108,6 +111,7 @@ int	process(t_prompt *prompt)
 
 	status = 0;
 	i = -1;
+	signal_process();
 	prompt->prev_pipefd = -1;
 	while (++i < prompt->nbr_request)
 		post_parse(&prompt->requests[i], i);

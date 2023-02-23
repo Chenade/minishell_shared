@@ -47,6 +47,7 @@ int	init_request(char *cmd, t_prompt *prompt)
 		if (set_request(p, &(prompt->requests[i])))
 			return (1);
 		p += prompt->requests[i].str_len;
+		prompt->requests->id = i;
 		prompt->requests[i].cmd = NULL;
 		prompt->requests[i].token = NULL;
 		p++;

@@ -52,7 +52,7 @@ INCS_DIR	=	incs
 
 OBJS_DIR	=	objs
 
-SRCS_GEN	=	env.c error.c
+SRCS_GEN	=	env.c error.c signal.c
 
 SRCS_UTL	=	utils/init.c \
 				utils/free.c \

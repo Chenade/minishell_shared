@@ -99,8 +99,12 @@ char		**set_env(char *var, char *value, char **envp, int n);
 void	    init_envp(t_prompt *prompt, char *str, char **argv);
 void	    init_prompt(char **argv, char **envp, t_prompt *prompt);
 
-/* MAIN & SIGNAL */
+/* SIGNAL */
+void	    sig_process_handler(int sig);
+void	    signal_process(void);
 void	    set_signal(void);
+
+/* MAIN & SIGNAL */
 int			main(int argc, char **argv, char **envp);
 
 /* parsing fix*/
