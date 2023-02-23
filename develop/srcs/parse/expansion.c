@@ -18,23 +18,20 @@ int	env_key_len(char *out)
 	char	*tmp;
 	int		j;
 
-	j = 0;
+	j = 1;
 	len = 0;
-	if (out[++j] == '?')
-	{
-		tmp = ft_itoa(g_exit_status);
-		len = ft_strlen(tmp);
-		free (tmp);
-	}
+	if (out[j] == '?')
+		return (1);
 	else
 	{
-		while (out[++j])
+		while (out[j])
 		{
-			if (out[j] == - ' ' || out[j] == - '|' || out[j] == - '<'
-				|| out[j] == - '>' || out[j] == '$' || out[j] == '\''
+			if (out[j] == ' ' || out[j] == '|' || out[j] == '<'
+				|| out[j] == '>' || out[j] == '$' || out[j] == '\''
 				|| out[j] == '"' || out[j] == ';' || out[j] == '\0')
 				break ;
 			len += 1;
+			j++;
 		}
 	}
 	return (len);
@@ -117,15 +114,13 @@ char	*expansion(char *out, char **envp)
 	char	*new_out;
 
 	malloc_len = get_malloc_size(out, envp);
-	if (malloc_len == 0 )
-		return (NULL);
 	if (malloc_len)
 		new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
-	if (!new_out)
-		return (print_error(MEM, NULL, NULL), NULL);
+	if (malloc_len == 0 || !new_out)
+		return (NULL);
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp);
 	free (out);
-	printf("[DEBUG] [%s]\n", new_out);
 	return (new_out);
 }
+	// printf("[DEBUG] [%s]\n", new_out);
