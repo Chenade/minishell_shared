@@ -5,20 +5,20 @@ void	rm_space_sep(char *cmd)
 	int	i;
 
 	i = 0;
+	while (*cmd == -' ')
+		push_str(cmd); 
 	while (*cmd)
 	{
 		if ((*(cmd) == - ' ' && (is_sep(*(cmd + 1)) && *(cmd + 1) != - ' ')) && ++i)
-			;
+					push_str(cmd);
 		else if ((*(cmd) == - ' ' && (is_sep(*(cmd - 1)) && *(cmd - 1) != - ' ')) && ++i)
-		{
-			*(cmd) = *(cmd + i);
-			cmd++;
-		}
+			push_str(cmd);
+		else if (*(cmd) == - ' ' && *(cmd + 1) == - ' ')
+			push_str(cmd);
 		else if ((*cmd) == -'$')
 			i += ((env_key_len(cmd )) + 1);
 		else
 			cmd++;
-		*(cmd) = *(cmd + i);
 	}
 }
 
