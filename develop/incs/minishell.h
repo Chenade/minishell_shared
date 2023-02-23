@@ -44,7 +44,6 @@ void		print_token(t_token *token);
 int			print_env(char **envp);
 
 /* ERROR */
-void		exit_minishell(t_prompt *prompt, int status);
 int			print_error(int err_type, char *cmd, char *param);
 int         print_syntax_error(t_parse data);
 int         print_fd_error(char *path, char *cmd);
@@ -110,6 +109,8 @@ int         check_quote(t_parse *data, char c);
 /* CMD - process */
 int	        redirection(t_request *request, t_prompt *prompt, int fd_stdout);
 int			process(t_prompt *prompt);
+void	    ft_wait(t_prompt *prompt);
+int         exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout);
 
 /* exec bin func*/
 int         exec_bin(t_request *request, t_prompt *prompt);

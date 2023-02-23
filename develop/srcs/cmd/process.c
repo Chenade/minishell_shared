@@ -45,6 +45,8 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 		result = ft_unset(request, prompt);
 	else if (ft_strcmp(request->cmd, "env") == 0)
 		result = print_env(prompt->envp);
+	else if (ft_strcmp(request->cmd, "exit") == 0)
+		exit_minishell(request, prompt, fd_stdout);
 	else
 		result = exec_bin(request, prompt);
 	free_cmd(prompt, fd_stdout);
@@ -78,21 +80,6 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	return (0);
 }
 
-void	ft_wait(t_prompt *prompt)
-{
-	int		status;
-	int		i;
-
-	i = -1;
-	status = 0;
-	while (++i < prompt->nbr_request)
-	{
-		waitpid(prompt->requests[i].pid, &status, 0);
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
-	}
-}
-
 int	process(t_prompt *prompt)
 {
 	int		status;
@@ -113,6 +100,6 @@ int	process(t_prompt *prompt)
 	ft_wait(prompt);
 	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
 		ft_close(prompt->pipefd[0]);
-	printf("[DEBUG 122] g_exit_status: %d\n", g_exit_status);
+	// printf("[DEBUG] g_exit_status: %d\n", g_exit_status);
 	return (status);
 }

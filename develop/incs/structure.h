@@ -13,14 +13,6 @@
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
 
-typedef struct s_sig
-{
-	int				sigint;
-	int				sigquit;
-	int				exit_status;
-	pid_t			pid;
-}				t_sig;
-
 typedef struct s_token
 {
 	char			*str;
