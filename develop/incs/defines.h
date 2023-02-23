@@ -32,7 +32,8 @@ enum	e_token_type
 	OUTPUT = 7, // >
 	DELIM = 8, // <<
 	APPEN = 9, // >>
-	PIPE = 10
+	PIPE = 10,
+	FILENAME = 11,
 };
 
 enum	e_mini_error

@@ -31,7 +31,8 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 
 	result = 0;
 	fd_stdout = dup(STDOUT_FILENO);
-	redirection(request, prompt);
+	if (redirection(request, prompt, fd_stdout))
+		return (1);
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
 	else if (ft_strcmp(request->cmd, "cd") == 0)
@@ -63,15 +64,15 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 			dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
 		if (request->id != 1)
 			dupnclose(prompt->prev_pipefd, STDIN_FILENO);
-		close(prompt->pipefd[READEND]);
-		close(prompt->pipefd[WRITEEND]);
+		ft_close(prompt->pipefd[READEND]);
+		ft_close(prompt->pipefd[WRITEEND]);
 		exit (dispatch_cmd(request, prompt));
 	}
 	else
 	{
-		close (prompt->pipefd[WRITEEND]);
+		ft_close (prompt->pipefd[WRITEEND]);
 		if (prompt->prev_pipefd != -1)
-			close(prompt->prev_pipefd);
+			ft_close(prompt->prev_pipefd);
 		prompt->prev_pipefd = prompt->pipefd[READEND];
 	}
 	return (0);
@@ -111,7 +112,7 @@ int	process(t_prompt *prompt)
 			exec_cmd(&prompt->requests[i], prompt, i);
 	ft_wait(prompt);
 	if (prompt->nbr_request > 1 || !is_builtin(prompt->requests[0].cmd))
-		close(prompt->pipefd[0]);
-	printf("[DEBUG] g_exit_status: %d\n", g_exit_status);
+		ft_close(prompt->pipefd[0]);
+	printf("[DEBUG 122] g_exit_status: %d\n", g_exit_status);
 	return (status);
 }

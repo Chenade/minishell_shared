@@ -40,7 +40,10 @@ int	post_parse(t_request *request, int index)
 		else if ((token->type == 2 || token->type == 5) && is_filename == 0)
 			set_cmd(request, &token, &is_cmd);
 		else if (token->type == 2 && is_filename > 0)
+		{
+			token->type = 11;
 			is_filename = 0;
+		}
 		else if (token->type > 5 && token->type < 10)
 			is_filename = 1;
 		token = token->next;

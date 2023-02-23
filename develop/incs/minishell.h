@@ -108,7 +108,7 @@ int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
 
 /* CMD - process */
-int         redirection(t_request *request, t_prompt *prompt);
+int	        redirection(t_request *request, t_prompt *prompt, int fd_stdout);
 int			process(t_prompt *prompt);
 
 /* exec bin func*/

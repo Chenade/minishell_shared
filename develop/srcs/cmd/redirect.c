@@ -26,15 +26,17 @@ int	ft_open(int type, char *path)
 	return (fd);
 }
 
-int	exit_fork(t_request *request, t_prompt *prompt, int status)
+int	exit_fork(t_request *request, t_prompt *prompt, int fd_stdout, int status)
 {
-	if (prompt->nbr_request > 1 || !is_builtin(request->cmd))
+	dupnclose (fd_stdout, STDOUT_FILENO);
+	if (!(prompt->nbr_request == 1 || !is_builtin(request->cmd)))
 	{
 		free_all(prompt);
 		free_pp(prompt->envp);
 		clear_history();
+		exit (status);
 	}
-	exit (status);
+	return (status);
 }
 
 int	redirect_heredoc(t_request *request, t_prompt *prompt, t_token *token)
@@ -42,40 +44,46 @@ int	redirect_heredoc(t_request *request, t_prompt *prompt, t_token *token)
 	return (0);
 }
 
-int	redirect_fd(t_request *request, t_prompt *prompt, t_token *token)
+int	redirect_fd(t_request *request, t_prompt *prompt, t_token *token, int fd)
 {
 	int	fd;
 
-	if (token->next && token->next->type == 2)
+	if (token->next && token->next->type == 11)
 	{
 		fd = ft_open(token->type, token->next->str);
 		if (fd < 0)
-			exit_fork(request, prompt,
-				print_redirect_error(token->type, token->next->str));
+			return (exit_fork(request, prompt, fd,
+					print_redirect_error(token->type, token->next->str)));
 		else
 		{
 			if (token->type == 7 || token->type == 9)
 				dupnclose(fd, STDOUT_FILENO);
 			if (token->type == 6)
 				dupnclose(fd, STDIN_FILENO);
+			return (0);
 		}
 	}
 	else
-		exit_fork(request, prompt, print_error(SYNERR, "", token->str));
+		return (exit_fork(request, prompt, fd,
+				print_error(SYNERR, "", token->str)));
 }
 
-int	redirection(t_request *request, t_prompt *prompt)
+int	redirection(t_request *request, t_prompt *prompt, int fd_stdout)
 {
-	int		fd;	
-	t_token	*token;
+	int			fd;	
+	t_token		*token;
+	t_request	*tmp;
 
-	token = request->token;
+	tmp = request;
+	token = tmp->token;
 	while (token)
 	{
 		if (token->type == 7 || token->type == 9 || token->type == 6)
-			redirect_fd(request, prompt, token);
+			if (redirect_fd(tmp, prompt, token, fd_stdout))
+				return (1);
 		if (token->type == 8)
-			redirect_heredoc(request, prompt, token);
+			if (redirect_heredoc(tmp, prompt, token))
+				return (1);
 		if (!token->next)
 			break ;
 		token = token->next;

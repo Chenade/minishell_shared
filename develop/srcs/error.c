@@ -31,7 +31,7 @@ int	print_redirect_error(int type, char *path)
 		print_error(IS_DIR, path, NULL);
 	if (folder)
 		closedir(folder);
-	close(fd);
+	ft_close(fd);
 	g_exit_status = 1;
 	return (g_exit_status);
 }

@@ -2,6 +2,6 @@
 
 void	ft_close(int fd)
 {
-	if (fd > 2)
+	if (fd > 0)
 		close(fd);
 }
