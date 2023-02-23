@@ -107,7 +107,7 @@ int	print_error(int err_type, char *cmd, char *param)
 	else if (err_type == TM_ARGS)
 		ft_putstr_fd(": too many arguments", 2);
 	else if (err_type == MEM)
-		ft_putstr_fd("No memory left on device", 2);
+		ft_putstr_fd(": No memory left on device", 2);
 	else if (err_type == IS_DIR)
 		ft_putstr_fd(": \e[91mIs a directory\e[0m", 2);
 	else if (err_type == NOT_DIR)

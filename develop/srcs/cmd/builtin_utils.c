@@ -21,7 +21,7 @@ int	del_envp(int index, t_token *token, t_prompt *prompt)
 	env_new = (char **) malloc((get_matrixlen(prompt->envp) - 1)
 			* sizeof(char *));
 	if (!env_new)
-		return (1);
+		return (print_error(MEM, "unset", NULL));
 	i = 0;
 	j = -1;
 	while (prompt->envp[++j])
@@ -45,10 +45,10 @@ int	add_envp(char *str, t_prompt *prompt)
 	int		j;
 	char	**env_new;
 
-	env_new = (char **) malloc((get_matrixlen(prompt->envp) + 2)
+	env_new = (char **) malloc((get_matrixlen(prompt->envp) - 1)
 			* sizeof(char *));
 	if (!env_new)
-		return (1);
+		return (print_error(MEM, "unset", NULL));
 	j = -1;
 	while (prompt->envp && prompt->envp[++j])
 	{

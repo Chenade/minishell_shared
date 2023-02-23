@@ -80,10 +80,12 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 
 int	ft_export(t_request *request, t_prompt *prompt)
 {
+	int		status;
 	int		index;
 	t_token	*token;
 
 	index = -1;
+	status = 0;
 	token = request->token;
 	while (token)
 	{
@@ -93,20 +95,24 @@ int	ft_export(t_request *request, t_prompt *prompt)
 			if (index > 0)
 				prompt->envp[index] = ft_strdup(token->str);
 			else
-				add_envp(token->str, prompt);
+				status = add_envp(token->str, prompt);
+			if (status)
+				break ;
 		}
 		token = token->next;
 	}
-	return (0);
+	return (status);
 }
 
 //todo: unset
 int	ft_unset(t_request *request, t_prompt *prompt)
 {
+	int		status;
 	int		index;
 	t_token	*token;
 
 	index = -1;
+	status = 0;
 	token = request->token;
 	while (token)
 	{
@@ -114,9 +120,11 @@ int	ft_unset(t_request *request, t_prompt *prompt)
 		{
 			index = in_envp(token->str, prompt);
 			if (index > 0)
-				del_envp(index, token, prompt);
+				status = del_envp(index, token, prompt);
+			if (status)
+				break ;
 		}
 		token = token->next;
 	}
-	return (0);
+	return (status);
 }

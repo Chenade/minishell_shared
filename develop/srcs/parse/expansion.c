@@ -117,10 +117,12 @@ char	*expansion(char *out, char **envp)
 	char	*new_out;
 
 	malloc_len = get_malloc_size(out, envp);
+	if (malloc_len == 0 )
+		return (NULL);
 	if (malloc_len)
 		new_out = (char *) malloc((malloc_len + 1) * sizeof (char));
-	if (malloc_len == 0 || !new_out)
-		return (NULL);
+	if (!new_out)
+		return (print_error(MEM, NULL, NULL), NULL);
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp);
 	free (out);
