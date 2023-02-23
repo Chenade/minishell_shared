@@ -12,28 +12,25 @@
 
 #include "minishell.h"
 
-int	is_builtin(char	*cmd)
+int	free_cmd(t_prompt *prompt, int fd_stdout)
 {
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "pwd") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "export") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "env") == 0)
-		return (1);
+	dupnclose(fd_stdout, STDOUT_FILENO);
+	if (!(prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd)))
+	{
+		free_all(prompt);
+		free_pp(prompt->envp);
+		clear_history();
+	}
 	return (0);
 }
 
 int	dispatch_cmd(t_request *request, t_prompt *prompt)
 {
 	int		result;
+	int		fd_stdout;
 
 	result = 0;
+	fd_stdout = dup(STDOUT_FILENO);
 	redirection(request, prompt);
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
@@ -49,12 +46,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 		result = print_env(prompt->envp);
 	else
 		result = exec_bin(request, prompt);
-	if (prompt->nbr_request > 1 || !is_builtin(request->cmd))
-	{
-		free_all(prompt);
-		free_pp(prompt->envp);
-		clear_history();
-	}
+	free_cmd(prompt, fd_stdout);
 	return (result);
 }
 

@@ -37,7 +37,7 @@ int	exit_fork(t_request *request, t_prompt *prompt, int status)
 	exit (status);
 }
 
-int	redirection_heredoc(t_request *request, t_prompt *prompt, t_token *token)
+int	redirect_heredoc(t_request *request, t_prompt *prompt, t_token *token)
 {
 	return (0);
 }
@@ -75,7 +75,7 @@ int	redirection(t_request *request, t_prompt *prompt)
 		if (token->type == 7 || token->type == 9 || token->type == 6)
 			redirect_fd(request, prompt, token);
 		if (token->type == 8)
-			redirection_heredoc(request, prompt, token);
+			redirect_heredoc(request, prompt, token);
 		if (!token->next)
 			break ;
 		token = token->next;
