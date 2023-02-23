@@ -18,23 +18,20 @@ int	env_key_len(char *out)
 	char	*tmp;
 	int		j;
 
-	j = 0;
+	j = 1;
 	len = 0;
 	if (out[j] == '?')
-	{
-		tmp = ft_itoa(g_exit_status);
-		len = ft_strlen(tmp);
-		free (tmp);
-	}
+		return (1);
 	else
 	{
-		while (out[++j])
+		while (out[j])
 		{
-			if (out[j] == - ' ' || out[j] == - '|' || out[j] == - '<'
-				|| out[j] == - '>' || out[j] == '$' || out[j] == '\''
+			if (out[j] == ' ' || out[j] == '|' || out[j] == '<'
+				|| out[j] == '>' || out[j] == '$' || out[j] == '\''
 				|| out[j] == '"' || out[j] == ';' || out[j] == '\0')
 				break ;
 			len += 1;
+			j++;
 		}
 	}
 	return (len);
