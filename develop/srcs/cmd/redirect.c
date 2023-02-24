@@ -39,7 +39,8 @@ int	exit_fork(t_request *request, t_prompt *prompt, int fd_stdout, int status)
 	return (status);
 }
 
-int	redirect_heredoc(t_prompt *prompt, t_token *token, int sfd)
+int	redirect_heredoc(t_request request, t_prompt *prompt,
+	t_token *token, int sfd)
 {
 	int		i;
 	int		fd;
@@ -100,7 +101,7 @@ int	redirection(t_request *request, t_prompt *prompt, int fd_stdout)
 			if (redirect_fd(tmp, prompt, token, fd_stdout))
 				return (1);
 		if (token->type == 8)
-			if (redirect_heredoc(prompt, token, fd_stdout))
+			if (redirect_heredoc(tmp, prompt, token, fd_stdout))
 				return (1);
 		if (!token->next)
 			break ;
