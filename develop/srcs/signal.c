@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 13:07:44 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/24 13:08:09 by jischoi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	sigint_process_handler(int sig)
@@ -24,9 +36,9 @@ void	signal_process(void)
 	signal(SIGQUIT, sigquit_process_handler);
 }
 
-void	sigint_handler(int sig)		// need to change exit_code -> 130;
+void	sigint_handler(int sig)
 {
-	char *str;
+	char	*str;
 
 	if (sig == SIGINT)
 	{

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_token.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 13:12:59 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/24 13:15:44 by jischoi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	fill_type(t_token *token, int separator)
 {
-	if (!ft_strcmp(token->str, "") || token->str[0] == -'e')
+	if (!ft_strcmp(token->str, "") || token->str[0] == - 'e')
 		token->type = EMPTY;
 	else if (!ft_strcmp(token->str, ">") && separator == 0)
 		token->type = OUTPUT;
@@ -12,19 +24,20 @@ void	fill_type(t_token *token, int separator)
 		token->type = INPUT;
 	else if (!ft_strcmp(token->str, "<<") && separator == 0)
 		token->type = HERE_DOC;
-	else if (ft_strchr("-", token->str[0]) && token->str[1] 
+	else if (ft_strchr("-", token->str[0]) && token->str[1]
 		&& separator == 0)
 		token->type = OPTN;
 	else if (ft_strchr_int(token->str, '=') > 0 && separator == 0)
 		token->type = ENV_DEF;
 	else if (!token->prev || (token->prev && token->prev->prev
-		&& token->prev->prev->type >= INPUT && token->prev->prev->type <= APPEN))
+			&& token->prev->prev->type >= INPUT
+			&& token->prev->prev->type <= APPEN))
 		token->type = CMD;
 	else
 		token->type = ARG;
 }
 
-char *set_str(t_token *new, char *str, int len, int *sep)
+char	*set_str(t_token *new, char *str, int len, int *sep)
 {
 	int	i;
 
@@ -33,9 +46,9 @@ char *set_str(t_token *new, char *str, int len, int *sep)
 	{
 		if (str[i] == '<' || str[i] == '>')
 			*sep = 1;
-		else if (str[i] == -'e')
+		else if (str[i] == - 'e')
 			str[i] = '\0';
-		else if (is_sep(str[i]) && str[i] != -'e')
+		else if (is_sep(str[i]) && str[i] != - 'e')
 			str[i] *= -1;
 		new->str[i] = str[i];
 		i++;
@@ -47,8 +60,8 @@ char *set_str(t_token *new, char *str, int len, int *sep)
 t_token	*add_node_end(t_token *token, char *str, int len)
 {
 	t_token	*new;
-	int	sep;
-	
+	int		sep;
+
 	sep = 0;
 	if (!str)
 		return (NULL);
@@ -73,22 +86,22 @@ t_token	*add_node_end(t_token *token, char *str, int len)
 	return (token);
 }
 
-int check_append_delim(char *p)
+int	check_append_delim(char *p)
 {
-	if (((p[0] == -'>' && p[1] == -'>')
-		||	(p[0] == -'<' && p[1] == -'<')))
+	if (((p[0] == - '>' && p[1] == - '>')
+			|| (p[0] == - '<' && p[1] == - '<')))
 		return (2);
-	if (p[0] != -' ' || p[0] == -'e')
+	if (p[0] != - ' ' || p[0] == - 'e')
 		return (1);
 	return (0);
 }
 
 t_token	*fill_token(t_request *request)
 {
-	int	i;
-	int	len;
-	char *p;
-	t_token *token;
+	int		i;
+	int		len;
+	char	*p;
+	t_token	*token;
 
 	p = request->str;
 	token = NULL;
@@ -96,7 +109,7 @@ t_token	*fill_token(t_request *request)
 	while (*(p) != '\0' && ++i < request->nbr_token)
 	{
 		len = 0;
-		while(p[len] && !is_sep(p[len]))
+		while (p[len] && !is_sep(p[len]))
 			len++;
 		if (is_sep(p[len]) || !p[len])
 		{
@@ -104,7 +117,7 @@ t_token	*fill_token(t_request *request)
 				len = check_append_delim(p);
 			if (len)
 				token = add_node_end(token, p, len);
-			if (p[len] == -' ')
+			if (p[len] == - ' ')
 				len++;
 		}
 		p += len;

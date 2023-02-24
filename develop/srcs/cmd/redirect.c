@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:12:05 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/21 09:12:06 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/02/24 13:06:19 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	exit_fork(t_request *request, t_prompt *prompt, int fd_stdout, int status)
 	return (status);
 }
 
-int	redirect_heredoc(t_request request, t_prompt *prompt,
+int	redirect_heredoc(t_request *request, t_prompt *prompt,
 	t_token *token, int sfd)
 {
 	int		i;

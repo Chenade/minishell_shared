@@ -1,22 +1,34 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_exit.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 13:08:20 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/24 13:08:21 by jischoi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	exit_strlen(void)
-{
-	char	*tmp;
-	int		len;
+// #include "minishell.h"
 
-	tmp = ft_itoa(g_exit_status);
-	len = ft_strlen(tmp);
-	free (tmp);
-	return (len);
-}
+// int	exit_strlen(void)
+// {
+// 	char	*tmp;
+// 	int		len;
 
-int expand_exit(char *new_out, int nout_i)
-{
-	char	*tmp;
+// 	tmp = ft_itoa(g_exit_status);
+// 	len = ft_strlen(tmp);
+// 	free (tmp);
+// 	return (len);
+// }
 
-	tmp = ft_itoa(g_exit_status);
-	insert_str(new_out, &nout_i, tmp, ft_strlen(tmp));
-	free (tmp);
-	return (nout_i);
-}
+// int expand_exit(char *new_out, int nout_i)
+// {
+// 	char	*tmp;
+
+// 	tmp = ft_itoa(g_exit_status);
+// 	insert_str(new_out, &nout_i, tmp, ft_strlen(tmp));
+// 	free (tmp);
+// 	return (nout_i);
+// }

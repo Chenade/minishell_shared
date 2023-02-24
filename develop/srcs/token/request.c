@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   request.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 13:10:45 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/24 13:12:50 by jischoi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	set_request(char *p, t_request *request)
@@ -7,24 +19,23 @@ int	set_request(char *p, t_request *request)
 	i = 0;
 	request->str_len = 0;
 	request->nbr_token = 1;
-	while (p[i] && p[i] != -'|')
+	while (p[i] && p[i] != - '|')
 		i++;
 	request->str_len = i;
 	request->str = (char *)malloc(sizeof(char) * (request->str_len + 1));
 	if (!request->str)
 		return (print_error(MEM, NULL, NULL));
 	i = 0;
-	while (*p && *p != -'|')
+	while (*p && *p != - '|')
 	{
-		if (*p == -' ')
+		if (*p == - ' ')
 			request->nbr_token++;
-		else if ((*p == -'>' && *(p + 1) == -'>') || (*p == -'<' && *(p + 1) == -'<'))
+		else if ((*p == - '>' && *(p + 1) == - '>')
+			|| (*p == - '<' && *(p + 1) == - '<'))
 			;
-		else if (is_sep(*p) && *p != -' ')
+		else if (is_sep(*p) && *p != - ' ')
 			request->nbr_token += 2;
-		request->str[i] = *p;
-		i++;
-		p++;
+		request->str[i++] = *(p++);
 	}
 	request->str[i] = '\0';
 	return (0);
@@ -32,14 +43,15 @@ int	set_request(char *p, t_request *request)
 
 int	init_request(char *cmd, t_prompt *prompt)
 {
-	int	i;
-	int j;
-	char *p;
+	int		i;
+	int		j;
+	char	*p;
 
 	i = 0;
 	p = cmd;
 	prompt->clean = cmd;
-	prompt->requests = (t_request *) malloc(sizeof(t_request) * prompt->nbr_request);
+	prompt->requests = \
+	(t_request *) malloc(sizeof(t_request) * prompt->nbr_request);
 	if (!prompt->requests)
 		return (print_error(MEM, NULL, NULL));
 	while (i < prompt->nbr_request)
@@ -60,7 +72,7 @@ int	init_request(char *cmd, t_prompt *prompt)
 void	fill_cmd(t_prompt *prompt)
 {
 	t_token	*tmp;
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < prompt->nbr_request)
@@ -68,11 +80,9 @@ void	fill_cmd(t_prompt *prompt)
 		tmp = prompt->requests[i].token;
 		while (tmp)
 		{
-			// printf("%s:tmp->str\n", tmp->str);
 			if (tmp->type == CMD)
 				prompt->requests[i].cmd = tmp->str;
 			tmp = tmp->next;
-			// printf("%s:tmp->str\n", prompt->requests[i].cmd);
 		}
 		i++;
 	}
@@ -82,7 +92,7 @@ int	fill_request(char *cmd, t_prompt *prompt)
 {
 	int	i;
 
-	if(init_request(cmd, prompt))
+	if (init_request(cmd, prompt))
 		return (1);
 	i = 0;
 	while (i < prompt->nbr_request)
