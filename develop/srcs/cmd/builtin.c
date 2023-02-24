@@ -62,7 +62,8 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 	newline = 1;
 	while (token)
 	{
-		if (token->type == 2)
+		if (token->type == 2
+			|| (token->type == 5 && ft_strcmp(token->str, "-n") != 0))
 		{
 			printf ("%s", token->str);
 			if (token->next && token->next->type == 2)
@@ -98,6 +99,8 @@ int	ft_export(t_request *request, t_prompt *prompt)
 			if (status)
 				break ;
 		}
+		else if (token->type != 1)
+			return (print_error(INV_ID, "export", token->str), -1);
 		token = token->next;
 	}
 	return (status);

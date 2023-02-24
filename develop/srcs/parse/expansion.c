@@ -29,7 +29,7 @@ int	env_key_len(char *out)
 			if (out[j] == ' ' || out[j] == '|' || out[j] == '<'
 				|| out[j] == '>' || out[j] == '$' || out[j] == '\''
 				|| out[j] == '"' || out[j] == ';' || out[j] == '\0'
-				|| out[j] == ',')
+				|| out[j] == ',' || out[j] == '=')
 				break ;
 			len += 1;
 			j++;

@@ -103,6 +103,8 @@ void	set_exit_status(int err_type)
 		g_exit_status = 1;
 	else if (err_type == NOT_DIR)
 		g_exit_status = 1;
+	else if (err_type == INV_ID)
+		g_exit_status = 1;
 }
 // else if (err_type == DUPERR)
 // 	ft_putstr_fd("Dup failed", 2);
@@ -134,6 +136,8 @@ int	print_error(int err_type, char *cmd, char *param)
 		ft_putstr_fd(": \e[91mIs a directory\e[0m", 2);
 	else if (err_type == NOT_DIR)
 		write(1, ": Not a directory", 18);
+	else if (err_type == INV_ID)
+		ft_putstr_fd(": not valid in this context: ", 2);
 	ft_putendl_fd(param, 2);
 	return (g_exit_status);
 }

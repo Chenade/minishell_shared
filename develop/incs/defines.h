@@ -53,6 +53,7 @@ enum	e_mini_error
 	OP_NS = 12,
 	SYNERR = 13,
 	TM_ARGS = 14,
+	INV_ID = 15,
 };
 
 #endif

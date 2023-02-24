@@ -69,7 +69,7 @@ int	add_envp(char *str, t_prompt *prompt)
 	env_new = (char **) malloc((get_matrixlen(prompt->envp) + 2)
 			* sizeof(char *));
 	if (!env_new)
-		return (print_error(MEM, "unset", NULL));
+		return (print_error(MEM, "export", NULL));
 	j = -1;
 	while (prompt->envp && prompt->envp[++j])
 	{
