@@ -126,13 +126,3 @@ int	update_oldpwd(t_prompt *prompt)
 	}
 	return (-1);
 }
-
-
-/*
-
-..
-.
-
-
-
-*/

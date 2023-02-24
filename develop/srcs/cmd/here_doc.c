@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 05:53:01 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/24 05:53:03 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -25,12 +36,6 @@ static void	ft_set_delims(t_prompt *prompt)
 		}
 	}
 	return ;
-}
-
-t_prompt	*starton()
-{
-	static t_prompt	prompt;
-	return (&prompt);
 }
 
 static void	exit_here_doc(int sig)
@@ -100,7 +105,7 @@ void	*here_doc(t_prompt *prompt)
 {
 	int		i;
 	pid_t	pid;
-    
+
 	prompt->nbr_here_doc = count_here_doc(prompt);
 	if (prompt->nbr_here_doc == 0)
 		return (NULL);

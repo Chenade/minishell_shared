@@ -24,20 +24,11 @@ int	free_cmd(t_prompt *prompt, int fd_stdout, int status)
 	return (status);
 }
 
-void	free_here_doc(t_prompt *p);
-
-
 int	dispatch_cmd(t_request *request, t_prompt *prompt)
 {
 	int		result;
 	int		fd_stdout;
 
-	// if (request->cmd == NULL)
-	// {
-	// 	// free_here_doc(prompt);
-	// 	free_all(prompt);
-	// 	return (print_error(NCMD, "\'\'", NULL));
-	// }
 	fd_stdout = dup(STDOUT_FILENO);
 	if (redirection(request, prompt, fd_stdout))
 		return (free_cmd(prompt, fd_stdout, 1));

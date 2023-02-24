@@ -53,6 +53,7 @@ int         print_redirect_error(int type, char *path);
 void		free_pp(char **pp);
 void	    ft_close(int fd);
 void	    free_all(t_prompt *p);
+void		free_here_doc(t_prompt *p);
 
 /* UTILS - init */
 void	    init_envp(t_prompt *prompt, char *str, char **argv);
@@ -95,6 +96,7 @@ char		*get_env(char *var, char **envp, int n);
 char		**set_env(char *var, char *value, char **envp, int n);
 
 /* INIT */
+t_prompt	*starton(void);
 void	    init_envp(t_prompt *prompt, char *str, char **argv);
 void	    init_prompt(char **argv, char **envp, t_prompt *prompt);
 

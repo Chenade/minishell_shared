@@ -14,6 +14,12 @@
 
 int	g_exit_status;
 
+t_prompt	*starton(void)
+{
+	static t_prompt	prompt;
+
+	return (&prompt);
+}
 
 int	minishell(char *out, t_prompt *prompt)
 {
