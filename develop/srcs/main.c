@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 
 	prompt = starton();
 	init_prompt(argv, envp, prompt);
-	out	= NULL;
+	out = NULL;
 	g_exit_status = 0;
 	while (42)
 	{
