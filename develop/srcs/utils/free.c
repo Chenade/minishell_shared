@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 06:01:12 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/24 06:01:15 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_pp(char **pp)
 {
 	int		i;
 
-    i = 0;
+	i = 0;
 	if (pp == NULL)
 		return ;
 	while (pp[i])
@@ -19,7 +31,6 @@ void	free_token(t_token **token)
 	ptr = (*token);
 	if (!ptr)
 		return ;
-	
 	while (ptr->next)
 	{
 		ptr = ptr->next;
@@ -31,9 +42,9 @@ void	free_token(t_token **token)
 		free(ptr->str);
 		free(ptr);
 	}
-	// free(*token);
 	*token = NULL;
 }
+	// free(*token);
 
 void	free_here_doc(t_prompt *p)
 {
@@ -78,18 +89,3 @@ void	free_all(t_prompt *p)
 	free (p->requests);
 	free (p->clean);
 }
-
-// void	free_readline(char **out, t_prompt *prompt)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	free (*out);
-// 	while (i <= prompt->nbr_request)
-// 	{
-// 		// printf("[DEBUG 85] request[%d]-> len: %d, str: [%s]\n", i, prompt->requests[i].str_len ,prompt->requests[i].str);
-// 		free (prompt->requests[i].str);
-// 		i += 1;
-// 	}
-// 	free (prompt->requests);
-// }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 06:03:44 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/24 06:03:45 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_token	*ft_token_last(t_token *token)
@@ -24,7 +36,6 @@ void	ft_token_add_back(t_token **token, t_token *new)
 		new->prev = tmp;
 	}
 }
-
 
 t_token	*token_create(t_token *token)
 {

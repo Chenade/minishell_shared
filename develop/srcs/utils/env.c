@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 05:59:21 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/24 05:59:23 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*get_env(char *var, char **envp, int n)
@@ -16,7 +28,6 @@ char	*get_env(char *var, char **envp, int n)
 		if (n2 < ft_strchr_int(envp[i], '='))
 			n2 = ft_strchr_int(envp[i], '=');
 		if (!ft_strncmp(envp[i], var, n2))
-		
 			return (ft_substr(envp[i], n2 + 1, ft_strlen(envp[i])));
 		i++;
 	}

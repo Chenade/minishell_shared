@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/24 05:56:07 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/24 05:57:58 by ykuo             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	init_envp(t_prompt *prompt, char *str, char **argv)
 {
 	char	*num;
-	
+
 	str = getcwd(NULL, 0);
 	prompt->envp = set_env("PWD", str, prompt->envp, 3);
 	free(str);
