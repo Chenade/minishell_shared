@@ -45,8 +45,6 @@ typedef struct s_prompt
 	char				*clean;
 	int					nbr_request;
 	int					nbr_here_doc;
-	// t_token				*token;
-	// pid_t				pid;
 	int					pipefd[2];
 	int					prev_pipefd;
 	struct s_here_doc	*here_docs;

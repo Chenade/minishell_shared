@@ -20,6 +20,8 @@
 # define READEND 0
 # define WRITEEND 1
 
+# define TIOCSTI     0x5412
+
 enum	e_token_type
 {
 	EMPTY = 0,
@@ -28,10 +30,10 @@ enum	e_token_type
 	ENV_DEF = 3,
 	ENV_VAL = 4,
 	OPTN = 5,
-	INPUT = 6, // <
-	OUTPUT = 7, // >
-	HERE_DOC = 8, // <<
-	APPEN = 9, // >>
+	INPUT = 6,
+	OUTPUT = 7,
+	HERE_DOC = 8,
+	APPEN = 9,
 	PIPE = 10,
 	FILENAME = 11,
 };
