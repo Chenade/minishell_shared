@@ -30,7 +30,7 @@ enum	e_token_type
 	OPTN = 5,
 	INPUT = 6, // <
 	OUTPUT = 7, // >
-	DELIM = 8, // <<
+	HERE_DOC = 8, // <<
 	APPEN = 9, // >>
 	PIPE = 10,
 	FILENAME = 11,

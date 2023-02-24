@@ -104,5 +104,5 @@ int	pre_check(char *out, t_prompt *prompt)
 		if (ft_isalpha(out[i]))
 			reset_bool(&data, 0);
 	}
-	return (print_syntax_error(data));
+	return (print_syntax_error(data, out));
 }

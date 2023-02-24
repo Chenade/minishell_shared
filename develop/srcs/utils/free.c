@@ -35,13 +35,30 @@ void	free_token(t_token **token)
 	*token = NULL;
 }
 
+void	free_here_doc(t_prompt *p)
+{
+	int	i;
+
+	i = -1;
+	while (++i < p->nbr_here_doc)
+	{
+		if (p->here_docs[i].delim)
+			free (p->here_docs[i].delim);
+		p->here_docs[i].delim = NULL;
+		close(p->here_docs[i].pipefd[READEND]);
+		close(p->here_docs[i].pipefd[WRITEEND]);
+	}
+	if (p->here_docs)
+		free (p->here_docs);
+	p->here_docs = NULL;
+}
+
 void	free_all(t_prompt *p)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	// printf("nbr_request : %d\n", p->nbr_request);
 	while (i < p->nbr_request)
 	{
 		if (p->requests)
@@ -57,6 +74,7 @@ void	free_all(t_prompt *p)
 		}
 		i++;
 	}
+	free_here_doc(p);
 	free (p->requests);
 	free (p->clean);
 }

@@ -44,9 +44,10 @@ int	minishell(char *out, t_prompt *prompt)
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
-	t_prompt			prompt;
+	t_prompt			*prompt;
 
-	init_prompt(argv, envp, &prompt);
+	prompt = starton();
+	init_prompt(argv, envp, prompt);
 	out	= NULL;
 	g_exit_status = 0;
 	while (42)
@@ -55,9 +56,9 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!out)
 			break ;
-		if (!minishell(out, &prompt))
-			free_all(&prompt);
+		if (!minishell(out, prompt))
+			free_all(prompt);
 	}
-	free_pp(prompt.envp);
+	free_pp(prompt->envp);
 	exit (g_exit_status);
 }

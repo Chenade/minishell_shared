@@ -15,7 +15,7 @@
 int	is_builtin(char	*cmd)
 {
 	if (!cmd)
-		return (1);
+		return (0);
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "cd") == 0)
@@ -126,3 +126,13 @@ int	update_oldpwd(t_prompt *prompt)
 	}
 	return (-1);
 }
+
+
+/*
+
+..
+.
+
+
+
+*/

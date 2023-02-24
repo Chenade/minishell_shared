@@ -11,7 +11,7 @@ void	fill_type(t_token *token, int separator)
 	else if (!ft_strcmp(token->str, "<") && separator == 0)
 		token->type = INPUT;
 	else if (!ft_strcmp(token->str, "<<") && separator == 0)
-		token->type = DELIM;
+		token->type = HERE_DOC;
 	else if (ft_strchr("-", token->str[0]) && token->str[1] 
 		&& separator == 0)
 		token->type = OPTN;

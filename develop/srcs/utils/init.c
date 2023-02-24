@@ -36,5 +36,7 @@ void	init_prompt(char **argv, char **envp, t_prompt *prompt)
 	prompt->clean = NULL;
 	prompt->nbr_request = 0;
 	prompt->requests = NULL;
+	prompt->nbr_here_doc = 0;
+	prompt->here_docs = NULL;
 	init_envp(prompt, str, argv);
 }

@@ -33,15 +33,23 @@ typedef struct s_request
 	int					pid;
 }				t_request;
 
+typedef struct s_here_doc
+{
+	char				*delim;
+	int					pipefd[2];
+}				t_here_doc;
+
 typedef struct s_prompt
 {
+	char				**envp;
 	char				*clean;
 	int					nbr_request;
-	char				**envp;
-	t_token				*token;
-	pid_t				pid;
+	int					nbr_here_doc;
+	// t_token				*token;
+	// pid_t				pid;
 	int					pipefd[2];
 	int					prev_pipefd;
+	struct s_here_doc	*here_docs;
 	struct s_request	*requests;
 }			t_prompt;
 

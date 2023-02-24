@@ -38,14 +38,14 @@
 #define TIOCSTI     0x5412
 
 extern int	g_exit_status;
-
+t_prompt	*starton();
 /* TEMP */
 void		print_token(t_token *token);
 int			print_env(char **envp);
 
 /* ERROR */
 int			print_error(int err_type, char *cmd, char *param);
-int         print_syntax_error(t_parse data);
+int			print_syntax_error(t_parse data, char *out);
 int         print_fd_error(char *path, char *cmd);
 int         print_redirect_error(int type, char *path);
 
@@ -111,6 +111,7 @@ int         reset_bool(t_parse *data, int init);
 int         check_quote(t_parse *data, char c);
 
 /* CMD - process */
+void		*here_doc(t_prompt *prompt);
 int	        redirection(t_request *request, t_prompt *prompt, int fd_stdout);
 int			process(t_prompt *prompt);
 void	    ft_wait(t_prompt *prompt);

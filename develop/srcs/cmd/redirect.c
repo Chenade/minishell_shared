@@ -39,8 +39,26 @@ int	exit_fork(t_request *request, t_prompt *prompt, int fd_stdout, int status)
 	return (status);
 }
 
-int	redirect_heredoc(t_request *request, t_prompt *prompt, t_token *token)
+int	redirect_heredoc(t_request *request, t_prompt *prompt, t_token *token, int sfd)
 {
+	int		i;
+	int		fd;
+
+	if (token->next && (token->next->type == 11 || token->next->type == 0))
+	{
+		i = -1;
+		while (++i < prompt->nbr_here_doc)
+		{
+			if (ft_strcmp(prompt->here_docs[i].delim, token->next->str) == 0)
+			{
+				dupnclose(prompt->here_docs[i].pipefd[READEND], STDIN_FILENO);
+				return (0);
+			}
+		}
+	}
+	else
+		return (exit_fork(request, prompt, sfd,
+				print_error(SYNERR, "", token->str)));
 	return (0);
 }
 
@@ -82,7 +100,7 @@ int	redirection(t_request *request, t_prompt *prompt, int fd_stdout)
 			if (redirect_fd(tmp, prompt, token, fd_stdout))
 				return (1);
 		if (token->type == 8)
-			if (redirect_heredoc(tmp, prompt, token))
+			if (redirect_heredoc(tmp, prompt, token, fd_stdout))
 				return (1);
 		if (!token->next)
 			break ;

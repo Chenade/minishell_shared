@@ -1,13 +1,23 @@
 #include "minishell.h"
 
-int	print_syntax_error(t_parse data)
+int	print_syntax_error(t_parse data, char *out)
 {
+	int i;
+	int has_pipe;
+	
+	i = -1;
+	has_pipe = 0;
+	while (out[++i])
+		if (out[i] == '|')
+			has_pipe = 1;
 	if (data.single_quote < 0)
 		return (print_error(SYNERR, "", "'"));
 	if (data.double_quote < 0)
 		return (print_error(SYNERR, "", "\""));
-	if (data.is_pipe < 0 && data.infile == 0 && data.outfile == 0)
+	if (data.is_pipe < 0 && data.infile == 0 && data.outfile == 0 && has_pipe)
 		return (print_error(SYNERR, "", "|"));
+	if (data.is_pipe < 0 && data.infile == 0 && data.outfile == 0 && !has_pipe)
+		return (print_error(SYNERR, "", &(out[i - 1])));
 	if (data.infile > 0)
 		return (print_error(SYNERR, "", "<"));
 	if (data.outfile > 0)

@@ -24,15 +24,24 @@ int	free_cmd(t_prompt *prompt, int fd_stdout, int status)
 	return (status);
 }
 
+void	free_here_doc(t_prompt *p);
+
+
 int	dispatch_cmd(t_request *request, t_prompt *prompt)
 {
 	int		result;
 	int		fd_stdout;
 
-	if (request->cmd == NULL)
-		return (print_error(NCMD, "\'\'", NULL));
+	// if (request->cmd == NULL)
+	// {
+	// 	// free_here_doc(prompt);
+	// 	free_all(prompt);
+	// 	return (print_error(NCMD, "\'\'", NULL));
+	// }
 	fd_stdout = dup(STDOUT_FILENO);
 	if (redirection(request, prompt, fd_stdout))
+		return (free_cmd(prompt, fd_stdout, 1));
+	if (!request->cmd)
 		return (free_cmd(prompt, fd_stdout, 1));
 	if (ft_strcmp(request->cmd, "echo") == 0)
 		result = ft_echo(request, prompt);
@@ -89,11 +98,12 @@ int	process(t_prompt *prompt)
 
 	status = 0;
 	i = -1;
-	signal_process();
 	prompt->prev_pipefd = -1;
 	while (++i < prompt->nbr_request)
 		post_parse(&prompt->requests[i], i);
+	here_doc(prompt);
 	i = -1;
+	signal_process();
 	if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
 		return (g_exit_status = dispatch_cmd(&prompt->requests[0], prompt));
 	else
