@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 23:15:56 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/24 16:46:35 by jischoi          ###   ########.fr       */
+/*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
+/*   Updated: 2023/02/25 02:15:47 by ykuo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,18 @@ int	get_exit_status(t_token *tmp)
 	int	i;
 
 	i = -1;
-	while (tmp->str[++i] && g_exit_status != 255)
+	while (tmp->str[++i])
 	{
-		if (!ft_isdigit(tmp->str[i]))
-			g_exit_status = 255;
+		if (ft_isalpha(tmp->str[i]))
+		{
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(tmp->str, STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required", STDERR_FILENO);
+			return (2);
+		}
 	}
 	if (tmp->str[i] == '\0')
-	{
 		g_exit_status = ft_atoi(tmp->str);
-		if (g_exit_status < 0 || g_exit_status > 255)
-			g_exit_status = 255;
-	}
 	return (g_exit_status);
 }
 
@@ -56,7 +57,11 @@ int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
 	if (tmp)
 		g_exit_status = get_exit_status(tmp);
 	else
+	{
 		ft_wait(prompt);
+		g_exit_status = 0;
+	}
+	fprintf(stderr, "exit status: %d\n", g_exit_status);
 	free_all(prompt);
 	free_pp(prompt->envp);
 	clear_history();

@@ -54,6 +54,7 @@ enum	e_mini_error
 	SYNERR = 13,
 	TM_ARGS = 14,
 	INV_ID = 15,
+	NARG = 16,
 };
 
 #endif

@@ -107,45 +107,45 @@ void	set_exit_status(int err_type)
 		g_exit_status = 1;
 }
 // else if (err_type == DUPERR)
-// 	ft_putstr_fd("Dup failed", 2);
+// 	ft_putstr_fd("Dup failed", STDERR_FILENO);
 // else if (err_type == FORKERR)
-// 	ft_putstr_fd("Fork failed", 2);
+// 	ft_putstr_fd("Fork failed", STDERR_FILENO);
 // else if (err_type == PIPERR)
-// 	ft_putstr_fd("Pipe error", 2);
+// 	ft_putstr_fd("Pipe error", STDERR_FILENO);
 
 int	print_error(int err_type, char *cmd, char *param)
 {
 	set_exit_status(err_type);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
 	if (err_type == OP_NS)
-		ft_putstr_fd(": Old Path not set.", 2);
+		ft_putstr_fd(": Old Path not set.", STDERR_FILENO);
 	else if (err_type == NDIR)
-		ft_putstr_fd(": No such file or directory: ", 2);
+		ft_putstr_fd(": No such file or directory: ", STDERR_FILENO);
 	else if (err_type == NPERM)
-		ft_putstr_fd(": Permission denied", 2);
+		ft_putstr_fd(": Permission denied", STDERR_FILENO);
 	else if (err_type == NCMD)
-		write(1, ": \e[91mCommand not found\e[0m", 29);
+		ft_putstr_fd(": \e[91mCommand not found\e[0m", STDERR_FILENO);
 	else if (err_type == SYNERR)
-		ft_putstr_fd(": syntax error near unexpected token: ", 2);
+		ft_putstr_fd(": syntax error near unexpected token: ", STDERR_FILENO);
 	else if (err_type == TM_ARGS)
-		ft_putstr_fd(": too many arguments", 2);
+		ft_putstr_fd(": too many arguments", STDERR_FILENO);
 	else if (err_type == MEM)
-		ft_putstr_fd(": No memory left on device", 2);
+		ft_putstr_fd(": No memory left on device", STDERR_FILENO);
 	else if (err_type == IS_DIR)
-		ft_putstr_fd(": \e[91mIs a directory\e[0m", 2);
+		ft_putstr_fd(": \e[91mIs a directory\e[0m", STDERR_FILENO);
 	else if (err_type == NOT_DIR)
-		write(1, ": Not a directory", 18);
+		ft_putstr_fd(":: Not a directory", STDERR_FILENO);
 	else if (err_type == INV_ID)
-		ft_putstr_fd(": not valid in this context: ", 2);
-	ft_putendl_fd(param, 2);
+		ft_putstr_fd(": not valid in this context: ", STDERR_FILENO);
+	ft_putendl_fd(param, STDERR_FILENO);
 	return (g_exit_status);
 }
 //  if (err_type == WCHAR)
-// 	ft_putstr_fd("Wrong input character: ", 2);
+// 	ft_putstr_fd("Wrong input character: ", STDERR_FILENO);
 // else if (err_type == DUPERR)
-// 	ft_putstr_fd("Dup failed", 2);
+// 	ft_putstr_fd("Dup failed", STDERR_FILENO);
 // else if (err_type == FORKERR)
-// 	ft_putstr_fd("Fork failed", 2);
+// 	ft_putstr_fd("Fork failed", STDERR_FILENO);
 // else if (err_type == PIPERR)
-// 	ft_putstr_fd("Pipe error", 2);
+// 	ft_putstr_fd("Pipe error", STDERR_FILENO);
