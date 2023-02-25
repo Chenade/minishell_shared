@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <sys/ioctl.h>
 # include <linux/ioctl.h>
+# include <pthread.h>
 # include "libft.h"
 
 # include <string.h>
@@ -45,7 +46,7 @@ int			print_env(char **envp);
 /* ERROR */
 int			print_error(int err_type, char *cmd, char *param);
 int			print_syntax_error(t_parse data, char *out);
-int			print_fd_error(char *path, char *cmd);
+int			print_fd_error(char *path, char *cmd, int type);
 int			print_redirect_error(int type, char *path);
 
 /* UTILS - free */
@@ -86,10 +87,6 @@ int			pre_check(char *out, t_prompt *prompt);
 char		*expansion(char *out, char **envp);
 int			post_parse(t_request *request, int index);
 
-/* PARSE - exit_status */
-int			exit_strlen(void);
-int			expand_exit(char *new_out, int nout_i);
-
 /* ENV */
 char		*get_env(char *var, char **envp, int n);
 char		**set_env(char *var, char *value, char **envp, int n);
@@ -112,7 +109,8 @@ int			reset_bool(t_parse *data, int init);
 int			check_quote(t_parse *data, char c);
 
 /* CMD - process */
-void		*here_doc(t_prompt *prompt);
+int			here_doc(t_prompt *prompt);
+void		exit_here_doc(int sig);
 int			redirection(t_request *request, t_prompt *prompt, int fd_stdout);
 int			process(t_prompt *prompt);
 void		ft_wait(t_prompt *prompt);
@@ -128,6 +126,7 @@ int			del_envp(int index, t_token *token, t_prompt *prompt);
 int			add_envp(char *str, t_prompt *prompt);
 int			in_envp(char *token, t_prompt *prompt);
 int			update_oldpwd(t_prompt *prompt);
+char		*get_dest(char *str, t_prompt *prompt);
 
 /* CMD - builtin */
 int			ft_pwd(t_request *request, t_prompt *prompt);

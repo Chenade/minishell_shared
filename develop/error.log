@@ -9,6 +9,101 @@
 
 
 
-
 cat > c error.log -e > f
 -> cat error.log -e > f
+
+### Error on 25 Feb 2023
+
+- [x]
+minishell $ ..
+minishell: : syntax error near unexpected token: |
+
+//----------------------------------//
+
+- [x]
+minishell $ export a=""
+minishell: export: not valid in this context: 
+
+//----------------------------------//
+
+- [x]
+minishell $ export jkl
+minishell: export: not valid in this context: jkl //no error needed
+
+//----------------------------------//
+
+- [x]
+minishell $ echo -nnnnnnn salut
+
+//----------------------------------//
+
+- [x]
+minishell $ cd .. (if a mkdir a/b/c and i cd a/b/c then i rm -rf ../../b)
+minishell: cd: Command not found
+
+//----------------------------------//
+
+- [x]
+minishell $ echo>a bonjour >a>b>f>g
+minishell $ cat g
+
+- [x]
+minishell $ echo >a bonjour >a>b>f>g
+minishell $ cat g
+
+//----------------------------------//
+
+- [x]
+<<lol | <<sisi //could implement this kind of error in the case of ctrl-D
+> 
+bash: warning: here-document at line 129 delimited by end-of-file (wanted `lol')
+> 
+bash: warning: here-document at line 129 delimited by end-of-file (wanted `sisi')
+
+//----------------------------------//
+
+- [x]
+minishell $ gdfgfdt | echo sisigdfgdf | sgffd | gfdgd | gfdgfd
+minishell: gdfgfdt: Command not found
+minishell: sgffd: Command not found
+minishell: gfdgd: miCnoimsmhaenldl :n ogtf dfgofudn:d 09m
+1mCommand not found
+
+// message are mixing up, its a wait prblm
+
+//----------------------------------//
+
+- [x]
+echo >f -n bonjour
+
+you write bonjour inside the out and not in the file as you should
+
+//----------------------------------//
+
+
+- [x]
+minishell $ <<fdsfds //ctrl-D
+>
+minishell $ echo $?
+1 //should be 0
+
+- [x]
+minishell $ <<fdsfds //ctrl-C
+>
+minishell $ echo $? 
+ 1 //Should be 130
+
+//----------------------------------//
+
+- [x]
+minishell $ exit 1 2 //when you puting 2 exit status
+//you dont need to quit the program when you put 2 exit status
+
+should be ->
+minishell $ exit 1 2 
+exit
+bash: exit: too many arguments
+
+- [x]
+minishell $ exit 1 2ss
+-> minishell exit at 2 (numeric argument required)

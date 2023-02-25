@@ -101,7 +101,7 @@ int	pre_check(char *out, t_prompt *prompt)
 			if (check_redirect (&data, &(out[i])))
 				break ;
 		}
-		if (ft_isalpha(out[i]))
+		if (ft_isalpha(out[i]) || ft_isdigit(out[i]))
 			reset_bool(&data, 0);
 	}
 	return (print_syntax_error(data, out));

@@ -29,22 +29,50 @@ void	ft_wait(t_prompt *prompt)
 
 int	get_exit_status(t_token *tmp)
 {
-	int	i;
+	int		i;
+	int		fd;
+	t_token	*tmp2;
 
 	i = -1;
-	while (tmp->str[++i])
+	tmp2 = tmp;
+	fd = dup(STDOUT_FILENO);
+	dupnclose(STDERR_FILENO, STDOUT_FILENO);
+	while (tmp)
 	{
-		if (ft_isalpha(tmp->str[i]))
+		while (tmp->str[++i])
 		{
-			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-			ft_putstr_fd(tmp->str, STDERR_FILENO);
-			ft_putstr_fd(": numeric argument required", STDERR_FILENO);
-			return (2);
+			if (ft_isalpha(tmp->str[i]))
+			{
+				printf("minishell: exit: %s: numeric argument required\n",
+					tmp->str);
+				return (dupnclose(fd, STDOUT_FILENO), 2);
+			}
 		}
+		tmp = tmp->next;
 	}
-	if (tmp->str[i] == '\0')
-		g_exit_status = ft_atoi(tmp->str);
-	return (g_exit_status);
+	if (tmp2->next)
+		return (dupnclose(fd, STDOUT_FILENO), -1);
+	g_exit_status = ft_atoi(tmp2->str);
+	return (dupnclose(fd, STDOUT_FILENO), g_exit_status);
+}
+
+int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
+{
+	int	status;
+
+	if (tmp)
+	{
+		status = get_exit_status(tmp);
+		if (status < 0)
+			return (print_error(TM_ARGS, "cd", NULL));
+		g_exit_status = status;
+	}
+	else
+	{
+		ft_wait(prompt);
+		g_exit_status = 0;
+	}
+	return (0);
 }
 
 int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
@@ -53,34 +81,31 @@ int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
 	t_token	*tmp;
 
 	tmp = request->token->next;
-	status = 0;
-	if (tmp)
-		g_exit_status = get_exit_status(tmp);
-	else
+	status = if_exit(request, prompt, tmp);
+	if (!status)
 	{
-		ft_wait(prompt);
-		g_exit_status = 0;
+		free_all(prompt);
+		free_pp(prompt->envp);
+		clear_history();
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_close(fd_stdout);
+		exit(g_exit_status);
 	}
-	fprintf(stderr, "exit status: %d\n", g_exit_status);
-	free_all(prompt);
-	free_pp(prompt->envp);
-	clear_history();
-	ft_putstr_fd("exit\n", STDERR_FILENO);
-	ft_close(fd_stdout);
-	exit(g_exit_status);
+	return (status);
 }
 
-// int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
-// {
-// 	int	status;
+void	exit_here_doc(int sig)
+{
+	t_prompt	*prompt;
+	int			i;
 
-// 	status = 0;
-// 	ft_wait(prompt);
-// 	free_all(prompt);
-// 	free_pp(prompt->envp);
-// 	clear_history();
-// 	ft_putstr_fd("exit\n", STDERR_FILENO);
-// 	ft_close(fd_stdout);
-// 	g_exit_status = 0;
-// 	exit(g_exit_status);
-// }
+	prompt = starton();
+	if (sig == SIGINT)
+	{
+		ft_putchar_fd('\n', 2);
+		g_exit_status = 130;
+		free_all(prompt);
+		free_pp(prompt->envp);
+		exit(g_exit_status);
+	}
+}

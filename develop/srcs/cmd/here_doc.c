@@ -38,20 +38,21 @@ static void	ft_set_delims(t_prompt *prompt)
 	return ;
 }
 
-static void	exit_here_doc(int sig)
+int	end_here_doc(char *str, t_prompt *prompt, int index)
 {
-	t_prompt	*prompt;
-	int			i;
-
-	prompt = starton();
-	if (sig == SIGINT)
+	g_exit_status = 0;
+	if (!str || !ft_strcmp(str, prompt->here_docs[index].delim))
 	{
-		ft_putchar_fd('\n', 2);
-		g_exit_status = 130;
-		free_all(prompt);
-		free_pp(prompt->envp);
-		exit(g_exit_status);
+		if (!str)
+		{
+			ft_putstr_fd("minishell: warning: here-document at line 72", 2);
+			ft_putstr_fd("delimited by end-of-file (wanted `", 2);
+			ft_putstr_fd(prompt->here_docs[index].delim, 2);
+			ft_putstr_fd("')\n", 2);
+		}
+		return (1);
 	}
+	return (0);
 }
 
 static void	child_hd(t_prompt *prompt)
@@ -66,7 +67,7 @@ static void	child_hd(t_prompt *prompt)
 		while (42)
 		{
 			str = readline(">");
-			if (!str || !ft_strcmp(str, prompt->here_docs[index].delim))
+			if (end_here_doc(str, prompt, index))
 				break ;
 			ft_putendl_fd(str, prompt->here_docs[index].pipefd[1]);
 			free(str);
@@ -77,7 +78,7 @@ static void	child_hd(t_prompt *prompt)
 	free_all(prompt);
 	free_pp(prompt->envp);
 	clear_history();
-	exit(1);
+	exit(0);
 }
 
 int	count_here_doc(t_prompt *prompt)
@@ -101,17 +102,18 @@ int	count_here_doc(t_prompt *prompt)
 	return (nb);
 }
 
-void	*here_doc(t_prompt *prompt)
+int	here_doc(t_prompt *prompt)
 {
 	int		i;
 	pid_t	pid;
+	int		status;
 
 	prompt->nbr_here_doc = count_here_doc(prompt);
 	if (prompt->nbr_here_doc == 0)
-		return (NULL);
+		return (g_exit_status);
 	prompt->here_docs = ft_calloc(sizeof(t_here_doc), prompt->nbr_here_doc);
 	if (!prompt->here_docs)
-		return (NULL);
+		return (g_exit_status);
 	ft_set_delims(prompt);
 	pid = fork();
 	i = -1;
@@ -120,6 +122,9 @@ void	*here_doc(t_prompt *prompt)
 	else
 		while (++i < prompt->nbr_here_doc)
 			close(prompt->here_docs[i].pipefd[WRITEEND]);
-	waitpid(pid, NULL, 0);
-	return (NULL);
+	status = waitpid(pid, NULL, 0);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	fprintf(stderr, "exit status: %d\n", g_exit_status);
+	return (g_exit_status);
 }

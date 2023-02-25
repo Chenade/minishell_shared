@@ -101,11 +101,12 @@ int	fill_request(char *cmd, t_prompt *prompt)
 		i++;
 	}
 	fill_cmd(prompt);
-	i = 0;
-	while (i < prompt->nbr_request)
-	{
-		print_token(prompt->requests[i].token);
-		i++;
-	}
 	return (0);
 }
+
+	// i = 0;
+	// while (i < prompt->nbr_request)
+	// {
+	// 	print_token(prompt->requests[i].token);
+	// 	i++;
+	// }

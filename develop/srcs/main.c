@@ -36,8 +36,9 @@ int	minishell(char *out, t_prompt *prompt)
 		if (!status)
 		{
 			parse_cmd(out, prompt->envp);
-			if (fill_request(out, prompt) || process(prompt))
+			if (fill_request(out, prompt))
 				return (1);
+			process(prompt);
 		}
 		else
 			free(out);
@@ -66,5 +67,6 @@ int	main(int argc, char **argv, char **envp)
 			free_all(prompt);
 	}
 	free_pp(prompt->envp);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	exit (g_exit_status);
 }

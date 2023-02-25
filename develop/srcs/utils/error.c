@@ -58,7 +58,7 @@ int	print_redirect_error(int type, char *path)
 	return (g_exit_status);
 }
 
-int	print_fd_error(char *path, char *cmd)
+int	print_fd_error(char *path, char *cmd, int type)
 {
 	DIR	*folder;
 	int	fd;
@@ -66,25 +66,31 @@ int	print_fd_error(char *path, char *cmd)
 
 	fd = open(path, O_WRONLY);
 	folder = NULL;
-	if (path)
+	if (path && fd < 0)
 		folder = opendir(path);
-	if (ft_strchr(path, '/') == NULL)
+	if (fd > 0)
+		print_error(NOT_DIR, cmd, NULL);
+	else if (type)
 		print_error(NCMD, cmd, NULL);
-	else if (fd == -1 && folder == NULL)
+	else if (fd == -1 && folder == NULL && !type)
 		print_error(NDIR, cmd, NULL);
-	else if (fd == -1 && folder != NULL)
+	else if (fd == -1 && folder != NULL && !type)
 		print_error(IS_DIR, cmd, NULL);
-	else if (fd != -1 && folder == NULL)
+	else if (ft_strchr(path, '/') == NULL && !type)
 		print_error(NPERM, cmd, NULL);
 	if (folder)
 		closedir(folder);
 	ft_close(fd);
-	g_exit_status = 127;
+	g_exit_status = 1;
 	return (g_exit_status);
 }
 
-void	set_exit_status(int err_type)
+void	set_exit_status(int err_type, char *cmd)
 {
+	if (err_type == OP_NS)
+		printf("minishell: %s : Old Path not set.\n", cmd);
+	if (err_type == NOT_DIR)
+		printf("minishell: %s :Not a directory.\n", cmd);
 	if (err_type == OP_NS)
 		g_exit_status = 1;
 	else if (err_type == NDIR)
@@ -115,30 +121,29 @@ void	set_exit_status(int err_type)
 
 int	print_error(int err_type, char *cmd, char *param)
 {
-	set_exit_status(err_type);
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	if (err_type == OP_NS)
-		ft_putstr_fd(": Old Path not set.", STDERR_FILENO);
-	else if (err_type == NDIR)
-		ft_putstr_fd(": No such file or directory: ", STDERR_FILENO);
+	int	fd;
+
+	set_exit_status(err_type, cmd);
+	fd = dup(STDOUT_FILENO);
+	dupnclose(STDERR_FILENO, STDOUT_FILENO);
+	if (err_type == NDIR)
+		printf("minishell: %s : No such file or directory.\n", cmd);
 	else if (err_type == NPERM)
-		ft_putstr_fd(": Permission denied", STDERR_FILENO);
+		printf("minishell: %s : Permission denied.\n", cmd);
 	else if (err_type == NCMD)
-		ft_putstr_fd(": \e[91mCommand not found\e[0m", STDERR_FILENO);
+		printf("minishell: %s : \e[91mCommand not found\e[0m\n", cmd);
 	else if (err_type == SYNERR)
-		ft_putstr_fd(": syntax error near unexpected token: ", STDERR_FILENO);
+		printf("minishell: %s : syntax error near unexpected token: %s\n",
+			cmd, param);
 	else if (err_type == TM_ARGS)
-		ft_putstr_fd(": too many arguments", STDERR_FILENO);
+		printf("minishell: %s : too many arguments.\n", cmd);
 	else if (err_type == MEM)
-		ft_putstr_fd(": No memory left on device", STDERR_FILENO);
+		printf("minishell: %s : No memory left on device.\n", cmd);
 	else if (err_type == IS_DIR)
-		ft_putstr_fd(": \e[91mIs a directory\e[0m", STDERR_FILENO);
-	else if (err_type == NOT_DIR)
-		ft_putstr_fd(":: Not a directory", STDERR_FILENO);
+		printf("minishell: %s : \e[91mIs a directory.\e[0m\n", cmd);
 	else if (err_type == INV_ID)
-		ft_putstr_fd(": not valid in this context: ", STDERR_FILENO);
-	ft_putendl_fd(param, STDERR_FILENO);
+		printf("minishell: %s : \e: not valid in this context: %s\n", cmd, param);
+	dupnclose(fd, STDOUT_FILENO);
 	return (g_exit_status);
 }
 //  if (err_type == WCHAR)

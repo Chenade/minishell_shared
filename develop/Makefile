@@ -75,6 +75,7 @@ SRCS_CMD	=	cmd/process.c \
 				cmd/here_doc.c \
 				cmd/builtin.c \
 				cmd/builtin_utils.c \
+				cmd/builtin_cd.c \
 				cmd/exec.c \
 				cmd/exit.c
 
@@ -104,6 +105,10 @@ $(LIBFT):
 $(NAME):		$(LIBFT) $(OBJS)
 				${CC} ${OBJS} ${CFLAGS} -lreadline $(LIBFT) -o $@
 				@echo ${GREEN}"===== Minishell Compile Successfully =====\n"${X}
+				@echo ${Y}"Huge thanks to: "${X}
+				@echo ${Y}"    Aboudjel (Master of parsing),"${X}
+				@echo ${Y}"    Mgamil (Master of execution),"${X}
+				@echo ${Y}"    Aweaver, Yatang, Amattei\n"${X}
 				@echo ${BLUE}"Command: ./minishell or make run\n"${X}
 
 $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
@@ -125,10 +130,11 @@ clear:
 				@echo "/****************************************************************************/"
 
 
-norminette:		clear
+correction:		fclean clear
 				@echo ${Y}"\n===== minishell norminette check! ====="${X}
 				norminette $(SRCS_DIR) $(INCS_DIR)
 				@echo ${GREEN}"===== minishell norminette check Successfully! =====\n"${X}
+				make all
 
 
 project:		clean $(OBJS)
@@ -147,7 +153,7 @@ fclean:			clean
 
 run:			$(NAME)
 				clear
-				valgrind -s --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
+				valgrind -s --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes -s ./minishell
 
 re:				fclean all
 

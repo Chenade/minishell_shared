@@ -16,9 +16,7 @@ int	is_builtin(char	*cmd)
 {
 	if (!cmd)
 		return (0);
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "cd") == 0)
+	if (ft_strcmp(cmd, "cd") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		return (1);
@@ -32,6 +30,8 @@ int	is_builtin(char	*cmd)
 		return (1);
 	return (0);
 }
+	// if (ft_strcmp(cmd, "echo") == 0)
+	// 	return (1);
 
 int	del_envp(int index, t_token *token, t_prompt *prompt)
 {
@@ -80,6 +80,7 @@ int	add_envp(char *str, t_prompt *prompt)
 	env_new[j] = ft_strdup(str);
 	env_new[j + 1] = NULL;
 	free_pp (prompt->envp);
+	free (str);
 	prompt->envp = env_new;
 	return (0);
 }
@@ -121,10 +122,10 @@ int	update_oldpwd(t_prompt *prompt)
 		{
 			free (prompt->envp[index]);
 			prompt->envp[index] = ft_strdup(val);
+			free (val);
 		}
 		else
 			add_envp(val, prompt);
-		free (val);
 		return (0);
 	}
 	return (-1);

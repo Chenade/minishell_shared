@@ -23,6 +23,11 @@ int	init_requset(t_request *request, int index)
 
 int	set_cmd(t_request *request, t_token **token, int *is_cmd)
 {
+	if ((*token)->type == 1 && *is_cmd == 1)
+	{
+		ft_array_push(&request->tab, (*token)->str);
+		(*token)->type = 2;
+	}
 	if (*is_cmd == 0)
 	{
 		request->cmd = ft_strdup((*token)->str);
@@ -35,6 +40,19 @@ int	set_cmd(t_request *request, t_token **token, int *is_cmd)
 	return (0);
 }
 
+int	cound_token(t_token *token)
+{
+	int	count;
+
+	count = 0;
+	while (token)
+	{
+		count += 1;
+		token = token->next;
+	}
+	return (count);
+}
+
 int	post_parse(t_request *request, int index)
 {
 	int		is_cmd;
@@ -44,6 +62,7 @@ int	post_parse(t_request *request, int index)
 	is_filename = 0;
 	is_cmd = 0;
 	init_requset(request, index);
+	request->nbr_token = cound_token(request->token);
 	token = request->token;
 	while (token)
 	{
@@ -62,3 +81,4 @@ int	post_parse(t_request *request, int index)
 	}
 	return (0);
 }
+		// fprintf(stderr, " %s, %d\n", token->str, token->type);
