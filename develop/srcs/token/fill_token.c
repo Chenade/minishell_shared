@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 13:12:59 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/24 13:15:44 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/25 22:42:56 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	fill_type(t_token *token, int separator)
 	else if (ft_strchr("-", token->str[0]) && token->str[1]
 		&& separator == 0)
 		token->type = OPTN;
-	else if (ft_strchr_int(token->str, '=') > 0 && separator == 0)
-		token->type = ENV_DEF;
+	// else if (ft_strchr_int(token->str, '=') > 0 && separator == 0)
+	// 	token->type = ENV_DEF;
 	else if (!token->prev || (token->prev && token->prev->prev
 			&& token->prev->prev->type >= INPUT
 			&& token->prev->prev->type <= APPEN))
@@ -122,5 +122,6 @@ t_token	*fill_token(t_request *request)
 		}
 		p += len;
 	}
+	print_token (token);
 	return (token);
 }
