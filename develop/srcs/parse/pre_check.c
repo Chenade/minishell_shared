@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pre_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:07:13 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/21 09:07:15 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/02/26 00:32:01 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,12 @@ int	check_pipe(t_parse *data, char *c, t_prompt *prompt)
 			return (1);
 		data->is_pipe *= -1;
 	}
-	if (*c == '|' || *c == ' ' || *c == '<' || *c == '>')
-		*c = -(*c);
 	return (0);
 }
 
 int	check_redirect(t_parse *data, char *c)
 {
-	if (*c == - '<')
+	if (*c == '<')
 	{
 		if (data->outfile > 0)
 			return (1);
@@ -50,7 +48,7 @@ int	check_redirect(t_parse *data, char *c)
 		if (data->infile > 2)
 			return (1);
 	}
-	if (*c == - '>')
+	if (*c == '>')
 	{
 		if (data->infile > 0)
 			return (1);
@@ -58,7 +56,7 @@ int	check_redirect(t_parse *data, char *c)
 		if (data->outfile > 2)
 			return (1);
 	}
-	if (*c == - ' ')
+	if (*c == ' ')
 	{
 		if (data->infile > 0)
 			data->infile += 1;

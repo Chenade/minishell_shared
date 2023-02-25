@@ -6,11 +6,31 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 13:08:30 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/24 13:10:37 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/25 23:51:54 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	rm_empty_str(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (*cmd == - 'e')
+		push_str(cmd);
+	while (*cmd)
+	{
+		if (*(cmd) == - 'e' && *(cmd + 1) == - 'e')
+			push_str(cmd);
+		else if (*(cmd) == - 'e' && *(cmd + 1)
+			&& *(cmd + 1) != - ' ' && *(cmd + 1) != - 'e')
+			push_str(cmd);
+			
+		else
+			cmd++;
+	}
+}
 
 void	rm_space_sep(char *cmd)
 {
@@ -99,6 +119,7 @@ void	parse_cmd(char *cmd, char **envp)
 	quot = '\0';
 	tmp = cmd;
 	check_empty_str(cmd);
+	printf("After empty check : [%s]\n\n", cmd);
 	cmd = tmp;
 	while (*cmd)
 	{
@@ -112,4 +133,5 @@ void	parse_cmd(char *cmd, char **envp)
 	}
 	cmd = tmp;
 	rm_space_sep(cmd);
+	rm_empty_str(cmd);
 }

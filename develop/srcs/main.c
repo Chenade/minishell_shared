@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/18 04:20:49 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 00:31:48 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	minishell(char *out, t_prompt *prompt)
 	int		status;
 	char	*cmd;
 
-	cmd = ft_strdup(out);
-	out = expansion(out, prompt->envp);
-	if (out)
+	status = pre_check(out, prompt);
+	add_history(out);
+	if (!status)
 	{
-		add_history(cmd);
-		free(cmd);
-		status = pre_check(out, prompt);
-		if (!status)
+
+		out = expansion(out, prompt->envp);
+		turn_sep(out);
+		if (out)
 		{
 			parse_cmd(out, prompt->envp);
 			if (fill_request(out, prompt))
@@ -43,8 +43,6 @@ int	minishell(char *out, t_prompt *prompt)
 		else
 			free(out);
 	}
-	else
-		return (free(cmd), 1);
 	return (status);
 }
 

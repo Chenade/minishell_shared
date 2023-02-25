@@ -60,12 +60,13 @@ SRCS_UTL	=	utils/init.c \
 				utils/env.c \
 				utils/error.c \
 				utils/utils.c \
-				signal.c
+				signal.c 
 
 SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
 				parse/post_parse.c \
-				parse/parse_cmd.c
+				parse/parse_cmd.c \
+				parse/turn_sep.c
 
 SRCS_TOK	=	token/fill_token.c \
 				token/request.c

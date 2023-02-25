@@ -80,6 +80,7 @@ t_token		*fill_token(t_request *request);
 int			fill_request(char *cmd, t_prompt *prompt);
 
 /* PARSE */
+void	turn_sep(char *out);
 int			env_key_len(char *out);
 int			insert_str(char *new_out, int *nout_i, char *str, int len);
 void		parse_cmd(char *cmd, char **envp);
