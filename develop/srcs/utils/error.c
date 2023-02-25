@@ -22,6 +22,8 @@ int	print_syntax_error(t_parse data, char *out)
 	while (out[++i])
 		if (out[i] == '|')
 			has_pipe = 1;
+	if (data.has_semico > 0)
+		return (print_error(SYNERR, "", ";"));
 	if (data.single_quote < 0)
 		return (print_error(SYNERR, "", "'"));
 	if (data.double_quote < 0)

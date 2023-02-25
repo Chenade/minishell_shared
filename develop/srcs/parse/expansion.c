@@ -122,6 +122,5 @@ char	*expansion(char *out, char **envp)
 	new_out[malloc_len] = '\0';
 	replace_env(out, new_out, envp);
 	free (out);
-	printf("[DEBUG] [%s]\n", new_out);
 	return (new_out);
 }

@@ -56,6 +56,7 @@ typedef struct s_parse
 	int				double_quote;
 	int				single_quote;
 	int				is_pipe;
+	int				has_semico;
 	int				infile;
 	int				outfile;
 }				t_parse;

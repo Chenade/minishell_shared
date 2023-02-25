@@ -20,6 +20,7 @@ int	reset_bool(t_parse *data, int init)
 	if (init)
 	{
 		data->is_pipe = -1;
+		data->has_semico = 0;
 		data->single_quote = 1;
 		data->double_quote = 1;
 	}
@@ -80,6 +81,8 @@ int	check_quote(t_parse *data, char c)
 		data->single_quote *= -1;
 		reset_bool(data, 0);
 	}
+	if (c == ';')
+		data->has_semico = 1;
 	return (0);
 }
 
