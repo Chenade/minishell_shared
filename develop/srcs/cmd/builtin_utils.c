@@ -118,7 +118,10 @@ int	update_oldpwd(t_prompt *prompt)
 		val = ft_strjoin("OLD_PWD=", cwd);
 		index = in_envp(val, prompt);
 		if (index > 0)
+		{
+			free (prompt->envp[index]);
 			prompt->envp[index] = ft_strdup(val);
+		}
 		else
 			add_envp(val, prompt);
 		free (val);

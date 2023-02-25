@@ -31,11 +31,12 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 				return (print_error(OP_NS, "cd", NULL), -1);
 		}
 		else
-			dest = token->str;
+			dest = ft_strdup(token->str);
 	}
 	update_oldpwd(prompt);
 	if (chdir(dest) < 0)
-		return (print_error(NDIR, "cd", token->str));
+		return (free (dest), print_error(NDIR, "cd", token->str));
+	free (dest);
 	return (0);
 }
 
