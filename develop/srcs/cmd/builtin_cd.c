@@ -63,3 +63,26 @@ int	ft_pwd(t_request *request, t_prompt *prompt)
 	else
 		return (-1);
 }
+
+int	update_oldpwd(t_prompt *prompt)
+{
+	int		index;
+	char	*val;
+	char	cwd[PATH_MAX];
+
+	if (getcwd(cwd, PATH_MAX))
+	{
+		val = ft_strjoin("OLD_PWD=", cwd);
+		index = in_envp(val, prompt);
+		if (index > 0)
+		{
+			free (prompt->envp[index]);
+			prompt->envp[index] = ft_strdup(val);
+			free (val);
+		}
+		else
+			add_envp(val, prompt);
+		return (0);
+	}
+	return (-1);
+}

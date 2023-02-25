@@ -107,3 +107,71 @@ bash: exit: too many arguments
 - [x]
 minishell $ exit 1 2ss
 -> minishell exit at 2 (numeric argument required)
+
+//----------------------------------//
+
+### Error on 25 Feb 2023 - Part 2 - 1
+
+-[x]
+export CMD=echo ARG=lol;$CMD $argument
+should be lol
+but nothing is printed
+
+-[x]
+bash-5.1$ echo ok "" ok
+ok  ok
+//reason: didn't print space when there is a empty string
+
+-[x]
+bash-5.1$ echo -n -n -na
+-nabash-5.1$ 
+//reason:condition error
+
+-[x]
+exit -1 2
+should not exit: too many args
+//reason: didn't convert to positive number before return
+
+-[x]
+bash-5.1$ exit -9223372036854775809
+exit
+bash: exit: -9223372036854775809: numeric argument required
+//reason: didn't convert to positive number before return
+
+-[ ] (?)
+bash-5.1$ echo hello > $test
+bash: $test: ambiguous redirect
+
+-[x]
+bash-5.1$ export loop='bonjour$loop' ; echo $loop
+bonjour$loop
+
+-[x]
+bash-5.1$ echo abc > a def 123
+bash-5.1$ cat a
+abc def 123
+//reason: redirection in the middle
+
+### Error on 25 Feb 2023 - Part 2 - 2
+
+-[ ]
+bash-5.1$ export var="cat Makefile | grep >" ; echo $var
+cat Makefile | grep >
+
+-[ ]
+bash-5.1$ echo "$USER$USER=lol$USER"
+ykuoykuo=lolykuo
+//reason: get_env is not working,the condition is not good
+
+//----------------------------------//
+
+-[ ]
+bash-5.1$ echo test > ls >> ls >>ls;echo test >> ls; cat ls
+test
+test
+
+-[ ]
+bash-5.1$ export A=1 B=2;echo $A; echo $B; echo "$A'$B"
+1
+2
+1'2

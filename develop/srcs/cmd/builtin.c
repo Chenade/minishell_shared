@@ -19,33 +19,47 @@ int	echo_check_flag(t_token *token)
 
 	i = 0;
 	ans = 1;
+	if (token->type != 5)
+		return (0);
 	while (token->str[++i])
 	{
 		if (token->str[i] != 110)
 			ans = 0;
 		i++;
 	}
+	fprintf(stderr, "str: %s, ans: %d\n", token->str, ans);
 	return (ans);
+}
+
+int	echo_print(t_token *token, int *isfirst)
+{
+	if (!(*isfirst))
+		printf(" ");
+	else
+		*(isfirst) = 0;
+	if (token->type == 0)
+		printf(" ");
+	else
+		printf ("%s", token->str);
 }
 
 int	ft_echo(t_request *request, t_prompt *prompt)
 {
 	int		i;
+	int		is_first;
 	int		newline;
 	t_token	*token;
 
 	token = request->token;
 	newline = 1;
+	is_first = 1;
 	while (token)
 	{
-		if (token->type == 2
-			|| (token->type == 5 && !echo_check_flag(token)))
-		{
-			printf ("%s", token->str);
-			if (token->next && token->next->type == 2)
-				printf (" ");
-		}
-		if (token->type == 5 && echo_check_flag(token))
+		if (token->type == 0)
+			echo_print(token, &is_first);
+		if (token->type == 2 && !echo_check_flag(token))
+			echo_print(token, &is_first);
+		if (echo_check_flag(token))
 			newline = 0;
 		token = token->next;
 	}
@@ -89,30 +103,6 @@ int	ft_export(t_request *request, t_prompt *prompt)
 				prompt->envp[index] = export_val(token->str);
 			else
 				status = add_envp(export_val(token->str), prompt);
-			if (status)
-				break ;
-		}
-		token = token->next;
-	}
-	return (status);
-}
-
-int	ft_unset(t_request *request, t_prompt *prompt)
-{
-	int		status;
-	int		index;
-	t_token	*token;
-
-	index = -1;
-	status = 0;
-	token = request->token;
-	while (token)
-	{
-		if (token->type == 2)
-		{
-			index = in_envp(token->str, prompt);
-			if (index >= 0)
-				status = del_envp(index, token, prompt);
 			if (status)
 				break ;
 		}

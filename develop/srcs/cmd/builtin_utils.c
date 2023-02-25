@@ -108,25 +108,26 @@ int	in_envp(char *str, t_prompt *prompt)
 	return (-1);
 }
 
-int	update_oldpwd(t_prompt *prompt)
+int	ft_unset(t_request *request, t_prompt *prompt)
 {
+	int		status;
 	int		index;
-	char	*val;
-	char	cwd[PATH_MAX];
+	t_token	*token;
 
-	if (getcwd(cwd, PATH_MAX))
+	index = -1;
+	status = 0;
+	token = request->token;
+	while (token)
 	{
-		val = ft_strjoin("OLD_PWD=", cwd);
-		index = in_envp(val, prompt);
-		if (index > 0)
+		if (token->type == 2)
 		{
-			free (prompt->envp[index]);
-			prompt->envp[index] = ft_strdup(val);
-			free (val);
+			index = in_envp(token->str, prompt);
+			if (index >= 0)
+				status = del_envp(index, token, prompt);
+			if (status)
+				break ;
 		}
-		else
-			add_envp(val, prompt);
-		return (0);
+		token = token->next;
 	}
-	return (-1);
+	return (status);
 }

@@ -53,6 +53,8 @@ int	get_exit_status(t_token *tmp)
 	if (tmp2->next)
 		return (dupnclose(fd, STDOUT_FILENO), -1);
 	g_exit_status = ft_atoi(tmp2->str);
+	while (g_exit_status < 0)
+		g_exit_status += 256;
 	return (dupnclose(fd, STDOUT_FILENO), g_exit_status);
 }
 
