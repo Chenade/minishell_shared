@@ -55,6 +55,7 @@ enum	e_mini_error
 	TM_ARGS = 14,
 	INV_ID = 15,
 	NARG = 16,
+	ABRT = 17,
 };
 
 #endif

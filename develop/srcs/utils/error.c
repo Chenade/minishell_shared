@@ -93,9 +93,9 @@ void	set_exit_status(int err_type, char *cmd)
 		printf("minishell: %s : Old Path not set.\n", cmd);
 	if (err_type == NOT_DIR)
 		printf("minishell: %s :Not a directory.\n", cmd);
-	if (err_type == OP_NS)
-		g_exit_status = 1;
-	else if (err_type == NDIR)
+	if (err_type == ABRT)
+		printf("minishell: %s : ambiguous redirect.\n", cmd);
+	if (err_type == OP_NS || err_type == NDIR)
 		g_exit_status = 1;
 	else if (err_type == NPERM)
 		g_exit_status = 1;

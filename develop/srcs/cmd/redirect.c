@@ -59,7 +59,7 @@ int	redirect_heredoc(t_request *request, t_prompt *prompt,
 	}
 	else
 		return (exit_fork(request, prompt, sfd,
-				print_error(SYNERR, "", token->str)));
+				print_error(ABRT, "", token->str)));
 	return (0);
 }
 
@@ -84,7 +84,7 @@ int	redirect_fd(t_request *request, t_prompt *prompt, t_token *token, int sfd)
 	}
 	else
 		return (exit_fork(request, prompt, sfd,
-				print_error(SYNERR, "", token->str)));
+				print_error(ABRT, "", token->str)));
 }
 
 int	redirection(t_request *request, t_prompt *prompt, int fd_stdout)
