@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   minishell.h										:+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: jischoi <jischoi@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/11/13 16:14:04 by ykuo			  #+#	#+#			 */
-/*   Updated: 2023/02/18 04:20:08 by jischoi		  ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/26 00:53:19 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/26 00:53:23 by jischoi          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -80,7 +80,9 @@ t_token		*fill_token(t_request *request);
 int			fill_request(char *cmd, t_prompt *prompt);
 
 /* PARSE */
-void	turn_sep(char *out);
+void		turn_sep(char *out);
+void		rm_empty_str(char *cmd);
+void		rm_space_sep(char *cmd);
 int			env_key_len(char *out);
 int			insert_str(char *new_out, int *nout_i, char *str, int len);
 void		parse_cmd(char *cmd, char **envp);
@@ -120,7 +122,7 @@ int			exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout);
 /* exec bin func*/
 int			exec_bin(t_request *request, t_prompt *prompt);
 
-/* builtin  utils*/
+/* builtin	utils*/
 int			is_builtin(char	*cmd);
 int			ft_print(char *str, int fd);
 int			del_envp(int index, t_token *token, t_prompt *prompt);

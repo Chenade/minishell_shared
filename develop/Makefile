@@ -66,7 +66,8 @@ SRCS_PAR	=	parse/pre_check.c \
 				parse/expansion.c \
 				parse/post_parse.c \
 				parse/parse_cmd.c \
-				parse/turn_sep.c
+				parse/turn_sep.c \
+				parse/parse_utils.c
 
 SRCS_TOK	=	token/fill_token.c \
 				token/request.c

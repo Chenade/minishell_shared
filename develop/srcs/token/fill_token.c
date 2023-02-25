@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 13:12:59 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/26 00:06:32 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 00:46:52 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,5 @@ t_token	*fill_token(t_request *request)
 		}
 		p += len;
 	}
-	print_token(token);
 	return (token);
 }

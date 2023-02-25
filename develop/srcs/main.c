@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/26 00:31:48 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 00:46:30 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	minishell(char *out, t_prompt *prompt)
 	add_history(out);
 	if (!status)
 	{
-
 		out = expansion(out, prompt->envp);
 		turn_sep(out);
 		if (out)
