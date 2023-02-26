@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 16:12:50 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/26 00:46:30 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 01:40:53 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ int	minishell(char *out, t_prompt *prompt)
 	return (status);
 }
 
+int	skip_emptycmd(char *out)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_strlen(out))
+		return (1);
+	while (out[i] == ' ')
+		i++;
+	if (out[i])
+		return (0);
+	return (1);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char				*out;
@@ -60,6 +74,8 @@ int	main(int argc, char **argv, char **envp)
 		out = readline("minishell $ ");
 		if (!out)
 			break ;
+		if (skip_emptycmd(out))
+			continue ;
 		if (!minishell(out, prompt))
 			free_all(prompt);
 	}

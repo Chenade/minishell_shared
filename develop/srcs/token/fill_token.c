@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 13:12:59 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/26 00:46:52 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 01:42:42 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	fill_type(t_token *token, int separator)
 {
-	if (!ft_strcmp(token->str, "") || token->str[0] == - 'e')
-		token->type = EMPTY;
-	else if (!ft_strcmp(token->str, ">") && separator == 0)
+	if (!ft_strcmp(token->str, ">") && separator == 0)
 		token->type = OUTPUT;
 	else if (!ft_strcmp(token->str, ">>") && separator == 0)
 		token->type = APPEN;
@@ -31,6 +29,8 @@ void	fill_type(t_token *token, int separator)
 			&& token->prev->prev->type >= INPUT
 			&& token->prev->prev->type <= APPEN))
 		token->type = CMD;
+	else if (!ft_strcmp(token->str, "") || token->str[0] == - 'e')
+		token->type = EMPTY;
 	else
 		token->type = ARG;
 }

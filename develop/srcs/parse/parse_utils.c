@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 00:51:08 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/26 00:51:16 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 01:40:08 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	rm_empty_str(char *cmd)
 	int	i;
 
 	i = 0;
-	while (*cmd == - 'e')
+	while (*cmd == - 'e' && *(cmd + 1) && *(cmd + 1) != - ' ')
 		push_str(cmd);
 	while (*cmd)
 	{
