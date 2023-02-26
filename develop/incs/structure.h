@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   structure.h										:+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: ykuo <marvin@42.fr>						+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/02/18 00:25:36 by ykuo			  #+#	#+#			 */
-/*   Updated: 2023/02/18 00:25:37 by ykuo			 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structure.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/26 05:25:47 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/26 05:25:49 by jischoi          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
@@ -38,12 +38,6 @@ typedef struct s_here_doc
 	char				*delim;
 	int					pipefd[2];
 }				t_here_doc;
-
-typedef struct	s_pidlist
-{
-	pid_t			content;
-	struct s_pidlist	*next;
-}	t_pidlist;
 
 typedef struct s_prompt
 {
