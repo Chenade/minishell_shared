@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 05:56:07 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/24 05:57:58 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/02/26 04:26:30 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	init_prompt(char **argv, char **envp, t_prompt *prompt)
 	prompt->requests = NULL;
 	prompt->nbr_here_doc = 0;
 	prompt->here_docs = NULL;
+	prompt->fork_i = 0;
 	init_envp(prompt, str, argv);
 }

@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   structure.h										:+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: ykuo <marvin@42.fr>						+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/02/18 00:25:36 by ykuo			  #+#	#+#			 */
-/*   Updated: 2023/02/18 00:25:37 by ykuo			 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structure.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/26 05:25:47 by jischoi           #+#    #+#             */
+/*   Updated: 2023/02/26 05:25:49 by jischoi          ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
@@ -47,6 +47,7 @@ typedef struct s_prompt
 	int					nbr_here_doc;
 	int					pipefd[2];
 	int					prev_pipefd;
+	int					fork_i;
 	struct s_here_doc	*here_docs;
 	struct s_request	*requests;
 }			t_prompt;

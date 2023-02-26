@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:09:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/21 09:09:46 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/02/26 05:29:47 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,16 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
 	int		ret;
 	int		status;
+	int		tmp;
 	pid_t	pid;
 
 	pipe(prompt->pipefd);
 	request->pid = fork();
-	if (request->pid == 0)
+	if (request->pid < 0)
+		;
+	else if (request->pid == 0)
 	{
+		signal_process();
 		if (prompt->nbr_request != request->id)
 			dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
 		if (request->id != 1)
@@ -73,6 +77,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		ft_close (prompt->pipefd[WRITEEND]);
 		if (prompt->prev_pipefd != -1)
 			ft_close(prompt->prev_pipefd);
@@ -94,7 +99,6 @@ int	process(t_prompt *prompt)
 		post_parse(&prompt->requests[i], i);
 	here_doc(prompt);
 	i = -1;
-	signal_process();
 	if (prompt->nbr_request == 1 && is_builtin(prompt->requests[0].cmd))
 		return (g_exit_status = dispatch_cmd(&prompt->requests[0], prompt));
 	else
