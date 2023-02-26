@@ -17,17 +17,16 @@ int	echo_check_flag(t_token *token)
 	int	i;
 	int	ans;
 
-	i = 0;
+	i = 1;
 	ans = 1;
 	if (token->type != 5)
 		return (0);
-	while (token->str[++i])
+	while (token->str[i])
 	{
 		if (token->str[i] != 110)
 			ans = 0;
 		i++;
 	}
-	fprintf(stderr, "str: %s, ans: %d\n", token->str, ans);
 	return (ans);
 }
 
