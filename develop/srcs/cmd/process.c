@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:09:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/26 05:17:08 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 05:29:47 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		ft_close (prompt->pipefd[WRITEEND]);
 		if (prompt->prev_pipefd != -1)
 			ft_close(prompt->prev_pipefd);
