@@ -41,6 +41,7 @@ int	echo_print(t_token *token, int *isfirst)
 		printf(" ");
 	else
 		printf ("%s", token->str);
+	return (0);
 }
 
 int	ft_echo(t_request *request, t_prompt *prompt)
