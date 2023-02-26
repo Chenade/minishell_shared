@@ -53,6 +53,18 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	return (free_cmd(prompt, fd_stdout, result));
 }
 
+int	exec_cmd_child(t_request *request, t_prompt *prompt, int i)
+{
+	signal_process();
+	if (prompt->nbr_request != request->id)
+		dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
+	if (request->id != 1)
+		dupnclose(prompt->prev_pipefd, STDIN_FILENO);
+	ft_close(prompt->pipefd[READEND]);
+	ft_close(prompt->pipefd[WRITEEND]);
+	exit (dispatch_cmd(request, prompt));
+}
+
 int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
 	int		ret;
@@ -65,16 +77,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	if (request->pid < 0)
 		;
 	else if (request->pid == 0)
-	{
-		signal_process();
-		if (prompt->nbr_request != request->id)
-			dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
-		if (request->id != 1)
-			dupnclose(prompt->prev_pipefd, STDIN_FILENO);
-		ft_close(prompt->pipefd[READEND]);
-		ft_close(prompt->pipefd[WRITEEND]);
-		exit (dispatch_cmd(request, prompt));
-	}
+		exec_cmd_child(request, prompt, i);
 	else
 	{
 		signal(SIGINT, SIG_IGN);
