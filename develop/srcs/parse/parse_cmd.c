@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 13:08:30 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/26 00:48:24 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 00:58:13 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	parse_cmd(char *cmd, char **envp)
 	quot = '\0';
 	tmp = cmd;
 	check_empty_str(cmd);
-	printf("After empty check : [%s]\n\n", cmd);
 	cmd = tmp;
 	while (*cmd)
 	{
