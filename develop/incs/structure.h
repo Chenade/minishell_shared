@@ -39,6 +39,12 @@ typedef struct s_here_doc
 	int					pipefd[2];
 }				t_here_doc;
 
+typedef struct	s_pidlist
+{
+	pid_t			content;
+	struct s_pidlist	*next;
+}	t_pidlist;
+
 typedef struct s_prompt
 {
 	char				**envp;
@@ -47,6 +53,7 @@ typedef struct s_prompt
 	int					nbr_here_doc;
 	int					pipefd[2];
 	int					prev_pipefd;
+	int					fork_i;
 	struct s_here_doc	*here_docs;
 	struct s_request	*requests;
 }			t_prompt;

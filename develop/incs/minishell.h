@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 00:53:19 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/26 00:53:23 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 03:23:18 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void		init_envp(t_prompt *prompt, char *str, char **argv);
 void		init_prompt(char **argv, char **envp, t_prompt *prompt);
 
 /* SIGNAL */
+void	sigignore_handler(int sig);
 void		sig_process_handler(int sig);
 void		signal_process(void);
 void		set_signal(void);
