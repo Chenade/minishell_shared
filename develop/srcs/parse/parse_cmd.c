@@ -75,7 +75,6 @@ void	parse_cmd(char *cmd, char **envp)
 	quot = '\0';
 	tmp = cmd;
 	check_empty_str(cmd);
-	printf("After empty check : [%s]\n\n", cmd);
 	cmd = tmp;
 	while (*cmd)
 	{

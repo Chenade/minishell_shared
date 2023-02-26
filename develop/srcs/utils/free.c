@@ -54,10 +54,12 @@ void	free_here_doc(t_prompt *p)
 	while (++i < p->nbr_here_doc)
 	{
 		if (p->here_docs[i].delim)
+		{
+			close(p->here_docs[i].pipefd[READEND]);
+			close(p->here_docs[i].pipefd[WRITEEND]);
 			free (p->here_docs[i].delim);
-		p->here_docs[i].delim = NULL;
-		close(p->here_docs[i].pipefd[READEND]);
-		close(p->here_docs[i].pipefd[WRITEEND]);
+			p->here_docs[i].delim = NULL;
+		}
 	}
 	if (p->here_docs)
 		free (p->here_docs);

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	ft_set_delims(t_prompt *prompt)
+static int	ft_set_delims(t_prompt *prompt)
 {
 	int		i;
 	int		index;
@@ -25,7 +25,7 @@ static void	ft_set_delims(t_prompt *prompt)
 		token = prompt->requests[i].token;
 		while (token)
 		{
-			if (token->type == HERE_DOC)
+			if (token->type == HERE_DOC && token->next)
 			{
 				prompt->here_docs[index].delim = ft_strdup(token->next->str);
 				pipe(prompt->here_docs[index].pipefd);
@@ -35,7 +35,7 @@ static void	ft_set_delims(t_prompt *prompt)
 			token = token->next;
 		}
 	}
-	return ;
+	return (index);
 }
 
 int	end_here_doc(char *str, t_prompt *prompt, int index)
@@ -114,7 +114,8 @@ int	here_doc(t_prompt *prompt)
 	prompt->here_docs = ft_calloc(sizeof(t_here_doc), prompt->nbr_here_doc);
 	if (!prompt->here_docs)
 		return (g_exit_status);
-	ft_set_delims(prompt);
+	if (!ft_set_delims(prompt))
+		return (g_exit_status);
 	pid = fork();
 	i = -1;
 	if (pid == 0)

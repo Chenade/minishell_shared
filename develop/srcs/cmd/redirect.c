@@ -31,6 +31,7 @@ int	exit_fork(t_request *request, t_prompt *prompt, int fd_stdout, int status)
 	dupnclose (fd_stdout, STDOUT_FILENO);
 	if (!(prompt->nbr_request == 1 || !is_builtin(request->cmd)))
 	{
+		fprintf(stderr, "sdfsdfdfs\n");
 		free_all(prompt);
 		free_pp(prompt->envp);
 		clear_history();
