@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:09:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/26 05:29:47 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 06:14:59 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	pipe(prompt->pipefd);
 	request->pid = fork();
 	if (request->pid < 0)
-		return (print_error(FORKERR, request->cmd, NULL), NULL);
+		return (print_error(FORKERR, request->cmd, NULL));
 	else if (request->pid == 0)
 		exec_cmd_child(request, prompt, i);
 	else
