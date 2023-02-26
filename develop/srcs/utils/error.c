@@ -97,7 +97,7 @@ void	set_exit_status(int err_type, char *cmd)
 		printf("minishell: %s : ambiguous redirect.\n", cmd);
 	if (err_type == OP_NS || err_type == NDIR)
 		g_exit_status = 1;
-	else if (err_type == NPERM)
+	else if (err_type == NPERM || err_type == ABRT)
 		g_exit_status = 1;
 	else if (err_type == NCMD)
 		g_exit_status = 1;
