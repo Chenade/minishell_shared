@@ -75,7 +75,7 @@ int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 	pipe(prompt->pipefd);
 	request->pid = fork();
 	if (request->pid < 0)
-		;
+		return (print_error(FORKERR, request->cmd, NULL), NULL);
 	else if (request->pid == 0)
 		exec_cmd_child(request, prompt, i);
 	else

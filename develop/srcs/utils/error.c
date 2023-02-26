@@ -95,20 +95,20 @@ void	set_exit_status(int err_type, char *cmd)
 		printf("minishell: %s :Not a directory.\n", cmd);
 	if (err_type == ABRT)
 		printf("minishell: %s : ambiguous redirect.\n", cmd);
+	if (err_type == FORKERR)
+		ft_putstr_fd("Fork failed", STDERR_FILENO);
 	if (err_type == OP_NS || err_type == NDIR)
 		g_exit_status = 1;
 	else if (err_type == NPERM || err_type == ABRT)
 		g_exit_status = 1;
-	else if (err_type == NCMD)
+	else if (err_type == NCMD || err_type == IS_DIR)
 		g_exit_status = 1;
-	else if (err_type == SYNERR)
+	else if (err_type == SYNERR || err_type == FORKERR)
 		g_exit_status = 2;
 	else if (err_type == TM_ARGS)
 		g_exit_status = 1;
 	else if (err_type == MEM)
 		g_exit_status = 2;
-	else if (err_type == IS_DIR)
-		g_exit_status = 1;
 	else if (err_type == NOT_DIR)
 		g_exit_status = 1;
 	else if (err_type == INV_ID)
@@ -152,7 +152,6 @@ int	print_error(int err_type, char *cmd, char *param)
 // 	ft_putstr_fd("Wrong input character: ", STDERR_FILENO);
 // else if (err_type == DUPERR)
 // 	ft_putstr_fd("Dup failed", STDERR_FILENO);
-// else if (err_type == FORKERR)
-// 	ft_putstr_fd("Fork failed", STDERR_FILENO);
+
 // else if (err_type == PIPERR)
 // 	ft_putstr_fd("Pipe error", STDERR_FILENO);
