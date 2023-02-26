@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 05:59:21 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/24 05:59:23 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/02/25 22:44:35 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_env(char *var, char **envp, int n)
 		return (ft_itoa(g_exit_status));
 	if (n < 0)
 		n = ft_strlen(var);
-	while (!ft_strchr(var, '=') && envp && envp[i])
+	while (envp && envp[i])
 	{
 		n2 = n;
 		if (n2 < ft_strchr_int(envp[i], '='))

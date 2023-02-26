@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/25 02:15:47 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/02/25 16:34:44 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
 	{
 		status = get_exit_status(tmp);
 		if (status < 0)
-			return (print_error(TM_ARGS, "cd", NULL));
+			status += 256;
 		g_exit_status = status;
 	}
 	else
