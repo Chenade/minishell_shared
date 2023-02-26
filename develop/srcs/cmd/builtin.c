@@ -57,7 +57,7 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 	{
 		if (token->type == 0)
 			echo_print(token, &is_first);
-		if (token->type == 2 && !echo_check_flag(token))
+		if (token->type == 2 || (token->type == 5 && !echo_check_flag(token)))
 			echo_print(token, &is_first);
 		if (echo_check_flag(token))
 			newline = 0;
