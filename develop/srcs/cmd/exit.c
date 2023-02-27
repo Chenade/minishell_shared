@@ -35,13 +35,13 @@ int	get_exit_status(t_token *tmp)
 {
 	int		i;
 	int		fd;
-	int		stderr_fd;
+	int		ed;
 	t_token	*tmp2;
 
 	i = -1;
 	tmp2 = tmp;
 	fd = dup(STDOUT_FILENO);
-	stderr_fd = dup(STDERR_FILENO);
+	ed = dup(STDERR_FILENO);
 	dupnclose(STDERR_FILENO, STDOUT_FILENO);
 	while (tmp)
 	{
@@ -52,12 +52,12 @@ int	get_exit_status(t_token *tmp)
 		tmp = tmp->next;
 	}
 	if (tmp2->next)
-		return (dupnclose(fd, STDOUT_FILENO), -1);
+		return (dupnclose(ed, STDERR_FILENO), dupnclose(fd, STDOUT_FILENO), -1);
 	g_exit_status = ft_atoi(tmp2->str);
 	while (g_exit_status < 0)
 		g_exit_status += 256;
-	dupnclose(stderr_fd, STDERR_FILENO);
-	return (dupnclose(fd, STDOUT_FILENO), g_exit_status);
+	return (dupnclose(ed, STDERR_FILENO),
+		dupnclose(fd, STDOUT_FILENO), g_exit_status);
 }
 
 int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
