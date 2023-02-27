@@ -36,6 +36,8 @@ int	check_pipe(t_parse *data, char *c, t_prompt *prompt)
 			return (1);
 		data->is_pipe *= -1;
 	}
+	if (*c == ';')
+		data->has_semico = 1;
 	return (0);
 }
 
@@ -79,8 +81,6 @@ int	check_quote(t_parse *data, char c)
 		data->single_quote *= -1;
 		reset_bool(data, 0);
 	}
-	if (c == ';')
-		data->has_semico = 1;
 	return (0);
 }
 
@@ -102,7 +102,7 @@ int	pre_check(char *out, t_prompt *prompt)
 			if (check_redirect (&data, &(out[i])))
 				break ;
 		}
-		if (ft_isalpha(out[i]) || ft_isdigit(out[i]))
+		if (ft_isalpha(out[i]) || ft_isdigit(out[i]) || out[i] == '?')
 			reset_bool(&data, 0);
 	}
 	return (print_syntax_error(data, out));

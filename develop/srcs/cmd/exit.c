@@ -44,7 +44,7 @@ int	get_exit_status(t_token *tmp)
 	while (tmp)
 	{
 		while (tmp->str[++i])
-			if (ft_isalpha(tmp->str[i]))
+			if (ft_isalpha(tmp->str[i]) || tmp->str[i] == ' ')
 				return (printf("minishell: exit: %s: numeric argument equired\n",
 						tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
 		tmp = tmp->next;
@@ -65,7 +65,7 @@ int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
 	{
 		status = get_exit_status(tmp);
 		if (status < 0)
-			status += 256;
+			return (print_error(TM_ARGS, "exit", NULL));
 		g_exit_status = status;
 	}
 	else
