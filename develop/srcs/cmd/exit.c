@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/26 05:31:23 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/26 06:09:58 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	ft_wait(t_prompt *prompt)
 	while (++i < prompt->nbr_request)
 	{
 		waitpid(prompt->requests[i].pid, &status, 0);
-		if (WTERMSIG(status) == SIGINT)
+		if (i + 1 < prompt->nbr_request)
+			signal(SIGINT, SIG_IGN);
+		else if (WTERMSIG(status) == SIGINT)
 			ft_putstr_fd("\n", 2);
 		else if (WTERMSIG(status) == SIGQUIT)
 			ft_putstr_fd("Quit (core dumped)\n", 2);
