@@ -23,7 +23,7 @@ int	echo_check_flag(t_token *token)
 		return (0);
 	while (token->str[i])
 	{
-		if (token->str[i] != 110)
+		if (token->str[i] != 'n')
 			ans = 0;
 		i++;
 	}
@@ -33,13 +33,13 @@ int	echo_check_flag(t_token *token)
 int	echo_print(t_token *token, int *isfirst)
 {
 	if (!(*isfirst))
-		printf(" ");
+		ft_putstr_fd (" ", STDOUT_FILENO);
 	else
 		*(isfirst) = 0;
 	if (token->type == 0)
-		printf(" ");
+		ft_putstr_fd (" ", STDOUT_FILENO);
 	else
-		printf ("%s", token->str);
+		ft_putstr_fd (token->str, STDOUT_FILENO);
 	return (0);
 }
 
