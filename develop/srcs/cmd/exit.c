@@ -35,11 +35,13 @@ int	get_exit_status(t_token *tmp)
 {
 	int		i;
 	int		fd;
+	int		stderr_fd;
 	t_token	*tmp2;
 
 	i = -1;
 	tmp2 = tmp;
 	fd = dup(STDOUT_FILENO);
+	stderr_fd = dup(STDERR_FILENO);
 	dupnclose(STDERR_FILENO, STDOUT_FILENO);
 	while (tmp)
 	{
@@ -54,6 +56,7 @@ int	get_exit_status(t_token *tmp)
 	g_exit_status = ft_atoi(tmp2->str);
 	while (g_exit_status < 0)
 		g_exit_status += 256;
+	dupnclose(stderr_fd, STDERR_FILENO);
 	return (dupnclose(fd, STDOUT_FILENO), g_exit_status);
 }
 
@@ -83,12 +86,12 @@ int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
 
 	tmp = request->token->next;
 	status = if_exit(request, prompt, tmp);
-	if (!status)
+	if (status >= 0)
 	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 		free_all(prompt);
 		free_pp(prompt->envp);
 		clear_history();
-		ft_putstr_fd("exit\n", STDERR_FILENO);
 		ft_close(fd_stdout);
 		exit(g_exit_status);
 	}
