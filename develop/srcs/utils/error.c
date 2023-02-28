@@ -127,7 +127,7 @@ int	print_error(int err_type, char *cmd, char *param)
 
 	set_exit_status(err_type, cmd);
 	fd = dup(STDOUT_FILENO);
-	dupnclose(STDERR_FILENO, STDOUT_FILENO);
+	dup2(STDERR_FILENO, STDOUT_FILENO);
 	if (err_type == NDIR)
 		printf("minishell: %s : No such file or directory.\n", cmd);
 	else if (err_type == NPERM)

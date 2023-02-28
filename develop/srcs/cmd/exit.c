@@ -70,7 +70,7 @@ int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
 	{
 		status = get_exit_status(tmp);
 		if (status < 0)
-			return (print_error(TM_ARGS, "exit", NULL));
+			print_error(TM_ARGS, "exit", NULL);
 		g_exit_status = status;
 	}
 	else
@@ -78,7 +78,7 @@ int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
 		ft_wait(prompt);
 		g_exit_status = 0;
 	}
-	return (0);
+	return (g_exit_status);
 }
 
 int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
