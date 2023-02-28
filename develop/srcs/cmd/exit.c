@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/28 21:28:28 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:42:20 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,15 @@ int	get_exit_status(t_token *tmp)
 	int		ed;
 	// t_token	*tmp2;
 
-	i = -1;
+	// i = -1;
 	// tmp2 = tmp;
 	fd = dup(STDOUT_FILENO);
 	ed = dup(STDERR_FILENO);
 	dupnclose(STDERR_FILENO, STDOUT_FILENO);
+	i = 0;
+	while (tmp->str[i] && tmp->str[i] == ' ')
+		i++;
+	i -= 1;
 	// while (tmp)
 	// {
 		while (tmp->type == 0 || tmp->str[++i])
