@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:09:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/28 17:20:59 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:30:38 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	free_cmd(t_prompt *prompt, int fd_stdout, int status)
 		free_pp(prompt->envp);
 		clear_history();
 	}
+	if (status == -1)
+		status = 1;
 	return (status);
 }
 
@@ -29,7 +31,6 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	int		result;
 	int		fd_stdout;
 
-	result = 1;
 	fd_stdout = dup(STDOUT_FILENO);
 	if (redirection(request, prompt, fd_stdout))
 		return (free_cmd(prompt, fd_stdout, 1));
@@ -48,7 +49,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	else if (ft_strcmp(request->cmd, "env") == 0)
 		result = print_env(prompt->envp);
 	else if (ft_strcmp(request->cmd, "exit") == 0)
-		exit_minishell(request, prompt, fd_stdout);
+		result = exit_minishell(request, prompt, fd_stdout);
 	else
 		result = exec_bin(request, prompt);
 	return (free_cmd(prompt, fd_stdout, result));

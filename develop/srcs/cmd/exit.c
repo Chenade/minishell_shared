@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/28 17:22:13 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:33:16 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	get_exit_status(t_token *tmp)
 	{
 		while (tmp->type == 0 || tmp->str[++i])
 			if (tmp->type == 0 || ft_isalpha(tmp->str[i]) || tmp->str[i] == ' ')
-				return (printf("minishell: exit: %s: numeric argument required\n",
-						tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
+				return (printf("minishell: exit: %s: numeric argument "\
+				"required\n", tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
 		tmp = tmp->next;
 	}
 	if (tmp2->next)
