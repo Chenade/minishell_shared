@@ -1,3 +1,18 @@
+# exit tested cases
+exit a
+exit 5
+exit 5 a
+exit a 5
+exit "5 5"
+exit -
+exit ""
+exit -1-
+exit --1
+exit 5""
+exit "       5"
+exit "5       "
+exit "  5  "
+
 ## Notes
 - be sure not have any error when you do valgrind -s
 ---
