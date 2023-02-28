@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/28 21:42:20 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/28 22:57:17 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,31 @@ void	ft_wait(t_prompt *prompt)
 	}
 }
 
+int	check_numeric_arg(t_token *tmp, int	i)
+{
+	if (tmp->str[i] == '-')
+		i ++;
+	if (!tmp->str[i] || tmp->type == 0)
+		return (1);
+	while (tmp->str[i])
+	{
+		if (!ft_isdigit(tmp->str[i]))
+		{	
+			if (tmp->str[i] != ' ')
+				return (1);
+			else
+			{
+				while (tmp->str[i] && tmp->str[i] == ' ')
+					i++;
+				if (tmp->str[i])
+					return (1);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	get_exit_status(t_token *tmp)
 {
 	int		i;
@@ -48,13 +73,15 @@ int	get_exit_status(t_token *tmp)
 	i = 0;
 	while (tmp->str[i] && tmp->str[i] == ' ')
 		i++;
-	i -= 1;
+	if (check_numeric_arg(tmp, i))
+		return (printf("minishell: exit: %s: numeric argument "\
+				"required\n", tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
 	// while (tmp)
 	// {
-		while (tmp->type == 0 || tmp->str[++i])
-			if (tmp->type == 0 || ft_isalpha(tmp->str[i]) || tmp->str[i] == ' ')
-				return (printf("minishell: exit: %s: numeric argument "\
-				"required\n", tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
+		// while (tmp->type == 0 || tmp->str[++i])
+		// 	if (tmp->type == 0 || ft_isalpha(tmp->str[i]) || tmp->str[i] == ' ')
+		// 		return (printf("minishell: exit: %s: numeric argument "\
+		// 		"required\n", tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
 		// tmp = tmp->next;
 	// }
 	// if (tmp2->next)
