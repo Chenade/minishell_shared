@@ -47,7 +47,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 	else if (ft_strcmp(request->cmd, "env") == 0)
 		result = print_env(prompt->envp);
 	else if (ft_strcmp(request->cmd, "exit") == 0)
-		exit_minishell(request, prompt, fd_stdout);
+		result = exit_minishell(request, prompt, fd_stdout);
 	else
 		result = exec_bin(request, prompt);
 	return (free_cmd(prompt, fd_stdout, result));
