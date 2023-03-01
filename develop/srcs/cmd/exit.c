@@ -45,14 +45,13 @@ int	get_exit_status(t_token *tmp)
 	fd = dup(STDOUT_FILENO);
 	ed = dup(STDERR_FILENO);
 	dupnclose(STDERR_FILENO, STDOUT_FILENO);
-	while (tmp)
-	{
-		while (tmp->str[++i])
-			if (ft_isalpha(tmp->str[i]) || tmp->str[i] == ' ')
-				return (printf("minishell: exit: %s: numeric argument equired\n",
-						tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
-		tmp = tmp->next;
-	}
+	while (tmp->str[++i])
+		if (ft_isalpha(tmp->str[i]))
+			return (printf("minishell: exit: %s: numeric argument equired\n",
+					tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
+	if (i == 0)
+		return (printf("minishell: exit: %s: numeric argument equired\n",
+				tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
 	if (tmp2->next)
 		return (dupnclose(ed, STDERR_FILENO), dupnclose(fd, STDOUT_FILENO), -1);
 	g_exit_status = ft_atoi(tmp2->str);
