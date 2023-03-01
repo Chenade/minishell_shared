@@ -19,6 +19,8 @@ void	turn_sep(char *out)
 
 	i = -1;
 	reset_bool(&data, 1);
+	if (!out)
+		return ;
 	while (out[++i])
 	{
 		check_quote(&data, out[i]);
