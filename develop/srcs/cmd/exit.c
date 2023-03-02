@@ -33,7 +33,7 @@ void	ft_wait(t_prompt *prompt)
 	}
 }
 
-int	check_numeric_arg(t_token *tmp, int	i)
+int	check_numeric_arg(t_token *tmp, int i)
 {
 	if (tmp->str[i] == '-' || tmp->str[i] == '+')
 		i ++;
@@ -63,10 +63,7 @@ int	get_exit_status(t_token *tmp)
 	int		i;
 	int		fd;
 	int		ed;
-	// t_token	*tmp2;
 
-	// i = -1;
-	// tmp2 = tmp;
 	fd = dup(STDOUT_FILENO);
 	ed = dup(STDERR_FILENO);
 	dupnclose(STDERR_FILENO, STDOUT_FILENO);
@@ -76,18 +73,8 @@ int	get_exit_status(t_token *tmp)
 	if (check_numeric_arg(tmp, i))
 		return (printf("minishell: exit: %s: numeric argument "\
 				"required\n", tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
-	// while (tmp)
-	// {
-		// while (tmp->type == 0 || tmp->str[++i])
-		// 	if (tmp->type == 0 || ft_isalpha(tmp->str[i]) || tmp->str[i] == ' ')
-		// 		return (printf("minishell: exit: %s: numeric argument "\
-		// 		"required\n", tmp->str), dupnclose(fd, STDOUT_FILENO), 2);
-		// tmp = tmp->next;
-	// }
-	// if (tmp2->next)
 	if (tmp->next)
 		return (dupnclose(ed, STDERR_FILENO), dupnclose(fd, STDOUT_FILENO), -1);
-	// g_exit_status = ft_atoi(tmp2->str);
 	g_exit_status = ft_atoi(tmp->str);
 	while (g_exit_status < 0)
 		g_exit_status += 256;

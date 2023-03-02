@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/14 18:45:53 by ykuo              #+#    #+#             */
-/*   Updated: 2023/03/02 04:27:33 by jischoi          ###   ########.fr       */
+/*   Created: 2023/03/02 05:04:27 by ykuo              #+#    #+#             */
+/*   Updated: 2023/03/02 05:04:31 by ykuo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,49 +66,4 @@ int	ft_echo(t_request *request, t_prompt *prompt)
 	if (newline)
 		printf("\n");
 	return (0);
-}
-
-char	*export_val(char *str)
-{
-	int		i;
-	char	*val;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '=')
-			return (ft_strdup(str));
-	val = ft_strjoin(str, "=");
-	if (!val)
-		return (NULL);
-	return (val);
-}
-
-int	ft_export(t_request *request, t_prompt *prompt)
-{
-	int		status;
-	int		index;
-	t_token	*token;
-
-	index = -1;
-	status = 0;
-	token = request->token;
-	while (token)
-	{
-		if ((token->type == 3 || token->type == 2))
-		{
-			if (token->str[0] == '=' || token->str[0] == '+'
-				|| ft_isdigit(token->str[0])
-				|| !only_norm_char(token->str))
-				return (print_error(INV_ID, "export", token->str), 1);
-			index = in_envp(token->str, prompt);
-			if (index >= 0)
-				prompt->envp[index] = export_val(token->str);
-			else
-				status = add_envp(export_val(token->str), prompt);
-			if (status)
-				break ;
-		}
-		token = token->next;
-	}
-	return (status);
 }

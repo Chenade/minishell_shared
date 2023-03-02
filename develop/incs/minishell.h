@@ -113,7 +113,7 @@ int			reset_bool(t_parse *data, int init);
 int			check_quote(t_parse *data, char c);
 
 /* CMD - process */
-int         only_norm_char(char *str);
+int			only_norm_char(char *str);
 int			here_doc(t_prompt *prompt);
 void		exit_here_doc(int sig);
 int			redirection(t_request *request, t_prompt *prompt, int fd_stdout);
