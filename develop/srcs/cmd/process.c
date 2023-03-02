@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 09:09:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/26 06:14:59 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:30:38 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	free_cmd(t_prompt *prompt, int fd_stdout, int status)
 		free_pp(prompt->envp);
 		clear_history();
 	}
+	if (status == -1)
+		status = 1;
 	return (status);
 }
 
