@@ -18,7 +18,7 @@ char	*get_dest(char *str, t_prompt *prompt)
 
 	if (ft_strcmp(str, "-") == 0)
 	{
-		dest = get_env("OLD_PWD", prompt->envp, 7);
+		dest = get_env("OLDPWD", prompt->envp, 7);
 		if (!dest)
 			return (print_error(OP_NS, "cd", NULL), NULL);
 	}
