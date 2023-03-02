@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 02:15:45 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/28 22:57:17 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/03/02 03:39:30 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_wait(t_prompt *prompt)
 
 int	check_numeric_arg(t_token *tmp, int	i)
 {
-	if (tmp->str[i] == '-')
+	if (tmp->str[i] == '-' || tmp->str[i] == '+')
 		i ++;
 	if (!tmp->str[i] || tmp->type == 0)
 		return (1);
