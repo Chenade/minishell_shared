@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykuo <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 18:45:53 by ykuo              #+#    #+#             */
-/*   Updated: 2023/02/14 18:46:06 by ykuo             ###   ########.fr       */
+/*   Updated: 2023/03/02 04:03:53 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	ft_export(t_request *request, t_prompt *prompt)
 	{
 		if ((token->type == 3 || token->type == 2))
 		{
-			if (token->str[0] == '=')
+			if (token->str[0] == '=' || ft_isdigit(token->str[0]))
 				return (print_error(INV_ID, "export", token->str), 1);
 			index = in_envp(token->str, prompt);
 			if (index >= 0)
