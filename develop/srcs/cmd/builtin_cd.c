@@ -44,9 +44,9 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 	dest_bk = ft_strdup(dest);
 	g_exit_status = 0;
 	update_oldpwd(prompt);
-	update_pwd(prompt);
 	if (chdir(dest) < 0)
 		print_fd_error(dest_bk, "cd", 0);
+	update_pwd(prompt);
 	free (dest);
 	free (dest_bk);
 	return (g_exit_status);
@@ -73,7 +73,7 @@ int	update_oldpwd(t_prompt *prompt)
 
 	if (getcwd(cwd, PATH_MAX))
 	{
-		val = ft_strjoin("OLD_PWD=", cwd);
+		val = ft_strjoin("OLDPWD=", cwd);
 		index = in_envp(val, prompt);
 		if (index > 0)
 		{
