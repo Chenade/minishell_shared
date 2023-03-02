@@ -130,8 +130,6 @@ int			ft_print(char *str, int fd);
 int			del_envp(int index, t_token *token, t_prompt *prompt);
 int			add_envp(char *str, t_prompt *prompt);
 int			in_envp(char *token, t_prompt *prompt);
-int			update_oldpwd(t_prompt *prompt);
-char		*get_dest(char *str, t_prompt *prompt);
 
 /* CMD - builtin */
 int			ft_pwd(t_request *request, t_prompt *prompt);
