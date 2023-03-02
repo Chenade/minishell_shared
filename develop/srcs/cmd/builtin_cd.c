@@ -35,7 +35,6 @@ int	ft_cd(t_request *request, t_prompt *prompt)
 
 	if (request->nbr_token > 2)
 		return (print_error(TM_ARGS, "cd", NULL));
-	print_token(request->token);
 	if (request->nbr_token == 1 || !ft_strcmp(request->token->next->str, "~"))
 		dest = get_env("HOME", prompt->envp, 4);
 	else

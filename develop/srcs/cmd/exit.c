@@ -61,32 +61,20 @@ int	get_exit_status(t_token *tmp)
 		dupnclose(fd, STDOUT_FILENO), g_exit_status);
 }
 
-int	if_exit(t_request *request, t_prompt *prompt, t_token *tmp)
-{
-	int	status;
-
-	if (tmp)
-	{
-		status = get_exit_status(tmp);
-		if (status < 0)
-			print_error(TM_ARGS, "exit", NULL);
-		g_exit_status = status;
-	}
-	else
-	{
-		ft_wait(prompt);
-		g_exit_status = 0;
-	}
-	return (status);
-}
-
 int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
 {
 	int		status;
-	t_token	*tmp;
 
-	tmp = request->token->next;
-	status = if_exit(request, prompt, tmp);
+	status = 0;
+	if (request->token->next)
+	{
+		status = get_exit_status(request->token->next);
+		if (status < 0)
+			print_error(TM_ARGS, "exit", NULL);
+	}
+	else
+		ft_wait(prompt);
+	g_exit_status = status;
 	if (status >= 0)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
