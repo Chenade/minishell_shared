@@ -6,7 +6,7 @@
 /*   By: jischoi <jischoi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 05:26:01 by jischoi           #+#    #+#             */
-/*   Updated: 2023/02/26 05:26:03 by jischoi          ###   ########.fr       */
+/*   Updated: 2023/03/02 04:29:05 by jischoi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int			reset_bool(t_parse *data, int init);
 int			check_quote(t_parse *data, char c);
 
 /* CMD - process */
+int         only_norm_char(char *str);
 int			here_doc(t_prompt *prompt);
 void		exit_here_doc(int sig);
 int			redirection(t_request *request, t_prompt *prompt, int fd_stdout);
