@@ -14,7 +14,7 @@ CFLAGS		=	-Wall -Werror -Wextra
 CFLAGS		+=	-I $(INCS_DIR) -I $(LIBFT_DIR) 
 CFLAGS		+=	-g3 -MMD
 
-CFLAGS		= 	-I $(INCS_DIR) -I $(LIBFT_DIR)  -g3 -MMD
+# CFLAGS		= 	-I $(INCS_DIR) -I $(LIBFT_DIR)  -g3 -MMD
 
 LFLAGS		= 	-L . -lmlx_Linux -lX11 -lXext -lm -I ${MLX_DIR}
 

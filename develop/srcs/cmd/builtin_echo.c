@@ -45,11 +45,11 @@ int	echo_print(t_token *token, int *isfirst)
 
 int	ft_echo(t_request *request, t_prompt *prompt)
 {
-	int		i;
 	int		is_first;
 	int		newline;
 	t_token	*token;
 
+	(void)prompt;
 	token = request->token;
 	newline = 1;
 	is_first = 1;

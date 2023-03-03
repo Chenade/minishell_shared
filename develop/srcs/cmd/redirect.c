@@ -44,7 +44,6 @@ int	redirect_heredoc(t_request *request, t_prompt *prompt,
 	t_token *token, int sfd)
 {
 	int		i;
-	int		fd;
 
 	if (token->next && (token->next->type == 11 || token->next->type == 0))
 	{
@@ -90,7 +89,6 @@ int	redirect_fd(t_request *request, t_prompt *prompt, t_token *token, int sfd)
 
 int	redirection(t_request *request, t_prompt *prompt, int fd_stdout)
 {
-	int			fd;	
 	t_token		*token;
 	t_request	*tmp;
 

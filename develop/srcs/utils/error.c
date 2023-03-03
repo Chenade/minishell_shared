@@ -43,7 +43,6 @@ int	print_redirect_error(int type, char *path)
 {
 	DIR	*folder;
 	int	fd;
-	int	ret;
 
 	fd = open(path, O_WRONLY);
 	folder = opendir(path);
@@ -64,7 +63,6 @@ int	print_fd_error(char *path, char *cmd, int type)
 {
 	DIR	*folder;
 	int	fd;
-	int	ret;
 
 	fd = open(path, O_WRONLY);
 	folder = NULL;

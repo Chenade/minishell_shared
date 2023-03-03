@@ -75,7 +75,6 @@ char	*get_dest(char *str, t_prompt *prompt)
 
 int	ft_cd(t_request *request, t_prompt *prompt)
 {
-	t_token	*token;
 	char	*dest;
 	char	*dest_bk;
 
@@ -102,6 +101,8 @@ int	ft_pwd(t_request *request, t_prompt *prompt)
 {
 	char	cwd[PATH_MAX];
 
+	(void)prompt;
+	(void)request;
 	if (getcwd(cwd, PATH_MAX))
 	{
 		printf("%s\n", cwd);

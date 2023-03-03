@@ -15,7 +15,6 @@
 int	env_key_len(char *out)
 {
 	int		len;
-	char	*tmp;
 	int		j;
 
 	j = 1;

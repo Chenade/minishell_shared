@@ -71,6 +71,7 @@ void	parse_cmd(char *cmd, char **envp)
 	char	quot;
 	char	*tmp;
 
+	(void) envp;
 	i = 0;
 	quot = '\0';
 	tmp = cmd;

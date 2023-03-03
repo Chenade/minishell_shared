@@ -52,8 +52,6 @@ void	signal_process(void)
 
 void	sigint_handler(int sig)
 {
-	char	*str;
-
 	if (sig == SIGINT)
 	{
 		printf("\n");

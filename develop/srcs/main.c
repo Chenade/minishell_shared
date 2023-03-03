@@ -24,7 +24,6 @@ t_prompt	*starton(void)
 int	minishell(char *out, t_prompt *prompt)
 {
 	int		status;
-	char	*cmd;
 
 	status = pre_check(out, prompt);
 	add_history(out);
@@ -64,6 +63,7 @@ int	main(int argc, char **argv, char **envp)
 	char				*out;
 	t_prompt			*prompt;
 
+	(void) argc;
 	prompt = starton();
 	init_prompt(argv, envp, prompt);
 	out = NULL;

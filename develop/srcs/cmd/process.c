@@ -57,6 +57,7 @@ int	dispatch_cmd(t_request *request, t_prompt *prompt)
 
 int	exec_cmd_child(t_request *request, t_prompt *prompt, int i)
 {
+	(void) i;
 	signal_process();
 	if (prompt->nbr_request != request->id)
 		dup2(prompt->pipefd[WRITEEND], STDOUT_FILENO);
@@ -69,11 +70,6 @@ int	exec_cmd_child(t_request *request, t_prompt *prompt, int i)
 
 int	exec_cmd(t_request *request, t_prompt *prompt, int i)
 {
-	int		ret;
-	int		status;
-	int		tmp;
-	pid_t	pid;
-
 	pipe(prompt->pipefd);
 	request->pid = fork();
 	if (request->pid < 0)
@@ -95,7 +91,6 @@ int	process(t_prompt *prompt)
 {
 	int		status;
 	int		i;
-	t_token	*token;
 
 	status = 0;
 	i = -1;

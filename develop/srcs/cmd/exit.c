@@ -113,7 +113,6 @@ int	exit_minishell(t_request *request, t_prompt *prompt, int fd_stdout)
 void	exit_here_doc(int sig)
 {
 	t_prompt	*prompt;
-	int			i;
 
 	prompt = starton();
 	if (sig == SIGINT)

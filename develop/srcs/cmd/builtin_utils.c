@@ -39,6 +39,7 @@ int	del_envp(int index, t_token *token, t_prompt *prompt)
 	int		j;
 	char	**env_new;
 
+	(void) token;
 	env_new = (char **) malloc((get_matrixlen(prompt->envp))
 			* sizeof(char *));
 	if (!env_new)

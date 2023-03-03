@@ -44,7 +44,6 @@ int	set_request(char *p, t_request *request)
 int	init_request(char *cmd, t_prompt *prompt)
 {
 	int		i;
-	int		j;
 	char	*p;
 
 	i = 0;
